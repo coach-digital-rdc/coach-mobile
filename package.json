@@ -16,7 +16,7 @@
     "@react-native-community/netinfo": "^9.4.1",
     "@types/react-native-dotenv": "^0.2.2",
     "@types/uuid": "^9.0.2",
-    "axios": "^1.4.0",
+    "axios": "^1.20.0",
     "formik": "^2.4.2",
     "i18next": "^23.2.3",
     "i18next-intervalplural-postprocessor": "^3.0.0",
