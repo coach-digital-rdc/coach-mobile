@@ -1,5 +1,13 @@
 const enTranslation = {
   errors: {requiredField: 'This field is required.'},
+  answer: {
+    yes: 'Yes',
+    no: 'No',
+    low: 'Low',
+    medium: 'Medium',
+    high: 'High',
+    na: 'N/A',
+  },
   common: {
     'load-more': 'Load more',
     optional: 'Optional',

@@ -7,6 +7,8 @@ import Icon from '../../../../../components/Icon';
 import StarRating from '../../../../../components/StarRating';
 import Button from '../../../../../components/Button';
 import {useTranslation} from 'react-i18next';
+import AnswerChoice from '../../../../../components/AnswerChoice';
+import {isChoiceQuestion} from '../../../../../helpers/answer.helper';
 
 type Props = {
   question: Question;
@@ -16,7 +18,9 @@ type Props = {
 
 const QuestionItem: React.FC<Props> = ({initialValue, question, onAnswer}) => {
   const {t} = useTranslation();
-  const [internalValue, setInternalValue] = useState(initialValue || 0);
+  const [internalValue, setInternalValue] = useState(
+    isChoiceQuestion(question) ? initialValue : initialValue || 0,
+  );
   const [tooltipData, setTooltipData] = useState<string>();
 
   return (
@@ -24,6 +28,7 @@ const QuestionItem: React.FC<Props> = ({initialValue, question, onAnswer}) => {
       <HStack mb={'16px'}>
         <VStack flex={1} mr={1}>
           <Text fontSize={'LLG'} fontWeight={500} color={'gray.700'}>
+            {question.code ? `${question.code} ` : ''}
             {t(question.title)}
           </Text>
 
@@ -49,14 +54,25 @@ const QuestionItem: React.FC<Props> = ({initialValue, question, onAnswer}) => {
         </TouchableOpacity>
       </HStack>
 
-      <StarRating
-        size={question.scale}
-        value={internalValue}
-        onPress={answerValue => {
-          onAnswer(question, answerValue);
-          setInternalValue(answerValue);
-        }}
-      />
+      {isChoiceQuestion(question) ? (
+        <AnswerChoice
+          question={question}
+          value={internalValue}
+          onPress={answerValue => {
+            onAnswer(question, answerValue);
+            setInternalValue(answerValue);
+          }}
+        />
+      ) : (
+        <StarRating
+          size={question.scale}
+          value={internalValue || 0}
+          onPress={answerValue => {
+            onAnswer(question, answerValue);
+            setInternalValue(answerValue);
+          }}
+        />
+      )}
 
       <Modal isOpen={!!tooltipData} onClose={() => setTooltipData(undefined)}>
         <VStack w="full" mt="auto" p="16px" bg="white" borderTopRadius={'20px'}>

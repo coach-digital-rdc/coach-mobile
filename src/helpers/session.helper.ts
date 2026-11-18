@@ -27,11 +27,15 @@ export const averageAnswersPerCompetence = (competence: Competence) => {
 export const sumAnswersPerQuestions = (question: Question) => {
   return (
     question.answers?.reduce((sum, answer) => {
+      // "N/A" answers have no value
+      if (answer.not_applicable || answer.value === null) {
+        return sum;
+      }
       return (
         sum +
         (question.scale === 3
-          ? (averageConverter as any)[parseInt(answer.value, 10)]
-          : parseInt(answer.value, 10))
+          ? (averageConverter as any)[parseInt(answer.value as string, 10)]
+          : parseInt(answer.value as string, 10))
       );
     }, 0) || 0
   );

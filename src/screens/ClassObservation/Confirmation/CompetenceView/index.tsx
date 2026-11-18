@@ -6,6 +6,11 @@ import StarView from '../../../../components/StarView';
 import {Question} from '../../../../types/question';
 import {useTranslation} from 'react-i18next';
 import {
+  getAnswerLabel,
+  isChoiceQuestion,
+  NOT_APPLICABLE,
+} from '../../../../helpers/answer.helper';
+import {
   averageAnswersPerCompetence,
   sumAnswersPerQuestions,
 } from '../../../../helpers/session.helper';
@@ -36,6 +41,8 @@ const CompetenceView: React.FC<Props> = ({competences}) => {
       <VStack space={6} mt={6} mb="8px">
         {competences.map((competency, i) => {
           const average = Math.floor(averageAnswersPerCompetence(competency));
+          // The DRC grid has no star average: its overall score comes with B15
+          const choiceGrid = isChoiceQuestion(competency.questions[0]);
           return (
             <VStack
               key={i}
@@ -45,6 +52,7 @@ const CompetenceView: React.FC<Props> = ({competences}) => {
               <HStack
                 py={3}
                 px={4}
+                display={choiceGrid ? 'none' : 'flex'}
                 alignItems={'center'}
                 background={'gray.200'}
                 borderTopLeftRadius={'16px'}
@@ -79,6 +87,7 @@ const CompetenceView: React.FC<Props> = ({competences}) => {
 
               <VStack p={4}>
                 <Text fontSize={'TMD'} fontWeight={700} color={'gray.700'}>
+                  {competency.code ? `${competency.code}. ` : ''}
                   {t(competency.title)}
                 </Text>
 
@@ -90,6 +99,7 @@ const CompetenceView: React.FC<Props> = ({competences}) => {
                           fontSize={'TSM'}
                           fontWeight={400}
                           color={'gray.700'}>
+                          {question.code ? `${question.code} ` : ''}
                           {t(question.title)}
                         </Text>
                         {question.description && (
@@ -102,16 +112,32 @@ const CompetenceView: React.FC<Props> = ({competences}) => {
                         )}
                       </VStack>
 
-                      <StarView
-                        maxLength={question.scale}
-                        value={
-                          question.scale === 3
-                            ? (averageConverter as any)[
-                                sumAnswersPerQuestions(question)
-                              ]
-                            : sumAnswersPerQuestions(question) || 0
-                        }
-                      />
+                      {isChoiceQuestion(question) ? (
+                        <Text
+                          fontSize={'TSM'}
+                          fontWeight={600}
+                          color={'gray.700'}>
+                          {t(
+                            getAnswerLabel(
+                              question,
+                              question.answers?.[0]?.not_applicable
+                                ? NOT_APPLICABLE
+                                : Number(question.answers?.[0]?.value),
+                            ) || '',
+                          )}
+                        </Text>
+                      ) : (
+                        <StarView
+                          maxLength={question.scale}
+                          value={
+                            question.scale === 3
+                              ? (averageConverter as any)[
+                                  sumAnswersPerQuestions(question)
+                                ]
+                              : sumAnswersPerQuestions(question) || 0
+                          }
+                        />
+                      )}
                     </HStack>
                   ))}
                 </VStack>

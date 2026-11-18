@@ -56,16 +56,21 @@ const CompetenceCharts: React.FC<Props> = ({competence_id, teacher_id}) => {
 
       const sessions = await Promise.all(
         sessionsDb.map(async session => {
-          const answers = await AnswerService.listBySessionsAndQuestions(
-            [session.id],
-            questions,
-          );
+          // "N/A" answers have no value and are left out of the average
+          const answers = (
+            await AnswerService.listBySessionsAndQuestions(
+              [session.id],
+              questions,
+            )
+          ).filter(answer => answer.value !== null);
 
           return {
             created_at: session.created_at,
             overall_rating: Math.round(
-              answers.reduce((acc, item) => acc + parseInt(item.value), 0) /
-                answers.length,
+              answers.reduce(
+                (acc, item) => acc + parseInt(item.value as string, 10),
+                0,
+              ) / answers.length,
             ),
           };
         }),
