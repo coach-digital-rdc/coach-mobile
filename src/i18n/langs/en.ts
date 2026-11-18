@@ -423,6 +423,31 @@ const enTranslation = {
           'After agreeing with the teacher about priority next steps for improvement, schedule your next visit.',
       },
     },
+    checklist: {
+      title: 'Document checklist',
+      'subtitle-before':
+        'Check that the documents of the teacher and of the learners are available. What cannot be checked now can be checked after the observation. The checklist is not part of the rating.',
+      'subtitle-after':
+        'Complete the documents that could not be checked before the observation. The checklist is not part of the rating.',
+      'subtitle-observing':
+        'The observation is in progress: the checklist can be completed after the observation.',
+      'teacher-documents': 'Documents of the teacher',
+      'learner-documents': 'Documents of the learners',
+      before: 'Before the observation',
+      after: 'After the observation',
+      proposal: 'Proposal of the observer',
+      'proposal-placeholder': 'E.g. update the document every week',
+      status: '{{count}}/{{total}} documents checked',
+      'status-later_interval':
+        '(1)[ · the last one will be completed after the observation];(2-inf)[ · the remaining {{count}} will be completed after the observation];',
+      'status-left': ' · {{count}} left',
+      start: 'Start the observation',
+      save: 'Save the checklist',
+      'back-to-observation': 'Back to the observation',
+      reminder_interval:
+        '(1)[Checklist: 1 document not checked (optional)];(2-inf)[Checklist: {{count}} documents not checked (optional)];',
+      complete: 'Complete',
+    },
     setup: {
       title: 'Header of the sheet',
       subtitle:

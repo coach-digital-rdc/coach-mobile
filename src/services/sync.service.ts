@@ -19,6 +19,8 @@ import {API_URL} from '@env';
 import CompetenceService from './competence.service';
 import {QuestionService} from './question.service';
 import {CoachService} from './coach.service';
+import {ChecklistService} from './checklist.service';
+import {Documentation} from '../types/checklist';
 
 const SyncService = {
   getUnsyncedItemsCount: async (): Promise<{
@@ -55,6 +57,9 @@ const SyncService = {
         sessionActivities: firstSync
           ? []
           : await SyncService.getPendingSessionActivities(db),
+        documentations: firstSync
+          ? []
+          : await SyncService.getPendingDocumentations(db),
       };
       console.log('2');
 
@@ -85,6 +90,8 @@ const SyncService = {
         await SessionService.sync(response.data.sessions);
         await AnswerService.sync(response.data.answers);
         await SessionService.syncActivities(response.data.sessionActivities);
+        await ChecklistService.syncItems(response.data.checklistItems);
+        await ChecklistService.syncAnswers(response.data.documentations);
         await SessionService.syncFeedbacks(response.data.feedbacks);
         await StorageService.setLastSync(new Date());
       }
@@ -104,6 +111,7 @@ const SyncService = {
       SyncService.updateToSyncedSession(db),
       SyncService.updateToSyncedAnswers(db),
       SyncService.updateToSyncedSessionActivities(db),
+      SyncService.updateToSyncedDocumentations(db),
       SyncService.updateToSyncedFeedbacks(db),
     ]);
   },
@@ -193,6 +201,22 @@ const SyncService = {
   ): Promise<void> => {
     await db.executeSql(
       "UPDATE session_activity SET _status = 'synced' WHERE _status != 'synced'",
+    );
+  },
+
+  getPendingDocumentations: async (
+    db: SQLiteDatabase,
+  ): Promise<Documentation[]> => {
+    const results = await db.executeSql(
+      "SELECT * FROM documentation WHERE _status != 'synced'",
+    );
+
+    return results[0].rows.raw();
+  },
+
+  updateToSyncedDocumentations: async (db: SQLiteDatabase): Promise<void> => {
+    await db.executeSql(
+      "UPDATE documentation SET _status = 'synced' WHERE _status != 'synced'",
     );
   },
 

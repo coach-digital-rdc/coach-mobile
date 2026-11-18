@@ -18,6 +18,8 @@ import Button from '../../../components/Button';
 import {useTranslation} from 'react-i18next';
 import Icon from '../../../components/Icon';
 import Page from '../../../components/Page';
+import {SessionService} from '../../../services/session.service';
+import {toAnswers} from '../../../helpers/answer.helper';
 
 const ClassObservationForm: React.FC<any> = () => {
   const isTablet = Tablet();
@@ -25,7 +27,7 @@ const ClassObservationForm: React.FC<any> = () => {
   const {state} = useLocation();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
-  const [keyPoints, setKeyPoints] = useState('');
+  const [keyPoints, setKeyPoints] = useState(state.session?.key_points || '');
   const [competencies, setCompetencies] = useState<Competence[]>(
     state.competencies || [],
   );
@@ -53,6 +55,14 @@ const ClassObservationForm: React.FC<any> = () => {
   }, [competencies]);
 
   const handleSubmitForm = async () => {
+    // End of the observation (B10): the answers are kept until the session is closed
+    if (state.session?.id) {
+      await SessionService.endObservation(
+        state.session.id,
+        keyPoints,
+        toAnswers(answers),
+      );
+    }
     navigate(PathRoutes.classObservation.confirmation, {
       replace: true,
       state: {

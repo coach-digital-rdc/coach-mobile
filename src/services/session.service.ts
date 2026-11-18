@@ -10,6 +10,7 @@ import {SessionActivity} from '../types/session-activity';
 import {getDBConnection} from './database.service';
 import {v4 as uuid} from 'uuid';
 import {ImageService} from './image.service';
+import {NOT_APPLICABLE} from '../helpers/answer.helper';
 
 export const SessionService = {
   findSessionFromTeacher: async (
@@ -103,8 +104,8 @@ export const SessionService = {
 
     await db.executeSql(
       `
-      INSERT INTO session(id, subject, school_id, coach_id, teacher_id, level, school_year, teacher_weekly_load, last_observation_date, observer_function, session_status, observation_started_at, created_at, _status)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'OBSERVATION', ?, ?, 'pending')
+      INSERT INTO session(id, subject, school_id, coach_id, teacher_id, level, school_year, teacher_weekly_load, last_observation_date, observer_function, session_status, created_at, _status)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'PREPARATION', ?, 'pending')
     `,
       [
         sessionId,
@@ -117,7 +118,6 @@ export const SessionService = {
         session.teacher_weekly_load,
         session.last_observation_date,
         session.observer_function,
-        now,
         now,
       ],
     );
@@ -142,6 +142,92 @@ export const SessionService = {
     );
 
     return sessionId;
+  },
+
+  getSessionById: async (id: string): Promise<Session | undefined> => {
+    const db = await getDBConnection();
+    const result = await db.executeSql('SELECT * FROM session WHERE id = ?', [
+      id,
+    ]);
+    return result[0].rows.raw()[0];
+  },
+
+  // End of the preparation (header and checklist): the observation starts.
+  startObservation: async (sessionId: string): Promise<void> => {
+    const db = await getDBConnection();
+    await db.executeSql(
+      `
+      UPDATE session
+      SET session_status = 'OBSERVATION', observation_started_at = COALESCE(observation_started_at, ?), _status = 'pending'
+      WHERE id = ?
+    `,
+      [new Date().toJSON(), sessionId],
+    );
+  },
+
+  // End of the observation: the answers are kept and the evaluation starts.
+  endObservation: async (
+    sessionId: string,
+    keyPoints: string,
+    answers: Partial<Answer>[],
+  ): Promise<void> => {
+    const db = await getDBConnection();
+    await db.executeSql(
+      `
+      UPDATE session
+      SET session_status = 'EVALUATION', key_points = ?, observation_ended_at = COALESCE(observation_ended_at, ?), _status = 'pending'
+      WHERE id = ?
+    `,
+      [keyPoints, new Date().toJSON(), sessionId],
+    );
+    await SessionService.saveAnswers(sessionId, answers);
+  },
+
+  // One answer per behaviour and per session: the existing one is updated
+  saveAnswers: async (
+    sessionId: string,
+    answers: Partial<Answer>[],
+  ): Promise<void> => {
+    const db = await getDBConnection();
+    for (const answer of answers) {
+      const values = [answer.value, answer.not_applicable ? 1 : 0];
+      const updated = await db.executeSql(
+        `
+        UPDATE answer SET value = ?, not_applicable = ?, _status = 'pending'
+        WHERE session_id = ? AND question_id = ?
+      `,
+        [...values, sessionId, answer.question_id],
+      );
+      if (!updated[0].rowsAffected) {
+        await db.executeSql(
+          `
+          INSERT INTO answer(value, not_applicable, id, session_id, question_id, _status)
+          VALUES (?, ?, ?, ?, ?, 'pending')
+        `,
+          [...values, uuid(), sessionId, answer.question_id],
+        );
+      }
+    }
+  },
+
+  // Answers of the form by behaviour, to resume the evaluation
+  getAnswersMap: async (
+    sessionId: string,
+  ): Promise<{[questionId: string]: number}> => {
+    const db = await getDBConnection();
+    const result = await db.executeSql(
+      'SELECT * FROM answer WHERE session_id = ?',
+      [sessionId],
+    );
+    return result[0].rows.raw().reduce(
+      (map: {[questionId: string]: number}, answer: Answer) => ({
+        ...map,
+        [answer.question_id]: answer.not_applicable
+          ? NOT_APPLICABLE
+          : Number(answer.value),
+      }),
+      {},
+    );
   },
 
   // Saves the answers and closes the session started by startLocalSession.
@@ -170,23 +256,7 @@ export const SessionService = {
       ],
     );
 
-    await Promise.all(
-      answers.map(answer =>
-        db.executeSql(
-          `
-            INSERT INTO answer(id, session_id, question_id, value, not_applicable, _status)
-            VALUES (?, ?, ?, ?, ?, 'pending')
-          `,
-          [
-            uuid(),
-            sessionId,
-            answer.question_id,
-            answer.value,
-            answer.not_applicable ? 1 : 0,
-          ],
-        ),
-      ),
-    );
+    await SessionService.saveAnswers(sessionId, answers);
 
     return sessionId;
   },

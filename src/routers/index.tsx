@@ -12,6 +12,7 @@ import QuickNewSessionScreen from '../screens/Home/QuickActions/NewSession';
 import TeacherDetailsScreen from '../screens/Teacher/TeacherDetails';
 import ClassObservationAbout from '../screens/ClassObservation/About';
 import ClassObservationSetup from '../screens/ClassObservation/Setup';
+import ClassObservationChecklist from '../screens/ClassObservation/Checklist';
 import ClassObservationForm from '../screens/ClassObservation/Form';
 import ClassObservationConfirmation from '../screens/ClassObservation/Confirmation';
 import ClassObservationCompleted from '../screens/ClassObservation/Completed';
@@ -114,6 +115,10 @@ const RouterProvider: React.FC = () => {
         <Route
           path={PathRoutes.classObservation.setup}
           Component={ClassObservationSetup}
+        />
+        <Route
+          path={PathRoutes.classObservation.checklist}
+          Component={ClassObservationChecklist}
         />
         <Route
           path={PathRoutes.classObservation.form}

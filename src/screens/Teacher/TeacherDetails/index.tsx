@@ -6,6 +6,7 @@ import {TouchableOpacity} from 'react-native';
 import {TeacherDetailsType} from '../../../types/teacher';
 import {TeacherService} from '../../../services/teacher.service';
 import {SessionService} from '../../../services/session.service';
+import CompetenceService from '../../../services/competence.service';
 import {useCoachContext} from '../../../providers/coach.provider';
 import {Session} from '../../../types/session';
 import PathRoutes from '../../../routers/paths';
@@ -42,11 +43,29 @@ const TeacherDetailsScreen: React.FC = () => {
     }
   }, [id]);
 
+  // The session is resumed at its step: checklist, observation form or summary
   const resumeSession = useCallback(
-    (session: Session) =>
-      navigate(PathRoutes.classObservation.form, {
-        state: {session: {id: session.id, teacher_id: session.teacher_id}},
-      }),
+    async (session: Session) => {
+      const current = {id: session.id, teacher_id: session.teacher_id};
+      if (session.session_status === 'PREPARATION') {
+        navigate(PathRoutes.classObservation.checklist, {
+          state: {session: current},
+        });
+      } else if (session.session_status === 'EVALUATION') {
+        navigate(PathRoutes.classObservation.confirmation, {
+          state: {
+            session: {...current, key_points: session.key_points},
+            competencies:
+              await CompetenceService.listCompetenciesWithQuestions(),
+            answers: await SessionService.getAnswersMap(session.id),
+          },
+        });
+      } else {
+        navigate(PathRoutes.classObservation.form, {
+          state: {session: current},
+        });
+      }
+    },
     [navigate],
   );
 

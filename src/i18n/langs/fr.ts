@@ -425,6 +425,31 @@ const frTranslation = {
           "Après vous être accordé avec l'enseignant sur les priorités, planifiez votre prochaine visite.",
       },
     },
+    checklist: {
+      title: 'Checklist documentaire',
+      'subtitle-before':
+        "Vérifiez la présence des documents de l'enseignant.e et des apprenant.e.s. Ce qui ne peut pas être vérifié maintenant pourra l'être après l'observation. La checklist n'entre pas dans la cotation.",
+      'subtitle-after':
+        "Complétez les documents qui n'ont pas pu être vérifiés avant l'observation. La checklist n'entre pas dans la cotation.",
+      'subtitle-observing':
+        "L'observation est en cours : la checklist pourra être complétée après l'observation.",
+      'teacher-documents': "Documents de l'enseignant.e",
+      'learner-documents': "Documents de l'apprenant.e",
+      before: "Avant l'observation",
+      after: "Après l'observation",
+      proposal: "Proposition de l'observateur",
+      'proposal-placeholder': 'Ex. : mettre à jour le document chaque semaine',
+      status: '{{count}}/{{total}} documents vérifiés',
+      'status-later_interval':
+        "(1)[ · le dernier sera à compléter après l'observation];(2-inf)[ · les {{count}} restants seront à compléter après l'observation];",
+      'status-left': ' · {{count}} à compléter',
+      start: "Démarrer l'observation",
+      save: 'Enregistrer la checklist',
+      'back-to-observation': "Retour à l'observation",
+      reminder_interval:
+        '(1)[Checklist : 1 document non vérifié (facultatif)];(2-inf)[Checklist : {{count}} documents non vérifiés (facultatif)];',
+      complete: 'Compléter',
+    },
     setup: {
       title: 'En-tête de la fiche',
       subtitle:

@@ -19,7 +19,8 @@ import {Competence} from '../../../types/competence';
 import CompetenceView from './CompetenceView';
 import Page from '../../../components/Page';
 import {Answer} from '../../../types/answer';
-import {NOT_APPLICABLE} from '../../../helpers/answer.helper';
+import {NOT_APPLICABLE, toAnswers} from '../../../helpers/answer.helper';
+import {ChecklistService} from '../../../services/checklist.service';
 
 const ClassObservationConfirmation: React.FC = () => {
   const theme = useTheme();
@@ -32,11 +33,29 @@ const ClassObservationConfirmation: React.FC = () => {
     state: {answers, session, competencies},
   } = useLocation();
 
+  const [uncheckedDocuments, setUncheckedDocuments] = useState(0);
+
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
     });
-  }, []);
+    if (session.id) {
+      ChecklistService.countUnchecked(session.id).then(setUncheckedDocuments);
+    }
+  }, [session.id]);
+
+  // The checklist does not block the closure: a reminder is shown when documents are left
+  const completeChecklist = () =>
+    navigate(PathRoutes.classObservation.checklist, {
+      replace: true,
+      state: {
+        session,
+        returnTo: {
+          path: PathRoutes.classObservation.confirmation,
+          state: {answers, session, competencies},
+        },
+      },
+    });
 
   const competencyFormatted = useMemo(
     () =>
@@ -70,12 +89,7 @@ const ClassObservationConfirmation: React.FC = () => {
 
       const location = await GeolocationService.getLocation();
 
-      const parsedAnswers: Partial<Answer>[] = Object.keys(answers).map(
-        question_id =>
-          answers[question_id] === NOT_APPLICABLE
-            ? {question_id, value: null, not_applicable: 1}
-            : {question_id, value: answers[question_id]},
-      );
+      const parsedAnswers = toAnswers(answers);
 
       const sessionId = session.id
         ? await SessionService.completeLocalSession(
@@ -142,6 +156,33 @@ const ClassObservationConfirmation: React.FC = () => {
           </VStack>
 
           <VStack w={'100%'} pt={3} space={4}>
+            {uncheckedDocuments > 0 && (
+              <HStack
+                p="8px"
+                space={2}
+                alignItems="center"
+                borderRadius="10px"
+                bg="primary.0">
+                <Icon
+                  name="info-circle"
+                  size={18}
+                  color={theme.colors.primary['200']}
+                />
+                <Text flex={1} fontSize="13px" color="gray.700">
+                  {t('classObservation.checklist.reminder_interval', {
+                    postProcess: 'interval',
+                    count: uncheckedDocuments,
+                  })}
+                </Text>
+                <Text
+                  fontSize="13px"
+                  fontWeight={600}
+                  color="primary.200"
+                  onPress={completeChecklist}>
+                  {t('classObservation.checklist.complete')}
+                </Text>
+              </HStack>
+            )}
             <Button
               onPress={handlePressContinue}
               marginTop={'auto'}

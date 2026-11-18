@@ -96,7 +96,7 @@ const ClassObservationSetup: React.FC = () => {
       },
       activity,
     );
-    navigate(PathRoutes.classObservation.form, {
+    navigate(PathRoutes.classObservation.checklist, {
       replace: true,
       state: {session: {id: sessionId, teacher_id: teacherId}},
     });
