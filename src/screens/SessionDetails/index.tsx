@@ -30,13 +30,13 @@ const SessionDetailsScreen: React.FC = () => {
   const options = [
     {
       icon: 'clipboard-notes',
-      label: 'Observation',
+      label: t('sessionDetails.observation'),
       onPress: () =>
         navigate(PathRoutes.session.classObservation, {state: {competences}}),
     },
     {
       icon: 'comment-verify',
-      label: 'Feedback',
+      label: t('sessionDetails.feedback'),
       onPress: session.feedback_id
         ? () => navigate(PathRoutes.session.feedback, {state: {session}})
         : () =>
