@@ -25,7 +25,7 @@ const Page: React.FC<Props> = ({
       <VStack
         w="full"
         flex={1}
-        {...(!noPadding && {p: isTablet() ? '32px 64px' : '16px 24px'})}>
+        {...(!noPadding && {p: isTablet() ? '24px 32px' : '16px'})}>
         {children}
       </VStack>
     </SafeAreaView>

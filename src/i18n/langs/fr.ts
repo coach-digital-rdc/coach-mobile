@@ -8,6 +8,10 @@ const frTranslation = {
     high: 'Élevé',
     na: 'N/A',
   },
+  splash: {
+    tagline: 'Observation des pratiques de classe',
+    version: 'Version {{value}}',
+  },
   common: {
     'load-more': 'Afficher plus',
     optional: 'Facultatif',
@@ -26,8 +30,9 @@ const frTranslation = {
   bottom_navigator: {
     home: 'Accueil',
     tlc: 'Cercles',
-    pending: 'En attente',
+    pending: 'En cours',
     cop: 'CdP',
+    settings: 'Paramètres',
   },
   components: {
     starRating: {low: 'Faible', mid: 'Moyen', high: 'Élevé'},
@@ -47,20 +52,25 @@ const frTranslation = {
   },
   login: {
     main: {
-      welcome: 'Bienvenue sur Coach Digital !',
-      user_id: 'Identifiant',
-      user_id_placeholder: 'Adresse e-mail ou numéro de téléphone',
+      welcome: 'Bienvenue !',
+      tagline: 'Observation de classe',
+      subtitle:
+        "Connectez-vous avec l'adresse e-mail ou le numéro de téléphone de votre compte.",
+      user_id: 'Adresse e-mail ou téléphone',
+      user_id_placeholder: 'ex. nom@example.com',
       error:
         'Utilisateur introuvable. Essayez avec votre numéro de téléphone ou créez un compte.',
       button: 'Se connecter',
-      create_account: "Vous n'avez pas de compte ?",
-      create_account_button: ' Créer un compte',
+      create_account: 'Pas encore de compte ? ',
+      create_account_button: 'Créer un compte',
     },
     otp: {
+      header: 'Vérification',
+      heading: 'Code de vérification',
       title: 'Saisissez le code à 6 chiffres envoyé à',
       error: 'Code incorrect. Veuillez réessayer.',
       button: 'Vérifier',
-      not_receive_code: "Vous n'avez pas reçu de code ?",
+      not_receive_code: 'Code non reçu ?',
       resend_code: 'Renvoyer le code',
       change_email: "Changer d'adresse e-mail",
     },
@@ -111,6 +121,7 @@ const frTranslation = {
     language: 'Langue',
     lastSync: 'Dernière synchronisation : {{value}}',
     'never-synced': 'jamais',
+    'try-sync': 'Synchroniser',
     appVersion: "Version de l'application",
     'unsynced-items': 'Éléments non synchronisés',
     'unsynced-teacher': 'Enseignants :',
@@ -128,7 +139,14 @@ const frTranslation = {
     'item-description-empty': 'Aucun profil',
   },
   schoolSelect: {
-    title: 'Choisissez votre établissement',
+    header: 'Établissement',
+    title: "Choisissez l'établissement",
+    subtitle:
+      "Choisissez l'établissement où vous observez, ou ajoutez-le en scannant son QR code.",
+    'qr-title': "Scanner le QR code de l'établissement",
+    'qr-hint': "Le code figure sur la fiche remise par l'administration",
+    search: 'Rechercher un établissement',
+    empty: 'Aucun établissement trouvé.',
     'item-description_interval':
       '(0)[Aucun enseignant];(1)[1 enseignant];(2-inf)[{{count}} enseignants];',
   },
@@ -146,6 +164,20 @@ const frTranslation = {
   },
   home: {
     salutation: 'Bonjour',
+    tiles: {
+      'new-observation': 'Nouvelle observation',
+      'in-progress': 'Séances en cours',
+      manual: 'Manuel',
+      tlc: "Cercles d'apprentissage",
+      cop: 'Communauté de pratique',
+      sync: 'Synchronisation',
+    },
+    sync: {
+      done: 'Synchronisé {{date}}',
+      never: 'Pas encore synchronisé',
+      pending_interval:
+        '(1)[1 élément à synchroniser];(2-inf)[{{count}} éléments à synchroniser];',
+    },
     teachersLength_interval: 'Établissement :',
     'menu-items': {
       newSession: 'Nouvelle observation',
@@ -164,6 +196,11 @@ const frTranslation = {
       'last-session': 'Mis à jour le {{date}}',
       session_interval: '(1)[1 observation];(2-inf)[{{count}} observations];',
       teachers_count: 'Enseignants de cet établissement :',
+      section: 'Enseignant.e.s ({{count}})',
+      add: 'Ajouter',
+      search: 'Rechercher un.e enseignant.e',
+      'last-observation': 'dernière le {{date}}',
+      'no-observation': 'aucune observation',
     },
     emptyState: {
       title: 'Aucun enseignant enregistré',

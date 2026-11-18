@@ -8,6 +8,10 @@ const enTranslation = {
     high: 'High',
     na: 'N/A',
   },
+  splash: {
+    tagline: 'Classroom practice observation',
+    version: 'Version {{value}}',
+  },
   common: {
     'load-more': 'Load more',
     optional: 'Optional',
@@ -29,6 +33,7 @@ const enTranslation = {
     tlc: 'TLC',
     pending: 'Pending',
     cop: 'COP',
+    settings: 'Settings',
   },
   components: {
     starRating: {low: 'Low', mid: 'Mid', high: 'High'},
@@ -48,17 +53,22 @@ const enTranslation = {
   },
   login: {
     main: {
-      welcome: 'Welcome to Coach!',
+      welcome: 'Welcome!',
+      tagline: 'Classroom observation',
+      subtitle:
+        'Sign in with the email address or phone number of your account.',
       user_id: 'User ID',
       user_id_placeholder: 'Email ID or Phone number',
       error:
         'User not found. Try logging in using phone number or create an account.',
       button: 'Login',
-      create_account: "Don't have an account?",
-      create_account_button: ' Register now',
+      create_account: "Don't have an account? ",
+      create_account_button: 'Register now',
     },
     otp: {
-      title: 'Enter the 6-digit code sent to you at',
+      header: 'Verification',
+      heading: 'Verification code',
+      title: 'Enter the 6-digit code sent to',
       error: 'Incorrect code. Please try again.',
       button: 'Verify',
       not_receive_code: "Didn't receive a verification code?",
@@ -111,6 +121,7 @@ const enTranslation = {
     language: 'Language',
     lastSync: 'Last sync: {{value}}',
     'never-synced': 'no sync',
+    'try-sync': 'Try sync',
     appVersion: 'App version',
     'unsynced-items': 'Unsynchronized items',
     'unsynced-teacher': 'Teachers:',
@@ -128,7 +139,14 @@ const enTranslation = {
     'item-description-empty': 'No profiles here',
   },
   schoolSelect: {
-    title: 'Select your school',
+    header: 'School',
+    title: 'Select the school',
+    subtitle:
+      'Choose the school where you observe, or add it by scanning its QR code.',
+    'qr-title': "Scan the school's QR code",
+    'qr-hint': 'The code is on the sheet provided by the administration',
+    search: 'Search a school',
+    empty: 'No school found.',
     'item-description_interval':
       '(0)[No teachers here];(1)[1 teacher here];(2-inf)[{{count}} teachers here];',
   },
@@ -146,6 +164,20 @@ const enTranslation = {
   },
   home: {
     salutation: 'Hi',
+    tiles: {
+      'new-observation': 'New observation',
+      'in-progress': 'Sessions in progress',
+      manual: 'Manual',
+      tlc: 'Learning circles',
+      cop: 'Community of practice',
+      sync: 'Synchronisation',
+    },
+    sync: {
+      done: 'Synced {{date}}',
+      never: 'Not synced yet',
+      pending_interval:
+        '(1)[1 item to synchronise];(2-inf)[{{count}} items to synchronise];',
+    },
     teachersLength_interval: 'Coaching in:',
     'menu-items': {
       newSession: 'Start a new session',
@@ -164,6 +196,11 @@ const enTranslation = {
       'last-session': 'Updated {{date}}',
       session_interval: '(1)[1 Observation];(2-inf)[{{count}} Observations];',
       teachers_count: 'Teachers in this school:',
+      section: 'Teachers ({{count}})',
+      add: 'Add',
+      search: 'Search a teacher',
+      'last-observation': 'last on {{date}}',
+      'no-observation': 'no observation yet',
     },
     emptyState: {
       title: 'No teacher registered',

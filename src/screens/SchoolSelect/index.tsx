@@ -2,8 +2,10 @@ import React, {useCallback, useState} from 'react';
 import {useCoachContext} from '../../providers/coach.provider';
 import {SchoolService} from '../../services/school.service';
 import {CoachService} from '../../services/coach.service';
-import {QrCodeImg} from '../../assets/images/scan';
-import InputText from '../../components/InputText';
+import {TouchableOpacity} from 'react-native';
+import Icon from '../../components/Icon';
+import ListRow from '../../components/ListRow';
+import SearchField from '../../components/SearchField';
 import {useNavigate} from 'react-router-native';
 import useDebounce from '../../hooks/debounce';
 import {useTranslation} from 'react-i18next';
@@ -13,14 +15,13 @@ import Page from '../../components/Page';
 import {
   Text,
   Modal,
-  Image,
-  Button,
+  HStack,
   VStack,
   Spinner,
   FlatList,
+  useTheme,
 } from 'native-base';
 import QrReader from '../../components/QrReader';
-import SchoolItem from './SchoolItem';
 
 const SchoolSelectScreen: React.FC = () => {
   const [filter, setFilter] = useState('');
@@ -29,6 +30,7 @@ const SchoolSelectScreen: React.FC = () => {
   const [schoolList, setSchoolList] = useState<School[]>([]);
 
   const {t} = useTranslation();
+  const theme = useTheme();
   const navigate = useNavigate();
   const {selectSchool, currentSchool, currentCoach} = useCoachContext();
 
@@ -66,69 +68,81 @@ const SchoolSelectScreen: React.FC = () => {
   };
 
   return (
-    <Page setting logo back={!!currentSchool}>
-      {isLoading ? (
-        <Spinner />
-      ) : schoolList.length > 0 ? (
-        <>
-          <Text
-            fontSize={'HSM'}
-            fontWeight={600}
-            color={'gray.700'}
-            mb={'16px'}>
-            {t('schoolSelect.title')}
-          </Text>
+    <Page setting back={!!currentSchool} title={t('schoolSelect.header') || ''}>
+      <Text fontSize="24px" fontWeight={600} color="gray.700">
+        {t('schoolSelect.title')}
+      </Text>
+      <Text mt="8px" mb="16px" fontSize="14px" color="gray.600">
+        {t('schoolSelect.subtitle')}
+      </Text>
 
-          <InputText
-            mb={2}
-            value={filter}
-            placeholder={t('common.search')}
-            onChangeText={setFilter}
+      <TouchableOpacity onPress={() => setIsOpen(true)}>
+        <HStack
+          p="12px"
+          space={3}
+          alignItems="center"
+          borderWidth="1px"
+          borderStyle="dashed"
+          borderRadius="12px"
+          borderColor="primary.200"
+          bg="primary.0">
+          <Icon
+            name="qrcode-scan"
+            size={28}
+            color={theme.colors.primary['200']}
           />
+          <VStack flex={1}>
+            <Text fontSize="14px" fontWeight={700} color="gray.700">
+              {t('schoolSelect.qr-title')}
+            </Text>
+            <Text fontSize="12px" color="gray.600">
+              {t('schoolSelect.qr-hint')}
+            </Text>
+          </VStack>
+          <Icon name="angle-right" size={20} color={theme.colors.gray['500']} />
+        </HStack>
+      </TouchableOpacity>
 
+      {isLoading ? (
+        <Spinner mt="24px" />
+      ) : schoolList.length > 0 || filter ? (
+        <>
+          <SearchField
+            value={filter}
+            onChangeText={setFilter}
+            placeholder={t('schoolSelect.search') || ''}
+          />
           <FlatList
             data={schoolList}
             keyExtractor={item => item.id || ''}
+            ListEmptyComponent={
+              <Text
+                mt="16px"
+                textAlign="center"
+                fontSize="14px"
+                color="gray.500">
+                {t('schoolSelect.empty')}
+              </Text>
+            }
             renderItem={({item, index}) => (
-              <SchoolItem
-                index={index}
-                school={item}
+              <ListRow
+                divider={index > 0}
+                icon="book-alt"
+                title={item.name || ''}
+                subtitle={t('schoolSelect.item-description_interval', {
+                  postProcess: 'interval',
+                  count: item.teachersCount,
+                })}
                 onPress={() => onSelectSchool(item)}
               />
             )}
           />
         </>
       ) : (
-        <VStack my="auto">
-          <Image
-            w="172px"
-            h="172px"
-            mt="45px"
-            source={QrCodeImg}
-            mx="auto"
-            alt="scan image"
-          />
-          <Text
-            mt="24px"
-            textAlign="center"
-            fontSize={20}
-            color="#111417"
-            fontWeight="600">
-            {t('aboutScan.title')}
-          </Text>
-          <Text mt="4px" color="#576375" fontSize={16} textAlign="center">
-            {t('aboutScan.description')}
-          </Text>
-        </VStack>
+        <Text mt="24px" textAlign="center" fontSize="14px" color="gray.600">
+          {t('aboutScan.description')}
+        </Text>
       )}
-
-      <Button
-        bg="#3373CC"
-        mt="auto"
-        _text={{fontWeight: 500, fontSize: 16}}
-        onPress={() => setIsOpen(true)}>
-        {t('aboutScan.scan')}
-      </Button>
 
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} flex={1}>
         <VStack flex={1} w="full">

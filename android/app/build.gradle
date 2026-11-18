@@ -79,6 +79,8 @@ def countryApps = [
     sl: [applicationId: "com.coachappsl", appName: "TEACH/COACH SL", icon: "ic_launcher"],
 ]
 def countryApp = countryApps[envCountry] ?: countryApps.sl
+// Country resources (logo shown while the app loads), in src/country/<country>/res
+def countryRes = envCountry == "cd" ? "cd" : "sl"
 
 android {
     packagingOptions {
@@ -95,6 +97,10 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     namespace 'com.coachappsl'
+
+    sourceSets {
+        main.res.srcDirs += "src/country/${countryRes}/res"
+    }
     defaultConfig {
         applicationId countryApp.applicationId
         resValue "string", "app_name", countryApp.appName
