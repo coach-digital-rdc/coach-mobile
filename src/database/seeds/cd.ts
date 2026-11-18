@@ -65,3 +65,75 @@ export const SEED_CD_INSERT_CHECKLIST = `
     ('24b36da7-0f95-5bf4-af38-34084fd3b4e2', 14, 'LEARNER', 'Cahier de devoirs et interrogations', 'Les apprenant.e.s font les devoirs, interrogations, travaux à domicile et travaux pratiques dans un cahier suivi par l''enseignant.e et les parents.', 14, 'synced'),
     ('449f92ca-b085-58bf-a676-73826cc2f11e', 15, 'LEARNER', 'Cahier de communication', 'Les apprenant.e.s utilisent le cahier de communication pour favoriser le contact entre l''école et les parents.', 15, 'synced');
 `;
+
+// PDP rules version 1 and objectives library (B18), validated by SERNAFOR
+export const SEED_CD_INSERT_PDP_RULE_SET = `
+    INSERT OR REPLACE INTO pdp_rule_set(id, version, status, diagnostic_config, max_objectives, published_at, _status)
+    VALUES
+    ('948f248e-7d7d-56bf-9e97-647004b6f025', 1, 'PUBLISHED', '{"strength": ["HIGH", "YES"], "consolidate": ["MEDIUM"], "priority": ["LOW", "NO"], "priority_threshold": 2, "due_in_days": 42}', 3, '2026-10-15T00:00:00.000Z', 'synced');
+`;
+
+export const SEED_CD_INSERT_PDP_LIBRARY = `
+    INSERT OR REPLACE INTO pdp_library_item(id, rule_set_id, question_id, objective, actions, indicator, _status)
+    VALUES
+    ('b8ae6a28-ac2b-517a-90e1-b36e8656b863', '948f248e-7d7d-56bf-9e97-647004b6f025', 'fa42f2c2-355b-552d-89fb-731341cb4c9e', 'Proposer une activité d''apprentissage à l''ensemble de la classe.', 'Prévoir une tâche pour chaque groupe dès le début de la séquence
+Vérifier en circulant que chaque apprenant.e a une tâche', 'Au moins 2/3 des apprenant.e.s en activité lors de la prochaine observation', 'synced'),
+    ('6c04bf5a-48b8-553b-b677-2c20cc88ef9b', '948f248e-7d7d-56bf-9e97-647004b6f025', 'db0d910e-5ba2-5f41-8e0f-46ce8e28fd17', 'Maintenir les apprenant.e.s concentré.e.s sur leur tâche.', 'Annoncer la durée de chaque activité
+Circuler dans les rangs pendant le travail individuel', 'Moins de 5 apprenant.e.s inactif.ve.s pendant les activités', 'synced'),
+    ('19f34635-b687-58be-a98f-7e2a6e26b43d', '948f248e-7d7d-56bf-9e97-647004b6f025', '34021e91-b605-5b5e-8ed1-b4fe927a1339', 'Faire participer activement les apprenant.e.s aux tâches d''apprentissage.', 'Interroger des apprenant.e.s qui ne lèvent pas la main
+Alterner travail individuel, en binôme et en groupe', 'La majorité des apprenant.e.s interviennent au moins une fois par séquence', 'synced'),
+    ('45bfacc8-8df3-5ae6-8746-081f9e09e4eb', '948f248e-7d7d-56bf-9e97-647004b6f025', '7ad84908-2122-58b1-880f-9d680fa0d4a8', 'Renforcer le respect dans les échanges avec les apprenant.e.s.', 'Appeler les apprenant.e.s par leur nom
+Écouter les réponses jusqu''au bout', 'Aucune remarque blessante relevée lors de l''observation', 'synced'),
+    ('97f61671-edc8-52b1-9767-6235b0135cf3', '948f248e-7d7d-56bf-9e97-647004b6f025', '89a39509-e0d0-5a79-bd64-6f12088bbef7', 'Utiliser un langage positif avec les apprenant.e.s.', 'Formuler les consignes de manière positive
+Valoriser les essais, même incorrects', 'Langage positif relevé dans les notes d''observation', 'synced'),
+    ('efb47e99-3452-58ba-b374-41d63a98e5f5', '948f248e-7d7d-56bf-9e97-647004b6f025', '42bc1669-731f-591f-aba3-673d0bd1bc4b', 'Mieux répondre aux besoins des apprenant.e.s.', 'Repérer les apprenant.e.s en difficulté en début de séquence
+Prévoir un temps d''aide individuelle', 'Les apprenant.e.s qui demandent de l''aide sont pris.es en charge', 'synced'),
+    ('c37386e7-e31b-5ea0-9e1e-bfefeb16da3d', '948f248e-7d7d-56bf-9e97-647004b6f025', 'eb7e82f4-99b2-5c99-aafc-170aec2a7538', 'Tenir compte de la diversité des apprenant.e.s.', 'Varier la composition des groupes (filles, garçons, niveaux)
+Donner la parole autant aux filles qu''aux garçons', 'Répartition équilibrée de la parole entre filles et garçons', 'synced'),
+    ('64535e06-2f56-5254-bff8-95d87c9a0821', '948f248e-7d7d-56bf-9e97-647004b6f025', '844dadba-5715-5269-9e32-badac99681a4', 'Définir des attentes comportementales claires.', 'Afficher trois règles de classe simples
+Rappeler les attentes avant chaque activité', 'Les apprenant.e.s savent citer les règles de la classe', 'synced'),
+    ('5c22ac03-a6c7-5f50-ba03-c917f759664b', '948f248e-7d7d-56bf-9e97-647004b6f025', 'e9c16d82-6bce-5a7a-9c1f-fd141f0ee72a', 'Reconnaître les comportements positifs.', 'Féliciter publiquement un comportement attendu
+Noter les comportements positifs de la semaine', 'Au moins trois renforcements positifs par séquence', 'synced'),
+    ('2875418a-8dea-5c6b-b15c-e39469547a74', '948f248e-7d7d-56bf-9e97-647004b6f025', '081bcf68-dd3c-5579-aacf-4660d0790812', 'Réorienter le mauvais comportement vers le comportement attendu.', 'Rappeler calmement la règle concernée
+S''approcher de l''apprenant.e plutôt que de hausser le ton', 'Les écarts de comportement sont réorientés sans interrompre la classe', 'synced'),
+    ('7f21fd70-eeb3-5ef4-85ab-9bb4a0104d45', '948f248e-7d7d-56bf-9e97-647004b6f025', 'fe9fded6-407d-5ec6-8259-ce0463028c31', 'Adapter l''apprentissage au niveau et au milieu des apprenant.e.s.', 'Commencer par un rappel des prérequis
+Utiliser des exemples tirés du milieu des apprenant.e.s', 'Fiche de préparation indiquant les adaptations prévues', 'synced'),
+    ('82073607-53d9-58a9-ace5-da9e164f4629', '948f248e-7d7d-56bf-9e97-647004b6f025', 'ff5a1b20-d342-541e-b3ca-7a35c81464de', 'Clarifier les problèmes de compréhension par des commentaires précis.', 'Reformuler l''erreur et expliquer pourquoi elle est fausse
+Proposer un exemple complémentaire', 'Les erreurs relevées sont corrigées avec une explication', 'synced'),
+    ('30913e16-ff2b-51d1-9511-6c441c0929ab', '948f248e-7d7d-56bf-9e97-647004b6f025', 'a4639c7e-a106-5a70-8470-69a070526b99', 'Offrir des choix aux apprenant.e.s.', 'Proposer deux exercices au choix de difficulté différente
+Laisser le groupe choisir sa méthode de présentation', 'Au moins une activité au choix par séquence', 'synced'),
+    ('c8bcef61-7b5d-5494-a0fe-6d06f66bf86a', '948f248e-7d7d-56bf-9e97-647004b6f025', '959caef7-598e-5b27-b290-dc6c14faf011', 'Relier les contenus à la vie courante des apprenant.e.s.', 'Introduire la leçon par une situation de la vie quotidienne
+Demander aux apprenant.e.s leurs propres exemples', 'Situation de vie courante présente dans la fiche de préparation', 'synced'),
+    ('a254ca08-ddef-57bb-8fed-cb6d8d551795', '948f248e-7d7d-56bf-9e97-647004b6f025', '8f5aec3a-d89b-5cdf-b0a7-54a7bd0c028e', 'Énoncer clairement les objectifs de la séquence.', 'Écrire l''objectif au tableau en début de séquence
+Revenir sur l''objectif en fin de séquence', 'Objectif écrit au tableau à chaque séquence', 'synced'),
+    ('1c9d9d58-04a6-556f-88fc-6661426301e9', '948f248e-7d7d-56bf-9e97-647004b6f025', 'c287fbcd-b8fd-59f3-a7f9-0d9ad9bd0b73', 'Faire davantage de démonstrations.', 'Préparer un matériel de manipulation simple
+Résoudre un exemple à haute voix devant la classe', 'Au moins une démonstration par séquence', 'synced'),
+    ('84973d89-fd30-509b-86b7-9dbba96beb58', '948f248e-7d7d-56bf-9e97-647004b6f025', '0d998e4c-a3d6-5729-9839-f4a296f4bdfe', 'Vérifier régulièrement le niveau de compréhension des apprenant.e.s.', 'Poser des questions de vérification à des moments prévus
+Utiliser les ardoises pour des réponses de toute la classe', 'Trois moments de vérification prévus dans la fiche de préparation', 'synced'),
+    ('0540c59f-8d80-5189-9457-0db7d2e2ee34', '948f248e-7d7d-56bf-9e97-647004b6f025', 'f63996bf-0f9d-507d-bc06-dddb47198e31', 'Suivre les apprenant.e.s pendant le travail individuel ou de groupe.', 'Circuler entre les groupes pendant le travail
+Prévoir une tâche d''approfondissement pour ceux qui ont terminé', 'Tâche d''approfondissement disponible à chaque activité', 'synced'),
+    ('77038ecf-eb55-5aaa-81e5-b7d2c0676975', '948f248e-7d7d-56bf-9e97-647004b6f025', '731adc9f-bff3-5a08-b6e3-746174457498', 'Confirmer les bonnes réponses par des commentaires précis.', 'Expliquer pourquoi une réponse est juste
+Faire reformuler la bonne réponse par un.e autre apprenant.e', 'Les bonnes réponses sont commentées et non seulement validées', 'synced'),
+    ('8380add0-33ec-5fef-ac23-60b86b408b93', '948f248e-7d7d-56bf-9e97-647004b6f025', 'c8532f1d-6e26-5b1c-b233-ad43593026c6', 'Expliquer le contenu à l''aide de plusieurs représentations.', 'Associer schéma, exemple concret et formule
+Utiliser le tableau et le matériel disponible', 'Au moins deux formes de représentation par notion', 'synced'),
+    ('56f2cae4-19c5-5b47-8558-c301859bfb11', '948f248e-7d7d-56bf-9e97-647004b6f025', '34f6a6a8-d0ce-5964-ab84-120a66be256b', 'Inciter les apprenant.e.s aux questions ouvertes et à la réflexion.', 'Poser des questions « pourquoi » et « comment »
+Laisser un temps de réflexion avant d''interroger', 'Au moins deux questions ouvertes par séquence', 'synced'),
+    ('d72026be-ed0c-5665-aab6-0f86e78a3055', '948f248e-7d7d-56bf-9e97-647004b6f025', '2fcc686c-3bc2-5cf4-93b4-6437eb1b3b3a', 'Amener les apprenant.e.s à répondre aux questions pendant le travail.', 'Interroger chaque groupe pendant l''activité
+Encourager les réponses partielles', 'Chaque groupe répond au moins une fois', 'synced'),
+    ('5a854665-faa1-5eba-a46d-921d9dfd5f7f', '948f248e-7d7d-56bf-9e97-647004b6f025', '2a86f0d1-7c77-5c13-bfa2-6852ac5f3b9f', 'Encourager les apprenant.e.s à se porter volontaires.', 'Valoriser les apprenant.e.s qui se proposent
+Créer des rôles tournants (rapporteur, secrétaire)', 'Au moins cinq volontaires différents par séquence', 'synced'),
+    ('9ad2f8d7-486e-53bc-80d2-dc67ef445f0f', '948f248e-7d7d-56bf-9e97-647004b6f025', '071b9b4d-07f5-56e6-a3d6-bff0fe736e4c', 'Garder les apprenant.e.s engagé.e.s dans leurs tâches.', 'Donner des consignes courtes et écrites
+Fixer un temps pour chaque tâche', 'Les tâches sont terminées dans le temps prévu', 'synced'),
+    ('5371c121-4474-5ea1-9849-75dc702da6d2', '948f248e-7d7d-56bf-9e97-647004b6f025', '71c1dd4b-03ff-5eec-9758-42f6c57df3b2', 'Reconnaître les efforts des apprenant.e.s.', 'Féliciter la démarche et pas seulement le résultat
+Commenter les progrès individuels', 'Commentaires sur les efforts relevés lors de l''observation', 'synced'),
+    ('bab5bef8-c67c-570d-b4e9-6a6d5f9d20e0', '948f248e-7d7d-56bf-9e97-647004b6f025', 'b33d8753-591c-571c-96b8-481a94d8961e', 'Adopter une attitude positive face aux difficultés.', 'Présenter l''erreur comme une étape d''apprentissage
+Encourager l''apprenant.e à réessayer', 'Aucune réaction négative face aux erreurs', 'synced'),
+    ('b9460a93-1d6f-55f8-8ed8-5169e851e1aa', '948f248e-7d7d-56bf-9e97-647004b6f025', 'd5dabce5-e0bb-545b-b7ab-e32187b2e81c', 'Encourager les apprenant.e.s à se fixer et atteindre des objectifs.', 'Faire formuler à chaque apprenant.e un objectif de la semaine
+Faire le point sur ces objectifs en fin de semaine', 'Objectifs individuels notés dans le cahier de l''apprenant.e', 'synced'),
+    ('bb562974-f23b-5065-bc3f-90116773b271', '948f248e-7d7d-56bf-9e97-647004b6f025', '2cef1c36-75b5-5778-bfd2-627af4a2f534', 'Encourager la collaboration entre pairs.', 'Organiser au moins une activité en binôme ou en groupe par séquence
+Attribuer un rôle à chaque membre du groupe', 'Une activité de groupe par séquence dans la fiche de préparation', 'synced'),
+    ('47ad0081-f2ce-5d94-bbaf-78f21876529d', '948f248e-7d7d-56bf-9e97-647004b6f025', '5406b969-2875-5754-96be-e32125e13fbd', 'Développer les compétences interpersonnelles des apprenant.e.s.', 'Enseigner les règles d''écoute et de prise de parole en groupe
+Faire présenter le travail du groupe par un.e rapporteur.e', 'Les règles de travail en groupe sont affichées et appliquées', 'synced'),
+    ('fd17bca7-cb51-5362-b092-604b3f5cd024', '948f248e-7d7d-56bf-9e97-647004b6f025', '8195fb5e-e64d-588e-ab11-2a11bd2e2f1d', 'Faire collaborer les apprenant.e.s entre pairs.', 'Proposer des tâches qui demandent l''apport de chacun
+Faire évaluer le travail du groupe par les pairs', 'Les apprenant.e.s s''entraident pendant les activités', 'synced');
+`;

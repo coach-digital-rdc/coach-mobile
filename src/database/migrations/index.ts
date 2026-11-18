@@ -6,6 +6,7 @@ import {runMigrationV3} from './03';
 import {runMigrationV4} from './04';
 import {runMigrationV5} from './05';
 import {runMigrationV6} from './06';
+import {runMigrationV7} from './07';
 
 const NP_MIGRATION_LIST = [
   runMigrationV0,
@@ -15,6 +16,7 @@ const NP_MIGRATION_LIST = [
   runMigrationV4,
   runMigrationV5,
   runMigrationV6,
+  runMigrationV7,
 ];
 
 export const runMigrations = async () => {

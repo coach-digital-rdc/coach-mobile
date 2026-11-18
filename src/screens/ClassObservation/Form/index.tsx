@@ -295,17 +295,9 @@ const ClassObservationForm: React.FC = () => {
         value: scores[competence.id]?.value ?? suggested,
       });
     }
-    navigate(PathRoutes.classObservation.confirmation, {
+    navigate(PathRoutes.classObservation.pdp, {
       replace: true,
-      state: {
-        competencies,
-        answers,
-        session: {
-          id: sessionId,
-          teacher_id: session?.teacher_id,
-          key_points: session?.key_points,
-        },
-      },
+      state: {session: {id: sessionId}},
     });
   };
 

@@ -11,6 +11,7 @@ import {Teacher} from './teacher';
 import {ChecklistItem, Documentation} from './checklist';
 import {ObservationNote} from './observation-note';
 import {CompetenceScore} from './competence-score';
+import {Pdp, PdpLibraryItem, PdpObjective, PdpRuleSet} from './pdp';
 
 export type SyncData = {
   coaches: Coach[];
@@ -27,6 +28,10 @@ export type SyncData = {
   documentations: Documentation[];
   observationNotes: ObservationNote[];
   competenceScores: CompetenceScore[];
+  pdps: Pdp[];
+  pdpObjectives: PdpObjective[];
+  pdpRuleSets: PdpRuleSet[];
+  pdpLibraryItems: PdpLibraryItem[];
 
   total: number;
 };

@@ -15,6 +15,7 @@ import ClassObservationSetup from '../screens/ClassObservation/Setup';
 import ClassObservationChecklist from '../screens/ClassObservation/Checklist';
 import ClassObservationNotes from '../screens/ClassObservation/Notes';
 import ClassObservationForm from '../screens/ClassObservation/Form';
+import ClassObservationPdp from '../screens/ClassObservation/Pdp';
 import ClassObservationConfirmation from '../screens/ClassObservation/Confirmation';
 import ClassObservationCompleted from '../screens/ClassObservation/Completed';
 import SessionDetailsScreen from '../screens/SessionDetails';
@@ -128,6 +129,10 @@ const RouterProvider: React.FC = () => {
         <Route
           path={PathRoutes.classObservation.form}
           Component={ClassObservationForm}
+        />
+        <Route
+          path={PathRoutes.classObservation.pdp}
+          Component={ClassObservationPdp}
         />
         <Route
           path={PathRoutes.classObservation.confirmation}
