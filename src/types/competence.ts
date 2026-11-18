@@ -4,6 +4,12 @@ import {Question} from './question';
 export type Competence = {
   id: string;
   title: string;
+  // Sub-domain number in the paper tool (I, II.1...) and its domain
+  code?: string | null;
+  domain_code?: string | null;
+  domain_title?: string | null;
+  display_order?: number | null;
+  has_global_score?: boolean;
   questions: Question[];
 };
 

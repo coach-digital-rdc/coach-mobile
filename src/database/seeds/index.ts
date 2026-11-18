@@ -1,11 +1,14 @@
 import {SEEDS} from '@env';
 import {SEED_SL_INSERT_COMPETENCIES, SEED_SL_INSERT_QUESTIONS} from './sl';
+import {SEED_CD_INSERT_COMPETENCIES, SEED_CD_INSERT_QUESTIONS} from './cd';
 import {StorageService} from '../../services/storage.service';
 import {getDBConnection} from '../../services/database.service';
 
 const ENABLE_SEEDS: any = {
   SEED_SL_INSERT_COMPETENCIES,
   SEED_SL_INSERT_QUESTIONS,
+  SEED_CD_INSERT_COMPETENCIES,
+  SEED_CD_INSERT_QUESTIONS,
 };
 
 export const runSeeds = async () => {

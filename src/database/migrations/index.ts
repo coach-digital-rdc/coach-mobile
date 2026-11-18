@@ -1,7 +1,8 @@
 import {StorageService} from '../../services/storage.service';
 import {runMigrationV0} from './00';
+import {runMigrationV1} from './01';
 
-const NP_MIGRATION_LIST = [runMigrationV0];
+const NP_MIGRATION_LIST = [runMigrationV0, runMigrationV1];
 
 export const runMigrations = async () => {
   const version = parseInt(
