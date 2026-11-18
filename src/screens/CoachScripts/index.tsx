@@ -25,7 +25,9 @@ const CoachScriptsScreen: React.FC = () => {
             trustAllCerts={true}
             source={{
               uri:
-                COUNTRY === 'np'
+                COUNTRY === 'cd'
+                  ? 'bundle-assets://Manuel_utilisation_RDC.pdf'
+                  : COUNTRY === 'np'
                   ? NepalScript
                   : 'bundle-assets://Sierra_Leone_Coach_Manual.pdf',
               cache: true,
