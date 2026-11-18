@@ -62,9 +62,7 @@ const TeacherItem: React.FC<Props> = ({onPress, teacher, customSubLabel}) => {
                 <Text fontSize={'TSM'} fontWeight={500} color={'gray.700'}>
                   {teacher.last_session_date
                     ? t('home.teachers.last-session', {
-                        date: moment(teacher.last_session_date).format(
-                          'MMM DD, YYYY',
-                        ),
+                        date: moment(teacher.last_session_date).format('ll'),
                       })
                     : t('home.teachers.no-session')}
                 </Text>

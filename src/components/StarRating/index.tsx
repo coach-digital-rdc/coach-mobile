@@ -3,10 +3,16 @@ import {Center, HStack, VStack, useTheme, Text} from 'native-base';
 import {TouchableOpacity} from 'react-native';
 import {Props} from './types';
 import Icon from '../Icon';
+import {useTranslation} from 'react-i18next';
 
-const StarsLabels = ['Low', 'Mid', 'High'];
+const StarsLabels = [
+  'components.starRating.low',
+  'components.starRating.mid',
+  'components.starRating.high',
+];
 
 const StarRating: React.FC<Props> = ({onPress, size, value}) => {
+  const {t} = useTranslation();
   const starsLength = Array(size).fill({});
   const theme = useTheme();
 
@@ -41,7 +47,9 @@ const StarRating: React.FC<Props> = ({onPress, size, value}) => {
             <VStack key={index} alignItems={'center'}>
               {renderStars(value, index + 1)}
               <Text fontSize={'TSM'} fontWeight={400} color={'gray.600'}>
-                {size === StarsLabels.length ? StarsLabels[index] : index + 1}
+                {size === StarsLabels.length
+                  ? t(StarsLabels[index])
+                  : index + 1}
               </Text>
             </VStack>
           ))}

@@ -258,9 +258,7 @@ const TeacherFormScreen: React.FC = () => {
                 <InputText
                   isReadOnly
                   {...(values.birthdate && {
-                    value: moment(new Date(values?.birthdate)).format(
-                      'DD MMM, YYYY',
-                    ),
+                    value: moment(new Date(values?.birthdate)).format('ll'),
                   })}
                 />
               </TouchableOpacity>

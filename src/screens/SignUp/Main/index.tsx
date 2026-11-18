@@ -160,7 +160,7 @@ const SignupScreen: React.FC = () => {
                     isReadOnly
                     value={
                       values?.birthdate
-                        ? moment(values?.birthdate).format('MMM DD yyyy')
+                        ? moment(values?.birthdate).format('ll')
                         : undefined
                     }
                   />
