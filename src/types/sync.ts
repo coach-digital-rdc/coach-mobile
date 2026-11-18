@@ -10,6 +10,7 @@ import {Session} from './session';
 import {Teacher} from './teacher';
 import {ChecklistItem, Documentation} from './checklist';
 import {ObservationNote} from './observation-note';
+import {CompetenceScore} from './competence-score';
 
 export type SyncData = {
   coaches: Coach[];
@@ -25,6 +26,7 @@ export type SyncData = {
   checklistItems: ChecklistItem[];
   documentations: Documentation[];
   observationNotes: ObservationNote[];
+  competenceScores: CompetenceScore[];
 
   total: number;
 };

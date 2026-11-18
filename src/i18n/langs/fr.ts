@@ -547,15 +547,23 @@ const frTranslation = {
       },
     },
     form: {
-      title: 'Observation de classe',
-      subtitle: 'Cotez chaque comportement observé',
-      keyPoints: "Points à aborder pendant l'entretien",
-      pointsToDiscuss: "Que voulez-vous aborder avec l'enseignant ?",
-      spaceAdditional:
-        "Utilisez cet espace pour noter les points que vous souhaitez aborder avec l'enseignant",
-      competenciesRated: '{{count}} sur {{total}} sous-domaines cotés',
-      'keyPoints-placeholder': 'Points forts et points faibles',
-      button: "Terminer l'observation",
+      title: 'Cotation',
+      subtitle:
+        "Cotez chaque comportement à partir de vos notes. Utilisez N/A lorsque le comportement n'a pas pu être observé.",
+      notes: 'Notes ({{count}})',
+      'notes-title': "Notes d'observation",
+      checklist: 'Checklist ({{count}}/15)',
+      help: 'Aide à la cotation',
+      'global-score': 'Cote globale du sous-domaine',
+      'suggested-later': 'proposée une fois les comportements cotés',
+      suggested: 'Proposée',
+      changed: 'Modifiée · proposée {{value}}',
+      progress:
+        '{{answered}}/{{total}} comportements cotés · {{scored}}/{{scoreTotal}} cotes globales',
+      button: 'Terminer la cotation',
+      'locked-title': 'Cotation verrouillée',
+      'locked-end': "Terminez l'observation pour commencer la cotation.",
+      'go-to-notes': 'Aller aux notes',
     },
     formConfirmation: {
       button: 'Confirmer',

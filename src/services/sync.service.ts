@@ -23,6 +23,8 @@ import {ChecklistService} from './checklist.service';
 import {Documentation} from '../types/checklist';
 import {NoteService} from './note.service';
 import {ObservationNote} from '../types/observation-note';
+import {ScoreService} from './score.service';
+import {CompetenceScore} from '../types/competence-score';
 
 const SyncService = {
   getUnsyncedItemsCount: async (): Promise<{
@@ -65,6 +67,9 @@ const SyncService = {
         observationNotes: firstSync
           ? []
           : await SyncService.getPendingObservationNotes(db),
+        competenceScores: firstSync
+          ? []
+          : await SyncService.getPendingCompetenceScores(db),
       };
       console.log('2');
 
@@ -98,6 +103,7 @@ const SyncService = {
         await ChecklistService.syncItems(response.data.checklistItems);
         await ChecklistService.syncAnswers(response.data.documentations);
         await NoteService.syncNotes(response.data.observationNotes);
+        await ScoreService.syncScores(response.data.competenceScores);
         await SessionService.syncFeedbacks(response.data.feedbacks);
         await StorageService.setLastSync(new Date());
       }
@@ -119,6 +125,7 @@ const SyncService = {
       SyncService.updateToSyncedSessionActivities(db),
       SyncService.updateToSyncedDocumentations(db),
       SyncService.updateToSyncedObservationNotes(db),
+      SyncService.updateToSyncedCompetenceScores(db),
       SyncService.updateToSyncedFeedbacks(db),
     ]);
   },
@@ -240,6 +247,22 @@ const SyncService = {
   updateToSyncedObservationNotes: async (db: SQLiteDatabase): Promise<void> => {
     await db.executeSql(
       "UPDATE observation_note SET _status = 'synced' WHERE _status != 'synced'",
+    );
+  },
+
+  getPendingCompetenceScores: async (
+    db: SQLiteDatabase,
+  ): Promise<CompetenceScore[]> => {
+    const results = await db.executeSql(
+      "SELECT * FROM competence_score WHERE _status != 'synced'",
+    );
+
+    return results[0].rows.raw();
+  },
+
+  updateToSyncedCompetenceScores: async (db: SQLiteDatabase): Promise<void> => {
+    await db.executeSql(
+      "UPDATE competence_score SET _status = 'synced' WHERE _status != 'synced'",
     );
   },
 

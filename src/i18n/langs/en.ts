@@ -544,15 +544,23 @@ const enTranslation = {
       },
     },
     form: {
-      title: 'Class Observation',
-      subtitle: 'Score each teaching practice related to your observation',
-      keyPoints: 'Key points to be discussed',
-      pointsToDiscuss: 'What you want to discuss with the teacher?',
-      spaceAdditional:
-        'Use this space for additional notes of items that you would like to discuss with the teacher',
-      competenciesRated: '{{count}} of {{total}} teaching practices rated',
-      'keyPoints-placeholder': 'Positive and negative points',
-      button: 'Complete observation',
+      title: 'Scoring',
+      subtitle:
+        'Score each behaviour from your notes. Use N/A when the behaviour could not be observed.',
+      notes: 'Notes ({{count}})',
+      'notes-title': 'Observation notes',
+      checklist: 'Checklist ({{count}}/15)',
+      help: 'Scoring help',
+      'global-score': 'Global score of the sub-domain',
+      'suggested-later': 'suggested once the behaviours are scored',
+      suggested: 'Suggested',
+      changed: 'Changed · suggested {{value}}',
+      progress:
+        '{{answered}}/{{total}} behaviours scored · {{scored}}/{{scoreTotal}} global scores',
+      button: 'End the scoring',
+      'locked-title': 'Scoring locked',
+      'locked-end': 'End the observation to start the scoring.',
+      'go-to-notes': 'Go to the notes',
     },
     formConfirmation: {
       button: 'Confirm',
