@@ -188,6 +188,30 @@ export const SessionService = {
     );
   },
 
+  // Times of the didactic sequence, advice and place of the signature (B16)
+  saveAdvice: async (
+    sessionId: string,
+    advice: Pick<
+      Session,
+      'start_time' | 'end_time' | 'advice' | 'signed_place'
+    >,
+  ): Promise<void> => {
+    const db = await getDBConnection();
+    await db.executeSql(
+      `
+      UPDATE session SET start_time = ?, end_time = ?, advice = ?, signed_place = ?, _status = 'pending'
+      WHERE id = ?
+    `,
+      [
+        advice.start_time || null,
+        advice.end_time || null,
+        advice.advice || null,
+        advice.signed_place || null,
+        sessionId,
+      ],
+    );
+  },
+
   // Answers of the scoring, kept until the session is closed
   saveEvaluation: async (
     sessionId: string,

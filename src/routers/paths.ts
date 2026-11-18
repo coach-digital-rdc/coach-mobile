@@ -70,6 +70,8 @@ const PathRoutes = {
     checklist: '/classObservation/checklist',
     notes: '/classObservation/notes',
     pdp: '/classObservation/pdp',
+    advice: '/classObservation/advice',
+    signatures: '/classObservation/signatures',
     form: '/classObservation/forms',
     confirmation: '/classObservation/confirmation',
     completed: '/classObservation/completed/:sessionId',

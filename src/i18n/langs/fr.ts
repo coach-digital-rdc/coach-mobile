@@ -427,6 +427,20 @@ const frTranslation = {
           "Après vous être accordé avec l'enseignant sur les priorités, planifiez votre prochaine visite.",
       },
     },
+    advice: {
+      title: 'Conseils et horaires',
+      subtitle:
+        "Les heures sont reprises de l'observation ; corrigez-les si besoin.",
+      'start-time': 'Début de la séquence',
+      'end-time': 'Fin de la séquence',
+      advice: "Conseils à l'enseignant.e",
+      'advice-placeholder':
+        'Points forts à maintenir, conseils pratiques pour la prochaine séquence…',
+      place: 'Fait à',
+      'place-placeholder': 'ex. Kinshasa',
+      date: 'Le',
+      button: 'Passer aux signatures',
+    },
     pdp: {
       title: 'Plan de développement',
       heading: 'Plan de développement professionnel',

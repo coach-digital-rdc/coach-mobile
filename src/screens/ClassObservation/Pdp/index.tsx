@@ -298,19 +298,11 @@ const ClassObservationPdp: React.FC = () => {
       state: {session: {id: sessionId}},
     });
 
-  // Next step of the session
-  const handleContinue = async () =>
-    navigate(PathRoutes.classObservation.confirmation, {
+  // Next step of the session: advice and times
+  const handleContinue = () =>
+    navigate(PathRoutes.classObservation.advice, {
       replace: true,
-      state: {
-        competencies,
-        answers,
-        session: {
-          id: sessionId,
-          teacher_id: session?.teacher_id,
-          key_points: session?.key_points,
-        },
-      },
+      state: {session: {id: sessionId}},
     });
 
   // The session stays open: it can be resumed from the teacher profile

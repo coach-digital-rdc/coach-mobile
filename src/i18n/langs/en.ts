@@ -425,6 +425,20 @@ const enTranslation = {
           'After agreeing with the teacher about priority next steps for improvement, schedule your next visit.',
       },
     },
+    advice: {
+      title: 'Advice and times',
+      subtitle:
+        'The times are taken from the observation; correct them if needed.',
+      'start-time': 'Start of the sequence',
+      'end-time': 'End of the sequence',
+      advice: 'Advice to the teacher',
+      'advice-placeholder':
+        'Strengths to keep, practical advice for the next sequence…',
+      place: 'Done at',
+      'place-placeholder': 'e.g. Kinshasa',
+      date: 'On',
+      button: 'Go to the signatures',
+    },
     pdp: {
       title: 'Development plan',
       heading: 'Professional development plan',
