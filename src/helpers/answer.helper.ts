@@ -1,3 +1,4 @@
+import {Answer} from '../types/answer';
 import {Question} from '../types/question';
 
 // Value kept in the observation form when the observer chooses "N/A".
@@ -30,3 +31,36 @@ export const getAnswerChoices = (
 
 export const getAnswerLabel = (question: Question, value?: number | null) =>
   getAnswerChoices(question).find(choice => choice.value === value)?.label;
+
+// Answers of the form ({question_id: value}) as rows of the answer table
+export const toAnswers = (answers: {
+  [questionId: string]: number;
+}): Partial<Answer>[] =>
+  Object.keys(answers).map(question_id =>
+    answers[question_id] === NOT_APPLICABLE
+      ? {question_id, value: null, not_applicable: 1}
+      : ({question_id, value: answers[question_id]} as any),
+  );
+
+// Global score suggested for a sub-domain (B15), once all its behaviours are scored:
+// with Faible = 1, Moyen = 2 and Élevé = 3 (N/A excluded), the mean m gives round(2 × m − 1),
+// i.e. 1 when all are low, 3 when all are medium and 5 when all are high.
+export const getSuggestedScore = (
+  questions: Question[],
+  answers: {[questionId: string]: number},
+): number | undefined => {
+  if (questions.some(question => answers[question.id] === undefined)) {
+    return undefined;
+  }
+  const values = questions
+    .filter(
+      question =>
+        question.type === 'FME' && answers[question.id] !== NOT_APPLICABLE,
+    )
+    .map(question => answers[question.id]);
+  if (values.length === 0) {
+    return undefined;
+  }
+  const mean = values.reduce((sum, value) => sum + value, 0) / values.length;
+  return Math.round(2 * mean - 1);
+};

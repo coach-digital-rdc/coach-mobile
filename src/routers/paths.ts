@@ -67,8 +67,12 @@ const PathRoutes = {
     about: '/classObservation/about/:teacherId',
     onboarding: '/classObservation/onboarding',
     setup: '/classObservation/setup',
+    checklist: '/classObservation/checklist',
+    notes: '/classObservation/notes',
+    pdp: '/classObservation/pdp',
+    advice: '/classObservation/advice',
+    signatures: '/classObservation/signatures',
     form: '/classObservation/forms',
-    confirmation: '/classObservation/confirmation',
     completed: '/classObservation/completed/:sessionId',
   },
 

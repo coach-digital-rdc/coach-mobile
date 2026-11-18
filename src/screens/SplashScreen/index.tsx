@@ -1,5 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {Center, Image, Spinner} from 'native-base';
+import {Center, Image, Spinner, Text} from 'native-base';
+import {getVersion} from 'react-native-device-info';
+import {useTranslation} from 'react-i18next';
 import {LoginLogo} from '../../assets/images/logos';
 import {runMigrations} from '../../database/migrations';
 import SyncService from '../../services/sync.service';
@@ -14,6 +16,7 @@ import {runSeeds} from '../../database/seeds';
 
 const SplashScreen: React.FC = () => {
   const navigate = useNavigate();
+  const {t} = useTranslation();
   const {isConnected} = useNetInfo();
   const [isLoading, setIsLoading] = useState(false);
   const {selectCoach, selectSchool} = useCoachContext();
@@ -35,8 +38,10 @@ const SplashScreen: React.FC = () => {
           await SyncService.trySyncData();
         }
 
-        selectCoach(currentCoach);
-        selectSchool(currentSchool);
+        // Wait for both to be set: the home screen goes back to the school
+        // selection while no school is selected.
+        await selectCoach(currentCoach);
+        await selectSchool(currentSchool);
 
         if (LOGIN_MODE === 'OTP') {
           if (!currentCoach) {
@@ -74,9 +79,18 @@ const SplashScreen: React.FC = () => {
   }, [setupApp]);
 
   return (
-    <Center flex={1}>
-      <Image source={LoginLogo} alt={'User icon'} />
+    <Center flex={1} bg="gray.0">
+      <Image source={LoginLogo} alt={'Logo'} w="112px" h="112px" />
+      <Text mt="24px" fontSize="28px" fontWeight={700} color="primary.300">
+        Coach Digital
+      </Text>
+      <Text mt="8px" fontSize="14px" color="gray.600">
+        {t('splash.tagline')}
+      </Text>
       <Spinner size="lg" mt="32px" />
+      <Text position="absolute" bottom="32px" fontSize="12px" color="gray.500">
+        {t('splash.version', {value: getVersion()})}
+      </Text>
     </Center>
   );
 };

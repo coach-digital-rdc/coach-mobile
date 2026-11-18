@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {Answer} from '../types/answer';
+import {SessionActivity} from '../types/session-activity';
 import {Coach} from '../types/coach';
 import {Feedback} from '../types/feedback';
 import {Image} from '../types/image';
@@ -18,6 +19,14 @@ import {API_URL} from '@env';
 import CompetenceService from './competence.service';
 import {QuestionService} from './question.service';
 import {CoachService} from './coach.service';
+import {ChecklistService} from './checklist.service';
+import {Documentation} from '../types/checklist';
+import {NoteService} from './note.service';
+import {ObservationNote} from '../types/observation-note';
+import {ScoreService} from './score.service';
+import {CompetenceScore} from '../types/competence-score';
+import {PdpService} from './pdp.service';
+import {SignatureService} from './signature.service';
 
 const SyncService = {
   getUnsyncedItemsCount: async (): Promise<{
@@ -51,6 +60,25 @@ const SyncService = {
         sessions: firstSync ? [] : await SyncService.getPendingSessions(db),
         answers: firstSync ? [] : await SyncService.getPendingAnswers(db),
         feedbacks: firstSync ? [] : await SyncService.getPendingFeedbacks(db),
+        sessionActivities: firstSync
+          ? []
+          : await SyncService.getPendingSessionActivities(db),
+        documentations: firstSync
+          ? []
+          : await SyncService.getPendingDocumentations(db),
+        observationNotes: firstSync
+          ? []
+          : await SyncService.getPendingObservationNotes(db),
+        competenceScores: firstSync
+          ? []
+          : await SyncService.getPendingCompetenceScores(db),
+        pdps: firstSync ? [] : await SyncService.getPending(db, 'pdp'),
+        sessionSignatures: firstSync
+          ? []
+          : await SyncService.getPending(db, 'session_signature'),
+        pdpObjectives: firstSync
+          ? []
+          : await SyncService.getPending(db, 'pdp_objective'),
       };
       console.log('2');
 
@@ -80,6 +108,20 @@ const SyncService = {
         await TeacherService.sync(response.data.teachers);
         await SessionService.sync(response.data.sessions);
         await AnswerService.sync(response.data.answers);
+        await SessionService.syncActivities(response.data.sessionActivities);
+        await ChecklistService.syncItems(response.data.checklistItems);
+        await ChecklistService.syncAnswers(response.data.documentations);
+        await NoteService.syncNotes(response.data.observationNotes);
+        await ScoreService.syncScores(response.data.competenceScores);
+        await PdpService.syncRules(
+          response.data.pdpRuleSets,
+          response.data.pdpLibraryItems,
+        );
+        await SignatureService.syncSignatures(response.data.sessionSignatures);
+        await PdpService.syncPdps(
+          response.data.pdps,
+          response.data.pdpObjectives,
+        );
         await SessionService.syncFeedbacks(response.data.feedbacks);
         await StorageService.setLastSync(new Date());
       }
@@ -98,6 +140,13 @@ const SyncService = {
       SyncService.updateToSyncedTeachers(db),
       SyncService.updateToSyncedSession(db),
       SyncService.updateToSyncedAnswers(db),
+      SyncService.updateToSyncedSessionActivities(db),
+      SyncService.updateToSyncedDocumentations(db),
+      SyncService.updateToSyncedObservationNotes(db),
+      SyncService.updateToSyncedCompetenceScores(db),
+      SyncService.updateToSynced(db, 'pdp'),
+      SyncService.updateToSynced(db, 'session_signature'),
+      SyncService.updateToSynced(db, 'pdp_objective'),
       SyncService.updateToSyncedFeedbacks(db),
     ]);
   },
@@ -169,6 +218,87 @@ const SyncService = {
   updateToSyncedSession: async (db: SQLiteDatabase): Promise<void> => {
     await db.executeSql(
       "UPDATE session SET _status = 'synced' WHERE _status != 'synced'",
+    );
+  },
+
+  getPendingSessionActivities: async (
+    db: SQLiteDatabase,
+  ): Promise<SessionActivity[]> => {
+    const results = await db.executeSql(
+      "SELECT * FROM session_activity WHERE _status != 'synced'",
+    );
+
+    return results[0].rows.raw();
+  },
+
+  updateToSyncedSessionActivities: async (
+    db: SQLiteDatabase,
+  ): Promise<void> => {
+    await db.executeSql(
+      "UPDATE session_activity SET _status = 'synced' WHERE _status != 'synced'",
+    );
+  },
+
+  getPendingDocumentations: async (
+    db: SQLiteDatabase,
+  ): Promise<Documentation[]> => {
+    const results = await db.executeSql(
+      "SELECT * FROM documentation WHERE _status != 'synced'",
+    );
+
+    return results[0].rows.raw();
+  },
+
+  updateToSyncedDocumentations: async (db: SQLiteDatabase): Promise<void> => {
+    await db.executeSql(
+      "UPDATE documentation SET _status = 'synced' WHERE _status != 'synced'",
+    );
+  },
+
+  getPendingObservationNotes: async (
+    db: SQLiteDatabase,
+  ): Promise<ObservationNote[]> => {
+    const results = await db.executeSql(
+      "SELECT * FROM observation_note WHERE _status != 'synced'",
+    );
+
+    return results[0].rows.raw();
+  },
+
+  updateToSyncedObservationNotes: async (db: SQLiteDatabase): Promise<void> => {
+    await db.executeSql(
+      "UPDATE observation_note SET _status = 'synced' WHERE _status != 'synced'",
+    );
+  },
+
+  getPendingCompetenceScores: async (
+    db: SQLiteDatabase,
+  ): Promise<CompetenceScore[]> => {
+    const results = await db.executeSql(
+      "SELECT * FROM competence_score WHERE _status != 'synced'",
+    );
+
+    return results[0].rows.raw();
+  },
+
+  updateToSyncedCompetenceScores: async (db: SQLiteDatabase): Promise<void> => {
+    await db.executeSql(
+      "UPDATE competence_score SET _status = 'synced' WHERE _status != 'synced'",
+    );
+  },
+
+  // Rows of a table created or changed on the device since the last sync
+  getPending: async (db: SQLiteDatabase, table: string): Promise<any[]> => {
+    const results = await db.executeSql(
+      `SELECT * FROM ${table} WHERE _status != 'synced'`,
+    );
+
+    return results[0].rows.raw();
+  },
+
+  updateToSynced: async (db: SQLiteDatabase, table: string): Promise<void> => {
+    await db.executeSql(
+      `UPDATE ${table} SET _status = 'synced' WHERE _status != 'synced'`,
     );
   },
 

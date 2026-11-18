@@ -136,8 +136,12 @@ const TeachersList: React.FC<Props> = ({
             />
           </Center>
         }
-        renderItem={({item}) => (
-          <ItemComponent teacher={item} onPress={() => onSelectTeacher(item)} />
+        renderItem={({item, index}) => (
+          <ItemComponent
+            divider={index > 0}
+            teacher={item}
+            onPress={() => onSelectTeacher(item)}
+          />
         )}
       />
     </>

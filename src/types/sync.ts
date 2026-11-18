@@ -1,3 +1,4 @@
+import {SessionActivity} from './session-activity';
 import {Answer} from './answer';
 import {Coach} from './coach';
 import {CoachSchool} from './coach_school';
@@ -7,6 +8,11 @@ import {Question} from './question';
 import {School} from './school';
 import {Session} from './session';
 import {Teacher} from './teacher';
+import {ChecklistItem, Documentation} from './checklist';
+import {ObservationNote} from './observation-note';
+import {CompetenceScore} from './competence-score';
+import {Pdp, PdpLibraryItem, PdpObjective, PdpRuleSet} from './pdp';
+import {SessionSignature} from './session-signature';
 
 export type SyncData = {
   coaches: Coach[];
@@ -17,7 +23,17 @@ export type SyncData = {
   teachers: Teacher[];
   feedbacks: Feedback[];
   answers: Answer[];
+  sessionActivities: SessionActivity[];
   competencies: Competence[];
+  checklistItems: ChecklistItem[];
+  documentations: Documentation[];
+  observationNotes: ObservationNote[];
+  competenceScores: CompetenceScore[];
+  pdps: Pdp[];
+  sessionSignatures: SessionSignature[];
+  pdpObjectives: PdpObjective[];
+  pdpRuleSets: PdpRuleSet[];
+  pdpLibraryItems: PdpLibraryItem[];
 
   total: number;
 };

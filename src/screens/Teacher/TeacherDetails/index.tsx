@@ -1,71 +1,110 @@
-import React, {useEffect, useState} from 'react';
-import {Box, HStack, VStack} from 'native-base';
+import React, {useCallback, useEffect, useState} from 'react';
+import {Center, HStack, Image, Text, VStack, useTheme} from 'native-base';
 import {useNavigate, useParams} from 'react-router-native';
-import Page from '../../../components/Page';
-import TeacherHeader from './TeacherHeader';
+import {useTranslation} from 'react-i18next';
+import {TouchableOpacity} from 'react-native';
 import {TeacherDetailsType} from '../../../types/teacher';
 import {TeacherService} from '../../../services/teacher.service';
+import {SessionService} from '../../../services/session.service';
 import {useCoachContext} from '../../../providers/coach.provider';
+import {Session} from '../../../types/session';
 import PathRoutes from '../../../routers/paths';
-import TeacherStatsTab from './Tabs/TeacherStats';
+import {getResumeRoute} from '../../../helpers/resume.helper';
 import TabButton from '../../../components/TabButton';
+import Button from '../../../components/Button';
+import Icon from '../../../components/Icon';
+import Page from '../../../components/Page';
+import TeacherStatsTab from './Tabs/TeacherStats';
 import SessionList from './Tabs/SessionListTab';
-import {isTablet} from 'react-native-device-info';
 
 type params = {
   id: string;
   tabIndex: string;
 };
 
+// Teacher profile of the mockups: identity, observations and evolution, and the
+// button that starts a new observation or resumes the one in progress.
 const TeacherDetailsScreen: React.FC = () => {
-  const {id, tabIndex} = useParams<params>();
-  const defaultTab = tabIndex === ':tabIndex' ? 0 : parseInt(tabIndex || '0');
-  const [selectedTabIndex, setSelectedTabIndex] = useState(defaultTab);
-  const [teacher, setTeacher] = useState<TeacherDetailsType>();
-  const {currentSchool} = useCoachContext();
+  const theme = useTheme();
+  const {t} = useTranslation();
   const navigate = useNavigate();
-  const IsTablet = isTablet();
+  const {id, tabIndex} = useParams<params>();
+  const defaultTab =
+    tabIndex === ':tabIndex' ? 0 : parseInt(tabIndex || '0', 10);
+  const [selectedTabIndex, setSelectedTabIndex] = useState(defaultTab || 0);
+  const [teacher, setTeacher] = useState<TeacherDetailsType>();
+  const [openSession, setOpenSession] = useState<Session>();
+  const {currentSchool} = useCoachContext();
 
   useEffect(() => {
     if (id) {
       TeacherService.getTeacherDetails(id).then(setTeacher);
+      SessionService.findOpenSession(id).then(setOpenSession);
     }
   }, [id]);
 
+  // The session is resumed at its step: checklist, notes or scoring
+  const resumeSession = useCallback(
+    (session: Session) => {
+      const {path, state} = getResumeRoute(session);
+      navigate(path, {state});
+    },
+    [navigate],
+  );
+
   const tabs = [
     {
-      Component: <SessionList teacherId={id || ''} />,
+      Component: <SessionList teacherId={id || ''} onResume={resumeSession} />,
       label: 'teacher.tabs.session.title',
     },
     {
       Component: <TeacherStatsTab teacherId={id || ''} />,
-      label: 'teacher.tabs.stats.title',
+      label: 'teacher.tabs.stats.evolution-tab',
     },
   ];
 
   return (
-    <Page logo setting back noPadding>
-      <VStack w="full" p={IsTablet ? '32px 64px' : '16px 24px'}>
-        {teacher && currentSchool ? (
-          <TeacherHeader
-            name={teacher.name}
-            image={teacher.image}
-            subject={teacher.subject}
-            school={currentSchool.name}
-            onEditPress={() =>
+    <Page back title={t('teacher.details.title')}>
+      <HStack space={3} alignItems="center">
+        <Center w="56px" h="56px" borderRadius="28px" bg="primary.0">
+          {teacher?.image ? (
+            <Image
+              w="100%"
+              h="100%"
+              alt="Teacher"
+              borderRadius="28px"
+              source={{uri: teacher.image}}
+            />
+          ) : (
+            <Icon name="user" size={28} color={theme.colors.primary['200']} />
+          )}
+        </Center>
+        <VStack flex={1}>
+          <Text fontSize="22px" fontWeight={600} color="gray.700">
+            {teacher?.name}
+          </Text>
+          <Text fontSize="13px" color="gray.600">
+            {[teacher?.subject, currentSchool?.name]
+              .filter(Boolean)
+              .join(' · ')}
+          </Text>
+        </VStack>
+        {teacher && (
+          <TouchableOpacity
+            accessibilityLabel={t('teacher.details.editTeacher') || ''}
+            onPress={() =>
               navigate(PathRoutes.teacher.form.replace(':id', teacher.id))
-            }
-          />
-        ) : (
-          <Box w="full" h="110px" bg="gray.100" />
+            }>
+            <Icon name="pen" size={22} color={theme.colors.primary['200']} />
+          </TouchableOpacity>
         )}
-      </VStack>
+      </HStack>
 
       <HStack
+        mt="12px"
         mb={2}
-        px={IsTablet ? '32px' : '16px'}
-        borderBottomWidth={'2px'}
-        borderBottomColor={'gray.200'}>
+        borderBottomWidth="2px"
+        borderBottomColor="gray.200">
         {tabs.map((item, index) => (
           <TabButton
             key={index}
@@ -76,13 +115,37 @@ const TeacherDetailsScreen: React.FC = () => {
         ))}
       </HStack>
 
-      <VStack
-        flex={1}
-        w="full"
-        px={IsTablet ? '32px' : '16px'}
-        pb={IsTablet ? '64px' : '24px'}>
+      <VStack flex={1} w="full">
         {tabs[selectedTabIndex].Component}
       </VStack>
+
+      <Button
+        mt="8px"
+        mb={0}
+        w="full"
+        onPress={() =>
+          openSession
+            ? resumeSession(openSession)
+            : navigate(
+                PathRoutes.classObservation.about.replace(
+                  ':teacherId',
+                  id || '',
+                ),
+              )
+        }>
+        <HStack space={2} alignItems="center">
+          <Icon
+            name={openSession ? 'history' : 'plus'}
+            size={18}
+            color={theme.colors.white}
+          />
+          <Text fontSize="15px" fontWeight={600} color="gray.0">
+            {openSession
+              ? t('teacher.details.resume-observation')
+              : t('teacher.details.new-observation')}
+          </Text>
+        </HStack>
+      </Button>
     </Page>
   );
 };

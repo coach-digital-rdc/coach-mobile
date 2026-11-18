@@ -8,7 +8,13 @@ const frTranslation = {
     high: 'Élevé',
     na: 'N/A',
   },
+  splash: {
+    tagline: 'Observation des pratiques de classe',
+    version: 'Version {{value}}',
+  },
   common: {
+    cancel: 'Annuler',
+    save: 'Enregistrer',
     'load-more': 'Afficher plus',
     optional: 'Facultatif',
     search: 'Rechercher',
@@ -26,8 +32,9 @@ const frTranslation = {
   bottom_navigator: {
     home: 'Accueil',
     tlc: 'Cercles',
-    pending: 'En attente',
+    pending: 'En cours',
     cop: 'CdP',
+    settings: 'Paramètres',
   },
   components: {
     starRating: {low: 'Faible', mid: 'Moyen', high: 'Élevé'},
@@ -47,20 +54,25 @@ const frTranslation = {
   },
   login: {
     main: {
-      welcome: 'Bienvenue sur Coach Digital !',
-      user_id: 'Identifiant',
-      user_id_placeholder: 'Adresse e-mail ou numéro de téléphone',
+      welcome: 'Bienvenue !',
+      tagline: 'Observation de classe',
+      subtitle:
+        "Connectez-vous avec l'adresse e-mail ou le numéro de téléphone de votre compte.",
+      user_id: 'Adresse e-mail ou téléphone',
+      user_id_placeholder: 'ex. nom@example.com',
       error:
         'Utilisateur introuvable. Essayez avec votre numéro de téléphone ou créez un compte.',
       button: 'Se connecter',
-      create_account: "Vous n'avez pas de compte ?",
-      create_account_button: ' Créer un compte',
+      create_account: 'Pas encore de compte ? ',
+      create_account_button: 'Créer un compte',
     },
     otp: {
+      header: 'Vérification',
+      heading: 'Code de vérification',
       title: 'Saisissez le code à 6 chiffres envoyé à',
       error: 'Code incorrect. Veuillez réessayer.',
       button: 'Vérifier',
-      not_receive_code: "Vous n'avez pas reçu de code ?",
+      not_receive_code: 'Code non reçu ?',
       resend_code: 'Renvoyer le code',
       change_email: "Changer d'adresse e-mail",
     },
@@ -111,6 +123,7 @@ const frTranslation = {
     language: 'Langue',
     lastSync: 'Dernière synchronisation : {{value}}',
     'never-synced': 'jamais',
+    'try-sync': 'Synchroniser',
     appVersion: "Version de l'application",
     'unsynced-items': 'Éléments non synchronisés',
     'unsynced-teacher': 'Enseignants :',
@@ -128,7 +141,14 @@ const frTranslation = {
     'item-description-empty': 'Aucun profil',
   },
   schoolSelect: {
-    title: 'Choisissez votre établissement',
+    header: 'Établissement',
+    title: "Choisissez l'établissement",
+    subtitle:
+      "Choisissez l'établissement où vous observez, ou ajoutez-le en scannant son QR code.",
+    'qr-title': "Scanner le QR code de l'établissement",
+    'qr-hint': "Le code figure sur la fiche remise par l'administration",
+    search: 'Rechercher un établissement',
+    empty: 'Aucun établissement trouvé.',
     'item-description_interval':
       '(0)[Aucun enseignant];(1)[1 enseignant];(2-inf)[{{count}} enseignants];',
   },
@@ -146,6 +166,20 @@ const frTranslation = {
   },
   home: {
     salutation: 'Bonjour',
+    tiles: {
+      'new-observation': 'Nouvelle observation',
+      'in-progress': 'Séances en cours',
+      manual: 'Manuel',
+      tlc: "Cercles d'apprentissage",
+      cop: 'Communauté de pratique',
+      sync: 'Synchronisation',
+    },
+    sync: {
+      done: 'Synchronisé {{date}}',
+      never: 'Pas encore synchronisé',
+      pending_interval:
+        '(1)[1 élément à synchroniser];(2-inf)[{{count}} éléments à synchroniser];',
+    },
     teachersLength_interval: 'Établissement :',
     'menu-items': {
       newSession: 'Nouvelle observation',
@@ -164,6 +198,11 @@ const frTranslation = {
       'last-session': 'Mis à jour le {{date}}',
       session_interval: '(1)[1 observation];(2-inf)[{{count}} observations];',
       teachers_count: 'Enseignants de cet établissement :',
+      section: 'Enseignant.e.s ({{count}})',
+      add: 'Ajouter',
+      search: 'Rechercher un.e enseignant.e',
+      'last-observation': 'dernière le {{date}}',
+      'no-observation': 'aucune observation',
     },
     emptyState: {
       title: 'Aucun enseignant enregistré',
@@ -209,15 +248,33 @@ const frTranslation = {
       },
     },
     pending: {
-      page_title: 'Séances inachevées',
-      title: 'Séances inachevées',
-      subtitle: "Terminez l'entretien avec les enseignants suivants",
+      page_title: 'Séances en cours',
+      title: 'Séances en cours',
+      subtitle:
+        "Séances commencées et non clôturées. Elles sont enregistrées sur l'appareil, même sans connexion.",
       list_subtitle: 'Entretien en attente',
+      empty: 'Commencez une observation pour la voir apparaître ici.',
+      started_interval:
+        '(0-1)[Commencée le {{date}} · {{count}} note];(2-inf)[Commencée le {{date}} · {{count}} notes];',
+      status: {
+        PREPARATION: 'Préparation',
+        OBSERVATION: 'Observation',
+        EVALUATION: 'Évaluation',
+      },
     },
   },
   teacher: {
     form: {
       name: 'Prénom',
+      'name-placeholder': 'ex. Daniel',
+      'surname-placeholder': 'ex. MUKENDI',
+      'heading-new': 'Ajouter un.e enseignant.e',
+      subtitle:
+        "L'enseignant.e est enregistré.e sur l'appareil puis envoyé.e au serveur à la prochaine synchronisation.",
+      sex: 'Sexe',
+      female: 'Féminin',
+      male: 'Masculin',
+      'weekly-load': 'Charge hebdomadaire (h)',
       birthdate: "Date de naissance de l'enseignant",
       birthdate_title: 'Choisir une date',
       birthdate_confirm: 'Confirmer',
@@ -227,10 +284,10 @@ const frTranslation = {
       matricule: 'Matricule',
       matricule_description: "Matricule de l'enseignant",
       surname: 'Nom',
-      'title-new': 'Nouvel enseignant',
+      'title-new': 'Nouvel enseignant.e',
       'title-edit': "Modifier l'enseignant",
       subject: 'Discipline principale',
-      'new-teacher-button': "Ajouter l'enseignant",
+      'new-teacher-button': "Ajouter l'enseignant.e",
       'update-teacher-button': 'Enregistrer',
       success: 'Enseignant ajouté',
       success_update: 'Enseignant mis à jour',
@@ -240,6 +297,9 @@ const frTranslation = {
       nin_description: "Numéro national d'identification",
     },
     details: {
+      title: 'Enseignant.e',
+      'new-observation': 'Nouvelle observation',
+      'resume-observation': "Reprendre l'observation",
       subject: 'Discipline principale',
       school: 'Établissement',
       editTeacher: "Modifier l'enseignant",
@@ -247,7 +307,10 @@ const frTranslation = {
     },
     tabs: {
       session: {
-        title: "Séances d'observation",
+        title: 'Observations',
+        'observation-of': 'Observation du {{date}}',
+        'in-progress': 'En cours',
+        closed: 'Clôturée',
         session: "Séance d'observation",
         newClassObservation: 'Nouvelle observation de classe',
         stillNoSession: "Aucune séance d'observation enregistrée",
@@ -259,6 +322,7 @@ const frTranslation = {
       },
       stats: {
         title: "Statistiques de l'enseignant",
+        'evolution-tab': 'Évolution',
         overallRating: 'Appréciation générale',
         currentRating: "L'appréciation actuelle est :",
         ratingAverage:
@@ -326,8 +390,26 @@ const frTranslation = {
   },
   classObservation: {
     title: 'Observation de classe',
+    phases: {
+      preparation: 'Préparation',
+      observation: 'Observation',
+      evaluation: 'Évaluation',
+      closing: 'Clôture',
+    },
     about: {
-      title: "Déroulement de l'observation",
+      title: 'Déroulement de la séance',
+      subtitle:
+        "L'observation se fait en quatre étapes. Chaque étape doit être terminée avant de passer à la suivante.",
+      steps: {
+        preparation:
+          "Échangez avec l'enseignant.e avant la leçon, complétez l'en-tête de la fiche et, si possible, la checklist des documents.",
+        observation:
+          'Installez-vous au fond de la classe et notez les faits observés au fil de la séquence.',
+        evaluation:
+          "Cotez les 30 comportements, puis établissez le plan de développement avec l'enseignant.e.",
+        closing:
+          'Ajoutez vos conseils et recueillez les signatures : la fiche est alors verrouillée et prête à être synchronisée.',
+      },
       'start-button': 'Commencer la préparation',
       step1: {
         title: 'Préparation',
@@ -354,10 +436,197 @@ const frTranslation = {
           "Après vous être accordé avec l'enseignant sur les priorités, planifiez votre prochaine visite.",
       },
     },
+    signatures: {
+      title: 'Signatures',
+      subtitle:
+        "Chaque signataire signe avec le doigt. L'enseignant.e peut refuser de signer en indiquant le motif ; seul le chef d'établissement peut être absent.",
+      role: {
+        TEACHER: 'Enseignant.e',
+        SCHOOL_HEAD: "Chef d'établissement",
+        OBSERVER: 'Observateur.trice',
+      },
+      name: 'Nom',
+      'sign-here': 'Touchez pour signer',
+      sign: 'Signer',
+      validate: 'Valider la signature',
+      clear: 'Effacer',
+      refuses: 'Refuse de signer',
+      refusal: 'Motif du refus de signer',
+      'refusal-placeholder':
+        "ex. l'enseignant.e conteste la cotation du sous-domaine III.1",
+      absent: 'Absent.e',
+      absence: "Motif de l'absence",
+      'absence-placeholder': 'ex. en réunion à la sous-division',
+      'observer-is-head':
+        "Vous êtes le chef d'établissement : votre signature d'observateur.trice vaut pour cette case.",
+      'before-closing': 'Avant de clôturer',
+      'condition-scoring':
+        'Cotation complète ({{answered}}/{{total}} comportements, {{scored}}/{{scoreTotal}} cotes)',
+      'condition-pdp': "PDP validé avec l'enseignant.e",
+      'condition-signatures':
+        "Signatures de l'enseignant.e, du chef d'établissement et de l'observateur.trice",
+      close: 'Clôturer la séance',
+      'close-title': 'Clôturer la séance ?',
+      'close-message':
+        'Une fois clôturée, la fiche ne peut plus être modifiée. Elle sera envoyée au serveur à la prochaine synchronisation.',
+      'close-confirm': 'Clôturer',
+    },
+    advice: {
+      title: 'Conseils et horaires',
+      subtitle:
+        "Les heures sont reprises de l'observation ; corrigez-les si besoin.",
+      'start-time': 'Début de la séquence',
+      'end-time': 'Fin de la séquence',
+      advice: "Conseils à l'enseignant.e",
+      'advice-placeholder':
+        'Points forts à maintenir, conseils pratiques pour la prochaine séquence…',
+      place: 'Fait à',
+      'place-placeholder': 'ex. Kinshasa',
+      date: 'Le',
+      button: 'Passer aux signatures',
+    },
+    pdp: {
+      title: 'Plan de développement',
+      heading: 'Plan de développement professionnel',
+      subtitle:
+        "Projet établi à partir de la cotation, selon les règles PDP version {{version}} (publiées le {{date}}). Ajustez-le avec l'enseignant.e puis validez-le.",
+      'missing-rules':
+        "Les règles du PDP ne sont pas encore sur l'appareil. Synchronisez l'application puis revenez à cette étape.",
+      summary: 'Résumé de la cotation',
+      'read-only': 'Lecture seule',
+      'score-note': 'cote proposée {{suggested}}, saisie {{score}}',
+      diagnostic: 'Diagnostic',
+      group: {
+        STRENGTH: 'Points forts',
+        CONSOLIDATE: 'Axes à consolider',
+        PRIORITY: 'Axes prioritaires',
+      },
+      category: {
+        STRENGTH: 'Point fort',
+        CONSOLIDATE: 'À consolider',
+        PRIORITY: 'Axe prioritaire',
+      },
+      origin: {GENERATED: 'Généré', EDITED: 'Modifié', ADDED: 'Ajouté'},
+      answer: {
+        YES: 'Oui',
+        NO: 'Non',
+        LOW: 'Faible',
+        MEDIUM: 'Moyen',
+        HIGH: 'Élevé',
+        NA: 'N/A',
+      },
+      short: {YES: 'O', NO: 'N', LOW: 'F', MEDIUM: 'M', HIGH: 'E', NA: '–'},
+      reason: 'Coté {{answer}}',
+      'reason-score': ' ; sous-domaine {{code}} coté {{score}}/5',
+      objectives: 'Objectifs du plan ({{count}}/{{max}})',
+      regenerate: 'Régénérer',
+      validated: 'Validé',
+      up: 'Monter',
+      down: 'Descendre',
+      edit: 'Modifier',
+      remove: 'Retirer',
+      objective: 'Objectif',
+      actions: 'Actions',
+      'actions-input': 'Actions (une par ligne)',
+      indicator: 'Indicateur de suivi',
+      'due-date': 'Échéance',
+      'due-date-input': 'Échéance (AAAA-MM-JJ)',
+      'to-fill': 'À renseigner',
+      done: 'Terminer',
+      add: 'Ajouter un objectif',
+      free: 'Objectif libre',
+      max: 'Maximum {{max}} objectifs atteint',
+      editable: "Projet modifiable jusqu'à sa validation",
+      'validated-at': "PDP validé avec l'enseignant.e à {{time}}",
+      'back-to-scoring': 'Cotation',
+      validate: 'Valider le PDP',
+      'validate-title': 'Valider le PDP ?',
+      'validate-message_interval':
+        "(1)[Le plan compte 1 objectif. Une fois validé avec l'enseignant.e, il ne pourra plus être modifié.];(2-inf)[Le plan compte {{count}} objectifs. Une fois validé avec l'enseignant.e, il ne pourra plus être modifié.];",
+      'validate-confirm': 'Valider',
+      continue: 'Continuer',
+    },
+    notes: {
+      title: 'Notes chronologiques',
+      subtitle:
+        'Notez les faits observés au fil de la séquence. Chaque note est horodatée automatiquement.',
+      'subtitle-read-only':
+        'Les notes sont en lecture seule. Elles restent visibles pendant la cotation.',
+      running: 'Observation en cours depuis {{time}}',
+      ended: 'Observation terminée à {{time}}',
+      count_interval: '(0-1)[note];(2-inf)[notes];',
+      'count-label_interval': '(0-1)[{{count}} note];(2-inf)[{{count}} notes];',
+      empty: "Aucune note pour l'instant.",
+      placeholder: 'Décrivez ce que vous observez…',
+      add: 'Ajouter la note',
+      edit: 'Modifier la note',
+      delete: 'Supprimer la note',
+      locked:
+        "La cotation est verrouillée tant qu'aucune note n'est enregistrée",
+      'unlock-at-end': "La cotation pourra commencer à la fin de l'observation",
+      unlocked: 'Cotation déverrouillée',
+      end: "Terminer l'observation",
+      'end-title': "Terminer l'observation ?",
+      'end-message_interval':
+        "(1)[Vous avez enregistré 1 note. Après la fin de l'observation, les notes ne pourront plus être modifiées et la cotation sera déverrouillée.];(2-inf)[Vous avez enregistré {{count}} notes. Après la fin de l'observation, les notes ne pourront plus être modifiées et la cotation sera déverrouillée.];",
+      'end-confirm': 'Terminer',
+      'go-to-scoring': 'Passer à la cotation',
+    },
+    checklist: {
+      title: 'Checklist documentaire',
+      'subtitle-before':
+        "Vérifiez la présence des documents de l'enseignant.e et des apprenant.e.s. Ce qui ne peut pas être vérifié maintenant pourra l'être après l'observation. La checklist n'entre pas dans la cotation.",
+      'subtitle-after':
+        "Complétez les documents qui n'ont pas pu être vérifiés avant l'observation. La checklist n'entre pas dans la cotation.",
+      'subtitle-observing':
+        "L'observation est en cours : la checklist pourra être complétée après l'observation.",
+      'teacher-documents': "Documents de l'enseignant.e",
+      'learner-documents': "Documents de l'apprenant.e",
+      before: "Avant l'observation",
+      after: "Après l'observation",
+      proposal: "Proposition de l'observateur",
+      'proposal-placeholder': 'Ex. : mettre à jour le document chaque semaine',
+      status: '{{count}}/{{total}} documents vérifiés',
+      'status-later_interval':
+        "(1)[ · le dernier sera à compléter après l'observation];(2-inf)[ · les {{count}} restants seront à compléter après l'observation];",
+      'status-left': ' · {{count}} à compléter',
+      start: "Démarrer l'observation",
+      save: 'Enregistrer la checklist',
+      'back-to-observation': "Retour à l'observation",
+      reminder_interval:
+        '(1)[Checklist : 1 document non vérifié (facultatif)];(2-inf)[Checklist : {{count}} documents non vérifiés (facultatif)];',
+      complete: 'Compléter',
+    },
     setup: {
-      title: 'À propos de la leçon',
-      subtitle: "Posez les questions suivantes à l'enseignant",
-      button: 'Suivant',
+      title: 'En-tête de la fiche',
+      subtitle:
+        'Les informations connues sont reprises automatiquement : vérifiez-les et complétez les autres.',
+      button: 'Enregistrer et continuer',
+      observer: 'Observateur.trice',
+      profile: 'Profil',
+      name: 'Nom',
+      contact: 'Contact',
+      session: 'Séance',
+      school: 'Établissement',
+      teacher: 'Enseignant.e',
+      'last-observation': 'Dernière observation',
+      none: 'Aucune',
+      level: 'Niveau',
+      secondary: 'Secondaire',
+      disciplines: 'Discipline(s)',
+      'weekly-load': 'Charge hebdomadaire (h)',
+      'school-year': 'Année scolaire',
+      activity: 'Activité observée',
+      'sub-domain': 'Sous-domaine',
+      'sub-domain-placeholder': 'ex. Mathématiques',
+      discipline: 'Discipline',
+      'sheet-code': 'N° fiche / code matrice',
+      'class-name': 'Classe',
+      'p-i': 'P/I',
+      time: 'Heure',
+      'essential-knowledge': 'Savoirs essentiels / sujet de la séquence',
+      missing:
+        "Renseignez la discipline de la séance et celle de l'activité observée",
       questions: {
         $0: {title: 'La classe est composée de', placeholder: 'Mixte'},
         $1: {
@@ -398,15 +667,23 @@ const frTranslation = {
       },
     },
     form: {
-      title: 'Observation de classe',
-      subtitle: 'Cotez chaque comportement observé',
-      keyPoints: "Points à aborder pendant l'entretien",
-      pointsToDiscuss: "Que voulez-vous aborder avec l'enseignant ?",
-      spaceAdditional:
-        "Utilisez cet espace pour noter les points que vous souhaitez aborder avec l'enseignant",
-      competenciesRated: '{{count}} sur {{total}} sous-domaines cotés',
-      'keyPoints-placeholder': 'Points forts et points faibles',
-      button: "Terminer l'observation",
+      title: 'Cotation',
+      subtitle:
+        "Cotez chaque comportement à partir de vos notes. Utilisez N/A lorsque le comportement n'a pas pu être observé.",
+      notes: 'Notes ({{count}})',
+      'notes-title': "Notes d'observation",
+      checklist: 'Checklist ({{count}}/15)',
+      help: 'Aide à la cotation',
+      'global-score': 'Cote globale du sous-domaine',
+      'suggested-later': 'proposée une fois les comportements cotés',
+      suggested: 'Proposée',
+      changed: 'Modifiée · proposée {{value}}',
+      progress:
+        '{{answered}}/{{total}} comportements cotés · {{scored}}/{{scoreTotal}} cotes globales',
+      button: 'Terminer la cotation',
+      'locked-title': 'Cotation verrouillée',
+      'locked-end': "Terminez l'observation pour commencer la cotation.",
+      'go-to-notes': 'Aller aux notes',
     },
     formConfirmation: {
       button: 'Confirmer',
@@ -418,7 +695,18 @@ const frTranslation = {
       },
     },
     observationCompleted: {
-      title: 'Observation terminée',
+      title: 'Séance clôturée',
+      'closed-at': 'Clôturée le {{date}} à {{time}}.',
+      teacher: 'Enseignant.e',
+      observation: 'Observation',
+      duration: '{{minutes}} min',
+      pdp: 'PDP',
+      'pdp-summary': '{{count}} objectifs',
+      'pdp-validated': ', validé',
+      sync: 'Synchronisation',
+      synced: 'Synchronisée',
+      pending: 'En attente',
+      pdf: 'Documents PDF (bientôt disponibles)',
       subtitle: "Merci. L'observation de classe est terminée !",
       whatsNext: 'Et ensuite ?',
       startFeedback:

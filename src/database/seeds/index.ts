@@ -1,6 +1,12 @@
 import {SEEDS} from '@env';
 import {SEED_SL_INSERT_COMPETENCIES, SEED_SL_INSERT_QUESTIONS} from './sl';
-import {SEED_CD_INSERT_COMPETENCIES, SEED_CD_INSERT_QUESTIONS} from './cd';
+import {
+  SEED_CD_INSERT_CHECKLIST,
+  SEED_CD_INSERT_COMPETENCIES,
+  SEED_CD_INSERT_PDP_LIBRARY,
+  SEED_CD_INSERT_PDP_RULE_SET,
+  SEED_CD_INSERT_QUESTIONS,
+} from './cd';
 import {StorageService} from '../../services/storage.service';
 import {getDBConnection} from '../../services/database.service';
 
@@ -9,6 +15,9 @@ const ENABLE_SEEDS: any = {
   SEED_SL_INSERT_QUESTIONS,
   SEED_CD_INSERT_COMPETENCIES,
   SEED_CD_INSERT_QUESTIONS,
+  SEED_CD_INSERT_CHECKLIST,
+  SEED_CD_INSERT_PDP_RULE_SET,
+  SEED_CD_INSERT_PDP_LIBRARY,
 };
 
 export const runSeeds = async () => {

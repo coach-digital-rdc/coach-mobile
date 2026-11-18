@@ -21,12 +21,12 @@ const PinInput: React.FC<Props> = ({
 
   return (
     <HStack position="relative" alignItems={'center'} justifyContent={'center'}>
-      <HStack justifyContent={'space-between'} alignSelf={'center'} space={4}>
+      <HStack justifyContent={'space-between'} alignSelf={'center'} space={3}>
         {len.map((_, index) => (
           <Center
             key={index}
-            width={'44px'}
-            height={'48px'}
+            width={'48px'}
+            height={'56px'}
             flexDir={'row'}
             borderWidth={1}
             bg={'gray.0'}
@@ -36,13 +36,13 @@ const PinInput: React.FC<Props> = ({
                 ? 'red.200'
                 : hasFocus && inputText.trim().length === index
                 ? 'primary.200'
-                : 'gray.400'
+                : 'gray.300'
             }>
             <Text
               textAlign={'center'}
-              fontSize={'LLG'}
-              fontWeight={500}
-              color={'gray.800'}>
+              fontSize={'24px'}
+              fontWeight={700}
+              color={'gray.700'}>
               {inputText.substring(index, index + 1)}
             </Text>
           </Center>

@@ -1,245 +1,308 @@
-import React from 'react';
-import {ScrollView, Text, TextArea, VStack, Box} from 'native-base';
-import {useNavigate, useLocation} from 'react-router-native';
-import SelectModal from '../../../components/SelectModal';
-import Button from '../../../components/Button';
-import PathRoutes from '../../../routers/paths';
+import React, {useEffect, useState} from 'react';
+import {HStack, ScrollView, Text, VStack, useTheme} from 'native-base';
+import {useLocation, useNavigate} from 'react-router-native';
 import {useTranslation} from 'react-i18next';
+import moment from 'moment';
+import {useCoachContext} from '../../../providers/coach.provider';
+import {TeacherService} from '../../../services/teacher.service';
+import {SessionService} from '../../../services/session.service';
+import {TeacherDetailsType} from '../../../types/teacher';
+import {SessionActivity} from '../../../types/session-activity';
+import SegmentedChoice from '../../../components/SegmentedChoice';
+import PhaseStepper from '../../../components/PhaseStepper';
+import FormField from '../../../components/FormField';
+import PathRoutes from '../../../routers/paths';
+import Button from '../../../components/Button';
+import Icon from '../../../components/Icon';
 import Page from '../../../components/Page';
-import {Formik} from 'formik';
-import FieldError from '../../../components/FieldError';
-import {COUNTRY} from '@env';
 
+// School year starting in September: "2026-2027" from September 2026 to August 2027
+const currentSchoolYear = () => {
+  const now = new Date();
+  const start = now.getMonth() >= 8 ? now.getFullYear() : now.getFullYear() - 1;
+  return `${start}-${start + 1}`;
+};
+
+const InfoRow: React.FC<{label: string; value?: string | null}> = ({
+  label,
+  value,
+}) => (
+  <HStack py="4px" space={2}>
+    <Text w="120px" fontSize="12px" fontWeight={600} color="gray.500">
+      {label}
+    </Text>
+    <Text flex={1} fontSize="14px" color="gray.700">
+      {value || '—'}
+    </Text>
+  </HStack>
+);
+
+// "En-tête de la fiche" of the mockups (B11): the known information is filled in,
+// the observer completes the session and the observed activity, then the observation starts (B10).
 const ClassObservationSetup: React.FC = () => {
-  const {state} = useLocation();
-  const navigate = useNavigate();
+  const theme = useTheme();
   const {t} = useTranslation();
+  const navigate = useNavigate();
+  const {state} = useLocation();
+  const {currentCoach, currentSchool} = useCoachContext();
+  const teacherId: string = state?.session?.teacher_id;
+  const [teacher, setTeacher] = useState<TeacherDetailsType>();
+  const [isSaving, setIsSaving] = useState(false);
+  const [header, setHeader] = useState({
+    subject: '',
+    teacher_weekly_load: '',
+    school_year: currentSchoolYear(),
+  });
+  const [activity, setActivity] = useState<Partial<SessionActivity>>({
+    p_i: '',
+    time: moment().format('HH:mm'),
+  });
 
-  const handleSubmitForm = async (values: typeof defaultValues) => {
-    navigate(PathRoutes.classObservation.form, {
-      state: {session: {...(state?.session ? state.session : {}), ...values}},
+  useEffect(() => {
+    if (teacherId) {
+      TeacherService.getTeacherDetails(teacherId).then(data => {
+        setTeacher(data);
+        setHeader(current => ({
+          ...current,
+          subject: data?.subject || '',
+          teacher_weekly_load: data?.weekly_load
+            ? String(data.weekly_load)
+            : '',
+        }));
+        setActivity(current => ({...current, discipline: data?.subject}));
+      });
+    }
+  }, [teacherId]);
+
+  const changeActivity = (change: Partial<SessionActivity>) =>
+    setActivity(current => ({...current, ...change}));
+
+  const ready = !!header.subject.trim() && !!activity.discipline?.trim();
+
+  const handleSave = async () => {
+    setIsSaving(true);
+    const sessionId = await SessionService.startLocalSession(
+      {
+        teacher_id: teacherId,
+        coach_id: currentCoach?.id,
+        school_id: currentSchool?.id,
+        subject: header.subject.trim(),
+        level: 'S',
+        school_year: header.school_year.trim(),
+        teacher_weekly_load: header.teacher_weekly_load
+          ? parseInt(header.teacher_weekly_load, 10)
+          : null,
+        last_observation_date: teacher?.last_session_date || null,
+      },
+      activity,
+    );
+    navigate(PathRoutes.classObservation.checklist, {
       replace: true,
+      state: {session: {id: sessionId, teacher_id: teacherId}},
     });
   };
 
-  const validate = (values: typeof defaultValues): any => {
-    let erros: any = {};
-    if (!values.class_type) {
-      erros.class_type = 'Required';
-    }
-
-    if (!values.students_count) {
-      erros.students_count = 'Required';
-    }
-
-    if (!values.lesson_time) {
-      erros.lesson_time = 'Required';
-    }
-
-    return erros;
-  };
-
-  const classroomOptions = [
-    t('classObservation.setup.questions.$1.options.$1'),
-    t('classObservation.setup.questions.$1.options.$2'),
-    t('classObservation.setup.questions.$1.options.$3'),
-  ];
-
-  const studentsOptions = [
-    t('classObservation.setup.questions.$1.counters.$1'),
-    t('classObservation.setup.questions.$1.counters.$2'),
-    t('classObservation.setup.questions.$1.counters.$3'),
-    t('classObservation.setup.questions.$1.counters.$4'),
-  ];
-
-  const timeOptions = [
-    t('classObservation.setup.questions.$3.options.$1'),
-    t('classObservation.setup.questions.$3.options.$2'),
-    t('classObservation.setup.questions.$3.options.$3'),
-    t('classObservation.setup.questions.$3.options.$4'),
-    t('classObservation.setup.questions.$3.options.$5'),
-    t('classObservation.setup.questions.$3.options.$6'),
-    t('classObservation.setup.questions.$3.options.$7'),
-    t('classObservation.setup.questions.$3.options.$8'),
-  ];
-
-  const subjectOptions =
-    COUNTRY === 'cd'
-      ? [
-          t(`teacher.subjects.cd.$1`),
-          t(`teacher.subjects.cd.$2`),
-          t(`teacher.subjects.cd.$3`),
-          t(`teacher.subjects.cd.$4`),
-          t(`teacher.subjects.cd.$5`),
-          t(`teacher.subjects.cd.$6`),
-          t(`teacher.subjects.cd.$7`),
-          t(`teacher.subjects.cd.$8`),
-          t(`teacher.subjects.cd.$9`),
-          t(`teacher.subjects.cd.$10`),
-          t(`teacher.subjects.cd.$11`),
-          t(`teacher.subjects.cd.$12`),
-          t(`teacher.subjects.cd.$13`),
-        ]
-      : COUNTRY === 'np'
-      ? [
-          t(`teacher.subjects.np.$1`),
-          t(`teacher.subjects.np.$2`),
-          t(`teacher.subjects.np.$3`),
-          t(`teacher.subjects.np.$4`),
-          t(`teacher.subjects.np.$5`),
-          t(`teacher.subjects.np.$6`),
-          t(`teacher.subjects.np.$7`),
-          t(`teacher.subjects.np.$8`),
-        ]
-      : [
-          t(`teacher.subjects.sl.$1`),
-          t(`teacher.subjects.sl.$2`),
-          t(`teacher.subjects.sl.$3`),
-          t(`teacher.subjects.sl.$4`),
-          t(`teacher.subjects.sl.$5`),
-          t(`teacher.subjects.sl.$6`),
-          t(`teacher.subjects.sl.$7`),
-          t(`teacher.subjects.sl.$8`),
-          t(`teacher.subjects.sl.$9`),
-          t(`teacher.subjects.sl.$10`),
-        ];
-
-  const defaultValues = {
-    students_count: '',
-    subject: '',
-    lesson_time: '',
-    objective: '',
-    class_type: t('classObservation.setup.questions.$1.options.$1'),
-  };
-
   return (
-    <Formik
-      validate={validate}
-      onSubmit={handleSubmitForm}
-      initialValues={state?.session ? state?.session : defaultValues}>
-      {({values, errors, handleSubmit, setFieldValue, submitCount}) => (
-        <Page back title={t('classObservation.title')}>
-          <ScrollView flexGrow={0}>
-            <Text fontSize={'HSM'} fontWeight={600} color={'gray.800'}>
-              {t('classObservation.setup.title')}
+    <Page back title={t('classObservation.title')} noPadding>
+      <PhaseStepper current="preparation" />
+      <ScrollView flex={1} px="16px" showsVerticalScrollIndicator={false}>
+        <Text mt="8px" fontSize="24px" fontWeight={600} color="gray.700">
+          {t('classObservation.setup.title')}
+        </Text>
+        <Text mt="8px" mb="16px" fontSize="14px" color="gray.600">
+          {t('classObservation.setup.subtitle')}
+        </Text>
+
+        <VStack
+          p="12px"
+          borderWidth="1px"
+          borderRadius="12px"
+          borderColor="gray.200">
+          <HStack mb="8px" justifyContent="space-between" alignItems="center">
+            <Text fontSize="16px" fontWeight={700} color="gray.700">
+              {t('classObservation.setup.observer')}
             </Text>
-            <Text mt={2} fontSize={'TMD'} fontWeight={400} color={'gray.800'}>
-              {t('classObservation.setup.subtitle')}
-            </Text>
+            <HStack
+              px="8px"
+              space={1}
+              alignItems="center"
+              borderRadius="999px"
+              bg="gray.100">
+              <Icon name="lock" size={12} color={theme.colors.gray['600']} />
+              <Text fontSize="11px" fontWeight={600} color="gray.600">
+                {t('classObservation.setup.profile')}
+              </Text>
+            </HStack>
+          </HStack>
+          <InfoRow
+            label={t('classObservation.setup.name')}
+            value={currentCoach?.name}
+          />
+          <InfoRow
+            label={t('classObservation.setup.contact')}
+            value={[currentCoach?.phone, currentCoach?.email]
+              .filter(Boolean)
+              .join(' · ')}
+          />
+        </VStack>
 
-            <VStack space={4} mt={6}>
-              <VStack space={2}>
-                <Text fontSize={'LLG'} fontWeight={500} color={'gray.800'}>
-                  {t('classObservation.setup.questions.$0.title')}
-                </Text>
+        <Text
+          mt="24px"
+          mb="8px"
+          fontSize="18px"
+          fontWeight={700}
+          color="gray.700">
+          {t('classObservation.setup.session')}
+        </Text>
+        <InfoRow
+          label={t('classObservation.setup.school')}
+          value={currentSchool?.name}
+        />
+        <InfoRow
+          label={t('classObservation.setup.teacher')}
+          value={teacher?.name}
+        />
+        <InfoRow
+          label={t('classObservation.setup.last-observation')}
+          value={
+            teacher?.last_session_date
+              ? moment(teacher.last_session_date).format('L')
+              : t('classObservation.setup.none')
+          }
+        />
 
-                <SelectModal
-                  isInvalid={!!errors.class_type && submitCount >= 1}
-                  value={values.class_type}
-                  handleSelectValue={value =>
-                    setFieldValue('class_type', value)
-                  }
-                  options={classroomOptions.map(option => ({
-                    value: option,
-                    label: option,
-                  }))}
-                  placeholder={t(
-                    'classObservation.setup.questions.$0.placeholder',
-                  )}
-                  bottomTitle={t('classObservation.setup.questions.$0.title')}
-                />
-                {!!errors.class_type && submitCount >= 1 && <FieldError />}
-              </VStack>
+        <FormField
+          readOnly
+          label={t('classObservation.setup.level')}
+          value={t('classObservation.setup.secondary') || ''}
+        />
+        <FormField
+          label={t('classObservation.setup.disciplines')}
+          value={header.subject}
+          onChangeText={subject =>
+            setHeader(current => ({...current, subject}))
+          }
+        />
+        <HStack space={3}>
+          <FormField
+            label={t('classObservation.setup.weekly-load')}
+            keyboardType="number-pad"
+            value={header.teacher_weekly_load}
+            onChangeText={value =>
+              setHeader(current => ({
+                ...current,
+                teacher_weekly_load: value.replace(/\D/g, ''),
+              }))
+            }
+          />
+          <FormField
+            label={t('classObservation.setup.school-year')}
+            value={header.school_year}
+            onChangeText={school_year =>
+              setHeader(current => ({...current, school_year}))
+            }
+          />
+        </HStack>
 
-              <VStack space={2}>
-                <Text fontSize={'LLG'} fontWeight={500} color={'gray.800'}>
-                  {t('classObservation.setup.questions.$1.title')}
-                </Text>
-
-                <SelectModal
-                  options={studentsOptions.map(option => ({
-                    value: option,
-                    label: option,
-                  }))}
-                  isInvalid={!!errors.students_count && submitCount >= 1}
-                  handleSelectValue={value =>
-                    setFieldValue('students_count', value)
-                  }
-                  placeholder={t(
-                    'classObservation.setup.questions.$1.placeholder',
-                  )}
-                  value={values.students_count}
-                  bottomTitle={t('classObservation.setup.questions.$1.title')}
-                />
-                {!!errors.students_count && submitCount >= 1 && <FieldError />}
-              </VStack>
-
-              <VStack space={2}>
-                <Text fontSize={'LLG'} fontWeight={500} color={'gray.800'}>
-                  {t('classObservation.setup.questions.$2.title')}
-                </Text>
-
-                <SelectModal
-                  options={subjectOptions.map(option => ({
-                    value: option,
-                    label: option,
-                  }))}
-                  handleSelectValue={value => setFieldValue('subject', value)}
-                  placeholder={t(
-                    'classObservation.setup.questions.$2.placeholder',
-                  )}
-                  bottomTitle={t('classObservation.setup.questions.$2.title')}
-                  value={values.subject}
-                />
-              </VStack>
-
-              <VStack space={2}>
-                <Text fontSize={'LLG'} fontWeight={500} color={'gray.800'}>
-                  {t('classObservation.setup.questions.$3.title')}
-                </Text>
-                <SelectModal
-                  options={timeOptions.map(option => ({
-                    value: option,
-                    label: option,
-                  }))}
-                  isInvalid={!!errors.lesson_time && submitCount >= 1}
-                  handleSelectValue={value =>
-                    setFieldValue('lesson_time', value)
-                  }
-                  placeholder={t(
-                    'classObservation.setup.questions.$3.placeholder',
-                  )}
-                  bottomTitle={t('classObservation.setup.questions.$3.title')}
-                  value={values.lesson_time}
-                />
-                {!!errors.lesson_time && submitCount >= 1 && <FieldError />}
-              </VStack>
-
-              <VStack space={2} mb="4px">
-                <Text fontSize={'LLG'} fontWeight={500} color={'gray.800'}>
-                  {t('classObservation.setup.questions.$4.title')}
-                </Text>
-                <TextArea
-                  onChangeText={value => setFieldValue('objective', value)}
-                  isInvalid={!!errors.objective}
-                  autoCompleteType={'off'}
-                  variant={'outline'}
-                  placeholder={t(
-                    'classObservation.setup.questions.$4.placeholder',
-                  )}
-                />
-              </VStack>
+        <Text
+          mt="24px"
+          mb="4px"
+          fontSize="18px"
+          fontWeight={700}
+          color="gray.700">
+          {t('classObservation.setup.activity')}
+        </Text>
+        <VStack
+          mb="16px"
+          p="12px"
+          borderWidth="1px"
+          borderRadius="12px"
+          borderColor="gray.200">
+          <HStack space={3}>
+            <FormField
+              label={t('classObservation.setup.sub-domain')}
+              placeholder={
+                t('classObservation.setup.sub-domain-placeholder') || ''
+              }
+              value={activity.sub_domain || ''}
+              onChangeText={sub_domain => changeActivity({sub_domain})}
+            />
+            <FormField
+              label={t('classObservation.setup.discipline')}
+              value={activity.discipline || ''}
+              onChangeText={discipline => changeActivity({discipline})}
+            />
+          </HStack>
+          <HStack space={3}>
+            <FormField
+              label={t('classObservation.setup.sheet-code')}
+              value={activity.sheet_code || ''}
+              onChangeText={sheet_code => changeActivity({sheet_code})}
+            />
+            <FormField
+              label={t('classObservation.setup.class-name')}
+              value={activity.class_name || ''}
+              onChangeText={class_name => changeActivity({class_name})}
+            />
+          </HStack>
+          <HStack space={3} alignItems="flex-end">
+            <VStack flex={1}>
+              <SegmentedChoice
+                label={t('classObservation.setup.p-i')}
+                value={activity.p_i}
+                options={[
+                  {value: '', label: '—'},
+                  {value: 'P', label: 'P'},
+                  {value: 'I', label: 'I'},
+                ]}
+                onChange={p_i => changeActivity({p_i})}
+              />
             </VStack>
-          </ScrollView>
+            <FormField
+              label={t('classObservation.setup.time')}
+              value={activity.time || ''}
+              placeholder="08:00"
+              onChangeText={time => changeActivity({time})}
+            />
+          </HStack>
+          <FormField
+            label={t('classObservation.setup.essential-knowledge')}
+            value={activity.essential_knowledge || ''}
+            onChangeText={essential_knowledge =>
+              changeActivity({essential_knowledge})
+            }
+          />
+        </VStack>
+      </ScrollView>
 
-          <Box marginTop={'auto'} pt={3} bg={'white'}>
-            <Button onPress={() => handleSubmit()}>
-              {t('classObservation.setup.button')}
-            </Button>
-          </Box>
-        </Page>
-      )}
-    </Formik>
+      <VStack
+        px="16px"
+        pb="16px"
+        pt="8px"
+        borderTopWidth="1px"
+        borderTopColor="gray.200">
+        {!ready && (
+          <HStack mb="8px" p="8px" space={2} borderRadius="10px" bg="yellow.0">
+            <Icon
+              name="info-circle"
+              size={18}
+              color={theme.colors.yellow['300']}
+            />
+            <Text flex={1} fontSize="13px" color="yellow.300">
+              {t('classObservation.setup.missing')}
+            </Text>
+          </HStack>
+        )}
+        <Button
+          w="full"
+          mb={0}
+          disabled={!ready}
+          isLoading={isSaving}
+          onPress={handleSave}>
+          {t('classObservation.setup.button')}
+        </Button>
+      </VStack>
+    </Page>
   );
 };
 

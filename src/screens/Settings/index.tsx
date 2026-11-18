@@ -161,7 +161,7 @@ const SettingsScreen: React.FC = () => {
                     color={'#3373CC'}
                     fontFamily="Inter"
                     fontSize="16px">
-                    {'Try sync'}
+                    {t('settings.try-sync')}
                   </Text>
                   <Icon name="redo" color={'#3373CC'} size={24} />
                 </HStack>

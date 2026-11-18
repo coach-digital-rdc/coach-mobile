@@ -1,13 +1,10 @@
-import React, {useEffect, useState} from 'react';
-import {SessionService} from '../../../../../../services/session.service';
-import {Box, HStack, Text, VStack, useTheme} from 'native-base';
-import StarsTag from '../../../../../../components/StarsTag';
-import {Session} from '../../../../../../types/session';
-import Icon from '../../../../../../components/Icon';
-import {TouchableOpacity} from 'react-native';
+import React from 'react';
+import {Center, Text, useTheme} from 'native-base';
 import {useTranslation} from 'react-i18next';
 import moment from 'moment';
-import i18n from '../../../../../../i18n';
+import {Session} from '../../../../../../types/session';
+import ListRow from '../../../../../../components/ListRow';
+import Icon from '../../../../../../components/Icon';
 
 type Props = {
   index: number;
@@ -15,65 +12,50 @@ type Props = {
   onPress: () => void;
 };
 
+const OPEN_STATUSES = ['PREPARATION', 'OBSERVATION', 'EVALUATION'];
+
+// Observation row of the teacher profile in the mockups: date and status.
 const SessionItem: React.FC<Props> = ({onPress, session, index}) => {
   const theme = useTheme();
   const {t} = useTranslation();
-  const [overallRating, setOverallRating] = useState<number>();
-  const currentLanguage = i18n.languages[0];
-
-  useEffect(() => {
-    (async () => {
-      const competences =
-        await SessionService.getSessionAnswersCountGroupedByCompetence(
-          session.id,
-        );
-
-      const overall = Math.round(
-        competences.reduce(
-          (acc, item) => acc + item.sumAnswers / item.totalQuestions,
-          0,
-        ) /
-          competences.length -
-          1,
-      );
-
-      setOverallRating(overall);
-    })();
-  }, []);
+  const isOpen = OPEN_STATUSES.includes(session.session_status || '');
 
   return (
-    <TouchableOpacity onPress={onPress}>
-      <HStack
-        py={3}
-        w={'100%'}
-        borderBottomWidth={'1px'}
-        borderBottomColor={'gray.200'}>
-        <VStack flex={1} space={2} alignItems={'flex-start'}>
-          <Text fontSize={'LMD'} fontWeight={500} color={'gray.700'}>
-            {t('teacher.tabs.session.session')} {index + 1}
-          </Text>
-          <Text fontSize={'TSM'} fontWeight={400} color={'gray.500'}>
-            {moment(session.created_at).format('lll')}
-          </Text>
-
-          {overallRating !== undefined ? (
-            <StarsTag value={overallRating} />
-          ) : (
-            <Box w={'104px'} h={'20px'} bg={'gray.200'} />
-          )}
-        </VStack>
-        <HStack space={1}>
-          {!session.feedback_id && (
-            <Icon
-              name={'exclamation-circle-solid'}
-              color={theme.colors.yellow['200']}
-            />
-          )}
-
-          <Icon name={'angle-right'} />
-        </HStack>
-      </HStack>
-    </TouchableOpacity>
+    <ListRow
+      divider={index > 0}
+      title={t('teacher.tabs.session.observation-of', {
+        date: moment(session.created_at).format('L'),
+      })}
+      onPress={onPress}
+      leading={
+        <Center
+          w="36px"
+          h="36px"
+          borderRadius="10px"
+          bg={isOpen ? 'primary.0' : 'green.0'}>
+          <Icon
+            name={isOpen ? 'clipboard-notes' : 'file-check'}
+            size={20}
+            color={
+              isOpen ? theme.colors.primary['200'] : theme.colors.green['300']
+            }
+          />
+        </Center>
+      }>
+      <Text
+        alignSelf="flex-start"
+        px="8px"
+        borderRadius="999px"
+        overflow="hidden"
+        fontSize="11px"
+        fontWeight={600}
+        bg={isOpen ? 'yellow.0' : 'green.0'}
+        color={isOpen ? 'yellow.300' : 'green.300'}>
+        {isOpen
+          ? t('teacher.tabs.session.in-progress')
+          : t('teacher.tabs.session.closed')}
+      </Text>
+    </ListRow>
   );
 };
 

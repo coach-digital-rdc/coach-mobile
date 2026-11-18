@@ -8,7 +8,13 @@ const enTranslation = {
     high: 'High',
     na: 'N/A',
   },
+  splash: {
+    tagline: 'Classroom practice observation',
+    version: 'Version {{value}}',
+  },
   common: {
+    cancel: 'Cancel',
+    save: 'Save',
     'load-more': 'Load more',
     optional: 'Optional',
     search: 'Search',
@@ -29,6 +35,7 @@ const enTranslation = {
     tlc: 'TLC',
     pending: 'Pending',
     cop: 'COP',
+    settings: 'Settings',
   },
   components: {
     starRating: {low: 'Low', mid: 'Mid', high: 'High'},
@@ -48,17 +55,22 @@ const enTranslation = {
   },
   login: {
     main: {
-      welcome: 'Welcome to Coach!',
+      welcome: 'Welcome!',
+      tagline: 'Classroom observation',
+      subtitle:
+        'Sign in with the email address or phone number of your account.',
       user_id: 'User ID',
       user_id_placeholder: 'Email ID or Phone number',
       error:
         'User not found. Try logging in using phone number or create an account.',
       button: 'Login',
-      create_account: "Don't have an account?",
-      create_account_button: ' Register now',
+      create_account: "Don't have an account? ",
+      create_account_button: 'Register now',
     },
     otp: {
-      title: 'Enter the 6-digit code sent to you at',
+      header: 'Verification',
+      heading: 'Verification code',
+      title: 'Enter the 6-digit code sent to',
       error: 'Incorrect code. Please try again.',
       button: 'Verify',
       not_receive_code: "Didn't receive a verification code?",
@@ -111,6 +123,7 @@ const enTranslation = {
     language: 'Language',
     lastSync: 'Last sync: {{value}}',
     'never-synced': 'no sync',
+    'try-sync': 'Try sync',
     appVersion: 'App version',
     'unsynced-items': 'Unsynchronized items',
     'unsynced-teacher': 'Teachers:',
@@ -128,7 +141,14 @@ const enTranslation = {
     'item-description-empty': 'No profiles here',
   },
   schoolSelect: {
-    title: 'Select your school',
+    header: 'School',
+    title: 'Select the school',
+    subtitle:
+      'Choose the school where you observe, or add it by scanning its QR code.',
+    'qr-title': "Scan the school's QR code",
+    'qr-hint': 'The code is on the sheet provided by the administration',
+    search: 'Search a school',
+    empty: 'No school found.',
     'item-description_interval':
       '(0)[No teachers here];(1)[1 teacher here];(2-inf)[{{count}} teachers here];',
   },
@@ -146,6 +166,20 @@ const enTranslation = {
   },
   home: {
     salutation: 'Hi',
+    tiles: {
+      'new-observation': 'New observation',
+      'in-progress': 'Sessions in progress',
+      manual: 'Manual',
+      tlc: 'Learning circles',
+      cop: 'Community of practice',
+      sync: 'Synchronisation',
+    },
+    sync: {
+      done: 'Synced {{date}}',
+      never: 'Not synced yet',
+      pending_interval:
+        '(1)[1 item to synchronise];(2-inf)[{{count}} items to synchronise];',
+    },
     teachersLength_interval: 'Coaching in:',
     'menu-items': {
       newSession: 'Start a new session',
@@ -164,6 +198,11 @@ const enTranslation = {
       'last-session': 'Updated {{date}}',
       session_interval: '(1)[1 Observation];(2-inf)[{{count}} Observations];',
       teachers_count: 'Teachers in this school:',
+      section: 'Teachers ({{count}})',
+      add: 'Add',
+      search: 'Search a teacher',
+      'last-observation': 'last on {{date}}',
+      'no-observation': 'no observation yet',
     },
     emptyState: {
       title: 'No teacher registered',
@@ -208,15 +247,33 @@ const enTranslation = {
       },
     },
     pending: {
-      page_title: 'Incomplete sessions',
-      title: 'Incomplete sessions',
-      subtitle: 'Complete the feedback sessions with the following teachers',
-      list_subtitle: 'Feedback pending',
+      page_title: 'Sessions in progress',
+      title: 'Sessions in progress',
+      subtitle:
+        'Sessions started and not closed. They are kept on the device, even without connection.',
+      list_subtitle: 'Coaching session pending',
+      empty: 'Start an observation to see it here.',
+      started_interval:
+        '(0-1)[Started on {{date}} · {{count}} note];(2-inf)[Started on {{date}} · {{count}} notes];',
+      status: {
+        PREPARATION: 'Preparation',
+        OBSERVATION: 'Observation',
+        EVALUATION: 'Evaluation',
+      },
     },
   },
   teacher: {
     form: {
-      name: 'Name',
+      name: 'First name',
+      'name-placeholder': 'e.g. Daniel',
+      'surname-placeholder': 'e.g. MUKENDI',
+      'heading-new': 'Add a teacher',
+      subtitle:
+        'The teacher is saved on the device, then sent to the server at the next synchronisation.',
+      sex: 'Sex',
+      female: 'Female',
+      male: 'Male',
+      'weekly-load': 'Weekly load (h)',
       birthdate: "Teacher's date of birth",
       birthdate_title: 'Select a date',
       birthdate_confirm: 'Confirm',
@@ -239,6 +296,9 @@ const enTranslation = {
       nin_description: 'National Identification Number',
     },
     details: {
+      title: 'Teacher',
+      'new-observation': 'New observation',
+      'resume-observation': 'Resume the observation',
       subject: 'Principal Subject',
       school: 'School',
       editTeacher: 'Edit teacher',
@@ -246,7 +306,10 @@ const enTranslation = {
     },
     tabs: {
       session: {
-        title: 'Observation sessions',
+        title: 'Observations',
+        'observation-of': 'Observation of {{date}}',
+        'in-progress': 'In progress',
+        closed: 'Closed',
         session: 'Observation session',
         newClassObservation: 'New class observation',
         stillNoSession: 'There are no observation sessions recorded',
@@ -258,6 +321,7 @@ const enTranslation = {
       },
       stats: {
         title: "Teacher's stats",
+        'evolution-tab': 'Evolution',
         overallRating: 'Overall rating',
         currentRating: 'The current rating is:',
         ratingAverage:
@@ -324,8 +388,26 @@ const enTranslation = {
   },
   classObservation: {
     title: 'Class observation',
+    phases: {
+      preparation: 'Preparation',
+      observation: 'Observation',
+      evaluation: 'Evaluation',
+      closing: 'Closing',
+    },
     about: {
-      title: 'Coaching process',
+      title: 'Session flow',
+      subtitle:
+        'The observation has four steps. Each step must be finished before moving to the next one.',
+      steps: {
+        preparation:
+          'Talk with the teacher before the lesson, fill in the header of the sheet and, if possible, the document checklist.',
+        observation:
+          'Sit at the back of the class and note what you observe during the lesson.',
+        evaluation:
+          'Rate the 30 behaviours, then agree on the development plan with the teacher.',
+        closing:
+          'Add your advice and collect the signatures: the sheet is then locked and ready to be synchronised.',
+      },
       'start-button': 'Start preparation',
       step1: {
         title: 'Preparation',
@@ -352,10 +434,196 @@ const enTranslation = {
           'After agreeing with the teacher about priority next steps for improvement, schedule your next visit.',
       },
     },
+    signatures: {
+      title: 'Signatures',
+      subtitle:
+        'Each signer signs with the finger. The teacher may refuse to sign and give the reason; only the school head may be absent.',
+      role: {
+        TEACHER: 'Teacher',
+        SCHOOL_HEAD: 'School head',
+        OBSERVER: 'Observer',
+      },
+      name: 'Name',
+      'sign-here': 'Tap to sign',
+      sign: 'Sign',
+      validate: 'Confirm the signature',
+      clear: 'Clear',
+      refuses: 'Refuses to sign',
+      refusal: 'Reason for refusing to sign',
+      'refusal-placeholder':
+        'e.g. the teacher disputes the score of sub-domain III.1',
+      absent: 'Absent',
+      absence: 'Reason for the absence',
+      'absence-placeholder': 'e.g. at a meeting at the sub-division',
+      'observer-is-head':
+        'You are the school head: your observer signature stands for this box.',
+      'before-closing': 'Before closing',
+      'condition-scoring':
+        'Scoring complete ({{answered}}/{{total}} behaviours, {{scored}}/{{scoreTotal}} scores)',
+      'condition-pdp': 'PDP validated with the teacher',
+      'condition-signatures':
+        'Signatures of the teacher, the school head and the observer',
+      close: 'Close the session',
+      'close-title': 'Close the session?',
+      'close-message':
+        'Once closed, the sheet can no longer be changed. It will be sent to the server at the next synchronisation.',
+      'close-confirm': 'Close',
+    },
+    advice: {
+      title: 'Advice and times',
+      subtitle:
+        'The times are taken from the observation; correct them if needed.',
+      'start-time': 'Start of the sequence',
+      'end-time': 'End of the sequence',
+      advice: 'Advice to the teacher',
+      'advice-placeholder':
+        'Strengths to keep, practical advice for the next sequence…',
+      place: 'Done at',
+      'place-placeholder': 'e.g. Kinshasa',
+      date: 'On',
+      button: 'Go to the signatures',
+    },
+    pdp: {
+      title: 'Development plan',
+      heading: 'Professional development plan',
+      subtitle:
+        'Draft set up from the scoring, with the PDP rules version {{version}} (published on {{date}}). Adjust it with the teacher, then validate it.',
+      'missing-rules':
+        'The PDP rules are not on the device yet. Synchronise the application, then come back to this step.',
+      summary: 'Scoring summary',
+      'read-only': 'Read-only',
+      'score-note': 'suggested score {{suggested}}, entered {{score}}',
+      diagnostic: 'Diagnostic',
+      group: {
+        STRENGTH: 'Strengths',
+        CONSOLIDATE: 'Areas to consolidate',
+        PRIORITY: 'Priority areas',
+      },
+      category: {
+        STRENGTH: 'Strength',
+        CONSOLIDATE: 'To consolidate',
+        PRIORITY: 'Priority',
+      },
+      origin: {GENERATED: 'Generated', EDITED: 'Edited', ADDED: 'Added'},
+      answer: {
+        YES: 'Yes',
+        NO: 'No',
+        LOW: 'Low',
+        MEDIUM: 'Medium',
+        HIGH: 'High',
+        NA: 'N/A',
+      },
+      short: {YES: 'Y', NO: 'N', LOW: 'L', MEDIUM: 'M', HIGH: 'H', NA: '–'},
+      reason: 'Scored {{answer}}',
+      'reason-score': '; sub-domain {{code}} scored {{score}}/5',
+      objectives: 'Objectives of the plan ({{count}}/{{max}})',
+      regenerate: 'Regenerate',
+      validated: 'Validated',
+      up: 'Move up',
+      down: 'Move down',
+      edit: 'Edit',
+      remove: 'Remove',
+      objective: 'Objective',
+      actions: 'Actions',
+      'actions-input': 'Actions (one per line)',
+      indicator: 'Follow-up indicator',
+      'due-date': 'Due date',
+      'due-date-input': 'Due date (YYYY-MM-DD)',
+      'to-fill': 'To be filled in',
+      done: 'Done',
+      add: 'Add an objective',
+      free: 'Free objective',
+      max: 'Maximum of {{max}} objectives reached',
+      editable: 'Draft can be changed until it is validated',
+      'validated-at': 'PDP validated with the teacher at {{time}}',
+      'back-to-scoring': 'Scoring',
+      validate: 'Validate the PDP',
+      'validate-title': 'Validate the PDP?',
+      'validate-message_interval':
+        '(1)[The plan has 1 objective. Once validated with the teacher, it can no longer be changed.];(2-inf)[The plan has {{count}} objectives. Once validated with the teacher, it can no longer be changed.];',
+      'validate-confirm': 'Validate',
+      continue: 'Continue',
+    },
+    notes: {
+      title: 'Chronological notes',
+      subtitle:
+        'Write down the facts observed during the sequence. Each note is timestamped automatically.',
+      'subtitle-read-only':
+        'The notes are read-only. They remain visible during the scoring.',
+      running: 'Observation in progress since {{time}}',
+      ended: 'Observation ended at {{time}}',
+      count_interval: '(0-1)[note];(2-inf)[notes];',
+      'count-label_interval': '(0-1)[{{count}} note];(2-inf)[{{count}} notes];',
+      empty: 'No note yet.',
+      placeholder: 'Describe what you observe…',
+      add: 'Add the note',
+      edit: 'Edit the note',
+      delete: 'Delete the note',
+      locked: 'The scoring is locked until a note is saved',
+      'unlock-at-end': 'The scoring can start at the end of the observation',
+      unlocked: 'Scoring unlocked',
+      end: 'End the observation',
+      'end-title': 'End the observation?',
+      'end-message_interval':
+        '(1)[You saved 1 note. After the end of the observation, the notes can no longer be changed and the scoring will be unlocked.];(2-inf)[You saved {{count}} notes. After the end of the observation, the notes can no longer be changed and the scoring will be unlocked.];',
+      'end-confirm': 'End',
+      'go-to-scoring': 'Go to the scoring',
+    },
+    checklist: {
+      title: 'Document checklist',
+      'subtitle-before':
+        'Check that the documents of the teacher and of the learners are available. What cannot be checked now can be checked after the observation. The checklist is not part of the rating.',
+      'subtitle-after':
+        'Complete the documents that could not be checked before the observation. The checklist is not part of the rating.',
+      'subtitle-observing':
+        'The observation is in progress: the checklist can be completed after the observation.',
+      'teacher-documents': 'Documents of the teacher',
+      'learner-documents': 'Documents of the learners',
+      before: 'Before the observation',
+      after: 'After the observation',
+      proposal: 'Proposal of the observer',
+      'proposal-placeholder': 'E.g. update the document every week',
+      status: '{{count}}/{{total}} documents checked',
+      'status-later_interval':
+        '(1)[ · the last one will be completed after the observation];(2-inf)[ · the remaining {{count}} will be completed after the observation];',
+      'status-left': ' · {{count}} left',
+      start: 'Start the observation',
+      save: 'Save the checklist',
+      'back-to-observation': 'Back to the observation',
+      reminder_interval:
+        '(1)[Checklist: 1 document not checked (optional)];(2-inf)[Checklist: {{count}} documents not checked (optional)];',
+      complete: 'Complete',
+    },
     setup: {
-      title: 'About the lesson',
-      subtitle: 'Ask the teacher the following questions',
-      button: 'Next',
+      title: 'Header of the sheet',
+      subtitle:
+        'Known information is filled in automatically: check it and complete the rest.',
+      button: 'Save and continue',
+      observer: 'Observer',
+      profile: 'Profile',
+      name: 'Name',
+      contact: 'Contact',
+      session: 'Session',
+      school: 'School',
+      teacher: 'Teacher',
+      'last-observation': 'Last observation',
+      none: 'None',
+      level: 'Level',
+      secondary: 'Secondary',
+      disciplines: 'Subject(s)',
+      'weekly-load': 'Weekly load (h)',
+      'school-year': 'School year',
+      activity: 'Observed activity',
+      'sub-domain': 'Sub-domain',
+      'sub-domain-placeholder': 'e.g. Mathematics',
+      discipline: 'Subject',
+      'sheet-code': 'Sheet no. / matrix code',
+      'class-name': 'Class',
+      'p-i': 'P/I',
+      time: 'Time',
+      'essential-knowledge': 'Essential knowledge / lesson topic',
+      missing:
+        'Fill in the subject of the session and of the observed activity',
       questions: {
         $0: {title: 'Classroom consists of', placeholder: 'Both'},
         $1: {
@@ -396,15 +664,23 @@ const enTranslation = {
       },
     },
     form: {
-      title: 'Class Observation',
-      subtitle: 'Score each teaching practice related to your observation',
-      keyPoints: 'Key points to be discussed',
-      pointsToDiscuss: 'What you want to discuss with the teacher?',
-      spaceAdditional:
-        'Use this space for additional notes of items that you would like to discuss with the teacher',
-      competenciesRated: '{{count}} of {{total}} teaching practices rated',
-      'keyPoints-placeholder': 'Positive and negative points',
-      button: 'Complete observation',
+      title: 'Scoring',
+      subtitle:
+        'Score each behaviour from your notes. Use N/A when the behaviour could not be observed.',
+      notes: 'Notes ({{count}})',
+      'notes-title': 'Observation notes',
+      checklist: 'Checklist ({{count}}/15)',
+      help: 'Scoring help',
+      'global-score': 'Global score of the sub-domain',
+      'suggested-later': 'suggested once the behaviours are scored',
+      suggested: 'Suggested',
+      changed: 'Changed · suggested {{value}}',
+      progress:
+        '{{answered}}/{{total}} behaviours scored · {{scored}}/{{scoreTotal}} global scores',
+      button: 'End the scoring',
+      'locked-title': 'Scoring locked',
+      'locked-end': 'End the observation to start the scoring.',
+      'go-to-notes': 'Go to the notes',
     },
     formConfirmation: {
       button: 'Confirm',
@@ -416,7 +692,18 @@ const enTranslation = {
       },
     },
     observationCompleted: {
-      title: 'Class observation complete',
+      title: 'Session closed',
+      'closed-at': 'Closed on {{date}} at {{time}}.',
+      teacher: 'Teacher',
+      observation: 'Observation',
+      duration: '{{minutes}} min',
+      pdp: 'PDP',
+      'pdp-summary': '{{count}} objectives',
+      'pdp-validated': ', validated',
+      sync: 'Synchronisation',
+      synced: 'Synchronised',
+      pending: 'Pending',
+      pdf: 'PDF documents (coming soon)',
       subtitle: 'Thank you. The class observation section is complete!',
       whatsNext: "What's next?",
       startFeedback:

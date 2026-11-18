@@ -12,8 +12,12 @@ import QuickNewSessionScreen from '../screens/Home/QuickActions/NewSession';
 import TeacherDetailsScreen from '../screens/Teacher/TeacherDetails';
 import ClassObservationAbout from '../screens/ClassObservation/About';
 import ClassObservationSetup from '../screens/ClassObservation/Setup';
+import ClassObservationChecklist from '../screens/ClassObservation/Checklist';
+import ClassObservationNotes from '../screens/ClassObservation/Notes';
 import ClassObservationForm from '../screens/ClassObservation/Form';
-import ClassObservationConfirmation from '../screens/ClassObservation/Confirmation';
+import ClassObservationPdp from '../screens/ClassObservation/Pdp';
+import ClassObservationAdvice from '../screens/ClassObservation/Advice';
+import ClassObservationSignatures from '../screens/ClassObservation/Signatures';
 import ClassObservationCompleted from '../screens/ClassObservation/Completed';
 import SessionDetailsScreen from '../screens/SessionDetails';
 import FeedbackSessionAbout from '../screens/FeedbackSession/About';
@@ -116,12 +120,28 @@ const RouterProvider: React.FC = () => {
           Component={ClassObservationSetup}
         />
         <Route
+          path={PathRoutes.classObservation.checklist}
+          Component={ClassObservationChecklist}
+        />
+        <Route
+          path={PathRoutes.classObservation.notes}
+          Component={ClassObservationNotes}
+        />
+        <Route
           path={PathRoutes.classObservation.form}
           Component={ClassObservationForm}
         />
         <Route
-          path={PathRoutes.classObservation.confirmation}
-          Component={ClassObservationConfirmation}
+          path={PathRoutes.classObservation.pdp}
+          Component={ClassObservationPdp}
+        />
+        <Route
+          path={PathRoutes.classObservation.advice}
+          Component={ClassObservationAdvice}
+        />
+        <Route
+          path={PathRoutes.classObservation.signatures}
+          Component={ClassObservationSignatures}
         />
         <Route
           path={PathRoutes.classObservation.completed}

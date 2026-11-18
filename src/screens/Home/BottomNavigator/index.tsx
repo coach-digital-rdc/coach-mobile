@@ -1,4 +1,4 @@
-import {Center, HStack, VStack, Text} from 'native-base';
+import {HStack, VStack, Text, useTheme} from 'native-base';
 import React from 'react';
 import Icon from '../../../components/Icon';
 import {TouchableOpacity} from 'react-native';
@@ -7,66 +7,84 @@ import {useNavigate} from 'react-router-native';
 import {useTranslation} from 'react-i18next';
 import {COUNTRY} from '@env';
 
-const BottomNavigator: React.FC = () => {
+type Props = {
+  active?: 'home' | 'pending' | 'circles' | 'settings';
+};
+
+// Bottom bar of the mockups: home, sessions in progress, circles (CoP in Nepal) and settings.
+const BottomNavigator: React.FC<Props> = ({active}) => {
   const navigate = useNavigate();
+  const theme = useTheme();
   const {t} = useTranslation();
 
-  const CountriesItems: {
-    [x: string]: [{label: string; icon: string; route: string}];
-  } = {
-    np: [
-      {
-        label: t('bottom_navigator.cop'),
-        icon: 'process',
-        route: PathRoutes.communityOfPractice.onboarding,
-      },
-    ],
-
-    sl: [
-      {
-        label: t('bottom_navigator.tlc'),
-        icon: 'process',
-        route: PathRoutes.teacherLearningCircles.onboarding,
-      },
-    ],
-
-    cd: [
-      {
-        label: t('bottom_navigator.tlc'),
-        icon: 'process',
-        route: PathRoutes.teacherLearningCircles.onboarding,
-      },
-    ],
-  };
-
-  const bottomItems = [
-    {label: t('bottom_navigator.home'), icon: 'home-alt-solid', route: ''},
-    ...(CountriesItems as any)[COUNTRY],
+  const items = [
     {
+      id: 'home',
+      label: t('bottom_navigator.home'),
+      icon: 'apps',
+      route: PathRoutes.home.main,
+    },
+    {
+      id: 'pending',
       label: t('bottom_navigator.pending'),
-      icon: 'comment-dots',
+      icon: 'history',
       route: PathRoutes.home.pendingSessions,
+    },
+    COUNTRY === 'np'
+      ? {
+          id: 'circles',
+          label: t('bottom_navigator.cop'),
+          icon: 'users-alt',
+          route: PathRoutes.communityOfPractice.onboarding,
+        }
+      : {
+          id: 'circles',
+          label: t('bottom_navigator.tlc'),
+          icon: 'users-alt',
+          route: PathRoutes.teacherLearningCircles.onboarding,
+        },
+    {
+      id: 'settings',
+      label: t('bottom_navigator.settings'),
+      icon: 'setting',
+      route: PathRoutes.settings.main,
     },
   ];
 
   return (
-    <HStack>
-      {bottomItems.map((item, index) => (
-        <TouchableOpacity
-          style={{flex: 1}}
-          key={index}
-          onPress={() => navigate(item.route)}>
-          <Center
-            borderTopWidth={'1px'}
-            borderTopColor={index === 0 ? 'gray.700' : 'gray.300'}
-            py={2}>
-            <VStack alignItems={'center'}>
-              <Icon name={item.icon as any} />
-              <Text color={'gray.700'}>{item.label}</Text>
+    <HStack
+      pt="6px"
+      pb="10px"
+      bg="gray.0"
+      borderTopWidth="1px"
+      borderTopColor="gray.200">
+      {items.map(item => {
+        const isActive = item.id === active;
+        return (
+          <TouchableOpacity
+            key={item.id}
+            style={{flex: 1}}
+            onPress={() => !isActive && navigate(item.route)}>
+            <VStack alignItems="center" space="2px">
+              <Icon
+                name={item.icon as any}
+                size={22}
+                color={
+                  isActive
+                    ? theme.colors.primary['200']
+                    : theme.colors.gray['500']
+                }
+              />
+              <Text
+                fontSize="11px"
+                fontWeight={isActive ? 600 : 400}
+                color={isActive ? 'primary.200' : 'gray.500'}>
+                {item.label}
+              </Text>
             </VStack>
-          </Center>
-        </TouchableOpacity>
-      ))}
+          </TouchableOpacity>
+        );
+      })}
     </HStack>
   );
 };

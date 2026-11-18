@@ -1,4 +1,4 @@
-import {Box, HStack, Text, VStack, useTheme} from 'native-base';
+import {HStack, Text, VStack, useTheme} from 'native-base';
 import Page from '../../../components/Page';
 import {useNavigate, useParams} from 'react-router-native';
 import Button from '../../../components/Button';
@@ -51,85 +51,68 @@ const OTPScreen: React.FC = () => {
   };
 
   return (
-    <Page back>
-      <VStack flex={1} p={4} alignItems={'center'}>
-        <VStack>
-          <Text
-            fontSize={'TMD'}
-            fontWeight={400}
-            color={'gray.800'}
-            textAlign="center">
-            {t('login.otp.title')}
-          </Text>
-
-          <Text
-            mt={1}
-            mb={8}
-            fontSize={'TXL'}
-            fontWeight={700}
-            alignSelf={'center'}
-            color={'primary.200'}>
+    <Page back title={t('login.otp.header') || ''}>
+      <VStack flex={1}>
+        <Text fontSize="24px" fontWeight={600} color="gray.700">
+          {t('login.otp.heading')}
+        </Text>
+        <Text mt="8px" fontSize="14px" color="gray.600">
+          {t('login.otp.title')}{' '}
+          <Text fontWeight={700} color="gray.700">
             {id}
           </Text>
+        </Text>
 
+        <VStack my="16px">
           <PinInput
             length={6}
             isInvalid={OTPCode?.hasError}
             onChangeText={value => setOTPCode({hasError: false, value})}
           />
+        </VStack>
 
-          {OTPCode?.hasError && (
-            <HStack mt={2} alignContent={'flex-start'} space={'4px'}>
-              <Icon
-                name={'exclamation-circle-solid'}
-                size={18}
-                color={theme.colors.red['200']}
-              />
-              <Text fontSize={'TXS'} color={'red.200'} fontWeight={400}>
-                {t('login.otp.error')}
-              </Text>
-            </HStack>
-          )}
-
-          <Button
-            mt={8}
-            isLoading={isLoading}
-            onPress={handleVerifyCode}
-            disabled={!OTPCode?.value}>
-            <Text
-              color={!OTPCode?.value ? 'gray.600' : 'gray.0'}
-              fontWeight={500}>
-              {t('login.otp.button')}
-            </Text>
-          </Button>
-
-          <Text
-            mt={8}
-            fontSize={'LMD'}
-            fontWeight={500}
-            color={'gray.800'}
-            textAlign="center">
-            {t('login.otp.not_receive_code')}
-          </Text>
-
-          <HStack mt={1} space={2} alignItems={'center'} alignSelf={'center'}>
-            <Text
-              fontSize={'LMD'}
-              fontWeight={500}
-              color={'primary.200'}
-              onPress={handleResendCode}>
-              {t('login.otp.resend_code')}
-            </Text>
-            <Box w={'4px'} h={'4px'} borderRadius={'2px'} bg={'gray.400'} />
-            <Text
-              fontSize={'LMD'}
-              fontWeight={500}
-              color={'primary.200'}
-              onPress={() => navigate(PathRoutes.login.main)}>
-              {t('login.otp.change_email')}
+        {OTPCode?.hasError && (
+          <HStack mb={2} alignContent={'flex-start'} space={'4px'}>
+            <Icon
+              name={'exclamation-circle-solid'}
+              size={18}
+              color={theme.colors.red['200']}
+            />
+            <Text fontSize={'TXS'} color={'red.200'} fontWeight={400}>
+              {t('login.otp.error')}
             </Text>
           </HStack>
-        </VStack>
+        )}
+
+        <Button
+          mt="4px"
+          w="full"
+          isLoading={isLoading}
+          onPress={handleVerifyCode}
+          disabled={!OTPCode?.value}>
+          <Text
+            fontSize="15px"
+            color={!OTPCode?.value ? 'gray.400' : 'gray.0'}
+            fontWeight={600}>
+            {t('login.otp.button')}
+          </Text>
+        </Button>
+
+        <Text textAlign="center" fontSize="14px" color="gray.600">
+          {t('login.otp.not_receive_code')}{' '}
+          <Text fontWeight={600} color="primary.200" onPress={handleResendCode}>
+            {t('login.otp.resend_code')}
+          </Text>
+        </Text>
+        <Text
+          mt="8px"
+          textAlign="center"
+          fontSize="14px"
+          fontWeight={600}
+          color="primary.200"
+          onPress={() => navigate(PathRoutes.login.main)}>
+          {t('login.otp.change_email')}
+        </Text>
       </VStack>
     </Page>
   );
