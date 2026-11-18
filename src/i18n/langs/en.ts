@@ -434,6 +434,15 @@ const enTranslation = {
           'After agreeing with the teacher about priority next steps for improvement, schedule your next visit.',
       },
     },
+    report: {
+      title: 'PDF documents',
+      observation: 'Observation sheet',
+      pdp: 'PDP (coaching report)',
+      share: 'Share',
+      generating: 'Preparing the document…',
+      error:
+        'The document could not be generated. Try again from the closed session screen.',
+    },
     signatures: {
       title: 'Signatures',
       subtitle:
@@ -703,7 +712,7 @@ const enTranslation = {
       sync: 'Synchronisation',
       synced: 'Synchronised',
       pending: 'Pending',
-      pdf: 'PDF documents (coming soon)',
+      pdf: 'See the PDF documents',
       subtitle: 'Thank you. The class observation section is complete!',
       whatsNext: "What's next?",
       startFeedback:

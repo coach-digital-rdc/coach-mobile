@@ -74,6 +74,7 @@ const PathRoutes = {
     signatures: '/classObservation/signatures',
     form: '/classObservation/forms',
     completed: '/classObservation/completed/:sessionId',
+    report: '/classObservation/report/:sessionId',
   },
 
   session: {

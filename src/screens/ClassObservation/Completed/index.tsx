@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Center, HStack, Text, VStack, useTheme} from 'native-base';
-import {useNavigate, useParams} from 'react-router-native';
+import {useLocation, useNavigate, useParams} from 'react-router-native';
 import {useNetInfo} from '@react-native-community/netinfo';
 import {useTranslation} from 'react-i18next';
 import moment from 'moment';
@@ -41,6 +41,7 @@ const ClassObservationCompleted: React.FC = () => {
   const {t} = useTranslation();
   const navigate = useNavigate();
   const {isConnected} = useNetInfo();
+  const {state} = useLocation();
   const {sessionId = ''} = useParams<{sessionId: string}>();
   const [session, setSession] = useState<Session>();
   const [teacherName, setTeacherName] = useState('');
@@ -91,7 +92,11 @@ const ClassObservationCompleted: React.FC = () => {
     <Page
       back
       title={t('classObservation.title')}
-      onBack={() => navigate(PathRoutes.home.main, {replace: true})}
+      onBack={() =>
+        state?.fromTeacher
+          ? navigate(-1)
+          : navigate(PathRoutes.home.main, {replace: true})
+      }
       noPadding>
       <PhaseStepper current="closing" />
       <VStack flex={1} px="16px" justifyContent="center">
@@ -164,8 +169,17 @@ const ClassObservationCompleted: React.FC = () => {
       </VStack>
 
       <VStack px="16px" pb="16px" pt="8px" space={3}>
-        {/* The PDF documents come with B24 and B25 */}
-        <Button w="full" mb={0} disabled>
+        <Button
+          w="full"
+          mb={0}
+          onPress={() =>
+            navigate(
+              PathRoutes.classObservation.report.replace(
+                ':sessionId',
+                sessionId,
+              ),
+            )
+          }>
           {t('classObservation.observationCompleted.pdf')}
         </Button>
         {COUNTRY !== 'cd' && (

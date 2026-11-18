@@ -436,6 +436,15 @@ const frTranslation = {
           "Après vous être accordé avec l'enseignant sur les priorités, planifiez votre prochaine visite.",
       },
     },
+    report: {
+      title: 'Documents PDF',
+      observation: "Fiche d'observation",
+      pdp: 'PDP (rapport de coaching)',
+      share: 'Partager',
+      generating: 'Préparation du document…',
+      error:
+        "Le document n'a pas pu être généré. Réessayez depuis l'écran de la séance clôturée.",
+    },
     signatures: {
       title: 'Signatures',
       subtitle:
@@ -706,7 +715,7 @@ const frTranslation = {
       sync: 'Synchronisation',
       synced: 'Synchronisée',
       pending: 'En attente',
-      pdf: 'Documents PDF (bientôt disponibles)',
+      pdf: 'Voir les documents PDF',
       subtitle: "Merci. L'observation de classe est terminée !",
       whatsNext: 'Et ensuite ?',
       startFeedback:

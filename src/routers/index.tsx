@@ -19,6 +19,7 @@ import ClassObservationPdp from '../screens/ClassObservation/Pdp';
 import ClassObservationAdvice from '../screens/ClassObservation/Advice';
 import ClassObservationSignatures from '../screens/ClassObservation/Signatures';
 import ClassObservationCompleted from '../screens/ClassObservation/Completed';
+import ClassObservationReport from '../screens/ClassObservation/Report';
 import SessionDetailsScreen from '../screens/SessionDetails';
 import FeedbackSessionAbout from '../screens/FeedbackSession/About';
 import FeedbackSessionChooseAnswer from '../screens/FeedbackSession/ChooseAnswer';
@@ -146,6 +147,10 @@ const RouterProvider: React.FC = () => {
         <Route
           path={PathRoutes.classObservation.completed}
           Component={ClassObservationCompleted}
+        />
+        <Route
+          path={PathRoutes.classObservation.report}
+          Component={ClassObservationReport}
         />
         <Route
           path={PathRoutes.session.details}
