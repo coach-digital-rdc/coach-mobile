@@ -35,7 +35,9 @@ const ClassObservationForm: React.FC<any> = () => {
     state.answers || {},
   );
   const [competenciesFinished, setCompetenciesFinished] = useState<string[]>(
-    state.answers ? state.competencies.map((item: Competence) => item.id) : [],
+    Object.keys(state.answers || {}).length
+      ? state.competencies.map((item: Competence) => item.id)
+      : [],
   );
 
   const isDisable = useMemo(
@@ -55,9 +57,9 @@ const ClassObservationForm: React.FC<any> = () => {
   }, [competencies]);
 
   const handleSubmitForm = async () => {
-    // End of the observation (B10): the answers are kept until the session is closed
+    // The answers are kept until the session is closed
     if (state.session?.id) {
-      await SessionService.endObservation(
+      await SessionService.saveEvaluation(
         state.session.id,
         keyPoints,
         toAnswers(answers),

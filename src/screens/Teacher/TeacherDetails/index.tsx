@@ -52,7 +52,7 @@ const TeacherDetailsScreen: React.FC = () => {
           state: {session: current},
         });
       } else if (session.session_status === 'EVALUATION') {
-        navigate(PathRoutes.classObservation.confirmation, {
+        navigate(PathRoutes.classObservation.form, {
           state: {
             session: {...current, key_points: session.key_points},
             competencies:
@@ -61,7 +61,7 @@ const TeacherDetailsScreen: React.FC = () => {
           },
         });
       } else {
-        navigate(PathRoutes.classObservation.form, {
+        navigate(PathRoutes.classObservation.notes, {
           state: {session: current},
         });
       }

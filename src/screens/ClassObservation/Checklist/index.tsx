@@ -162,7 +162,7 @@ const ClassObservationChecklist: React.FC = () => {
     setIsSaving(true);
     await save();
     await SessionService.startObservation(sessionId);
-    navigate(PathRoutes.classObservation.form, {
+    navigate(PathRoutes.classObservation.notes, {
       replace: true,
       state: {session: {id: sessionId, teacher_id: session?.teacher_id}},
     });

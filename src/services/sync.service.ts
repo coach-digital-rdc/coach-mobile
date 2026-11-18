@@ -21,6 +21,8 @@ import {QuestionService} from './question.service';
 import {CoachService} from './coach.service';
 import {ChecklistService} from './checklist.service';
 import {Documentation} from '../types/checklist';
+import {NoteService} from './note.service';
+import {ObservationNote} from '../types/observation-note';
 
 const SyncService = {
   getUnsyncedItemsCount: async (): Promise<{
@@ -60,6 +62,9 @@ const SyncService = {
         documentations: firstSync
           ? []
           : await SyncService.getPendingDocumentations(db),
+        observationNotes: firstSync
+          ? []
+          : await SyncService.getPendingObservationNotes(db),
       };
       console.log('2');
 
@@ -92,6 +97,7 @@ const SyncService = {
         await SessionService.syncActivities(response.data.sessionActivities);
         await ChecklistService.syncItems(response.data.checklistItems);
         await ChecklistService.syncAnswers(response.data.documentations);
+        await NoteService.syncNotes(response.data.observationNotes);
         await SessionService.syncFeedbacks(response.data.feedbacks);
         await StorageService.setLastSync(new Date());
       }
@@ -112,6 +118,7 @@ const SyncService = {
       SyncService.updateToSyncedAnswers(db),
       SyncService.updateToSyncedSessionActivities(db),
       SyncService.updateToSyncedDocumentations(db),
+      SyncService.updateToSyncedObservationNotes(db),
       SyncService.updateToSyncedFeedbacks(db),
     ]);
   },
@@ -217,6 +224,22 @@ const SyncService = {
   updateToSyncedDocumentations: async (db: SQLiteDatabase): Promise<void> => {
     await db.executeSql(
       "UPDATE documentation SET _status = 'synced' WHERE _status != 'synced'",
+    );
+  },
+
+  getPendingObservationNotes: async (
+    db: SQLiteDatabase,
+  ): Promise<ObservationNote[]> => {
+    const results = await db.executeSql(
+      "SELECT * FROM observation_note WHERE _status != 'synced'",
+    );
+
+    return results[0].rows.raw();
+  },
+
+  updateToSyncedObservationNotes: async (db: SQLiteDatabase): Promise<void> => {
+    await db.executeSql(
+      "UPDATE observation_note SET _status = 'synced' WHERE _status != 'synced'",
     );
   },
 

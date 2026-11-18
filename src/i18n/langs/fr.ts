@@ -13,6 +13,8 @@ const frTranslation = {
     version: 'Version {{value}}',
   },
   common: {
+    cancel: 'Annuler',
+    save: 'Enregistrer',
     'load-more': 'Afficher plus',
     optional: 'Facultatif',
     search: 'Rechercher',
@@ -424,6 +426,31 @@ const frTranslation = {
         description:
           "Après vous être accordé avec l'enseignant sur les priorités, planifiez votre prochaine visite.",
       },
+    },
+    notes: {
+      title: 'Notes chronologiques',
+      subtitle:
+        'Notez les faits observés au fil de la séquence. Chaque note est horodatée automatiquement.',
+      'subtitle-read-only':
+        'Les notes sont en lecture seule. Elles restent visibles pendant la cotation.',
+      running: 'Observation en cours depuis {{time}}',
+      ended: 'Observation terminée à {{time}}',
+      count_interval: '(0-1)[note];(2-inf)[notes];',
+      empty: "Aucune note pour l'instant.",
+      placeholder: 'Décrivez ce que vous observez…',
+      add: 'Ajouter la note',
+      edit: 'Modifier la note',
+      delete: 'Supprimer la note',
+      locked:
+        "La cotation est verrouillée tant qu'aucune note n'est enregistrée",
+      'unlock-at-end': "La cotation pourra commencer à la fin de l'observation",
+      unlocked: 'Cotation déverrouillée',
+      end: "Terminer l'observation",
+      'end-title': "Terminer l'observation ?",
+      'end-message_interval':
+        "(1)[Vous avez enregistré 1 note. Après la fin de l'observation, les notes ne pourront plus être modifiées et la cotation sera déverrouillée.];(2-inf)[Vous avez enregistré {{count}} notes. Après la fin de l'observation, les notes ne pourront plus être modifiées et la cotation sera déverrouillée.];",
+      'end-confirm': 'Terminer',
+      'go-to-scoring': 'Passer à la cotation',
     },
     checklist: {
       title: 'Checklist documentaire',

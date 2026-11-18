@@ -13,6 +13,8 @@ const enTranslation = {
     version: 'Version {{value}}',
   },
   common: {
+    cancel: 'Cancel',
+    save: 'Save',
     'load-more': 'Load more',
     optional: 'Optional',
     search: 'Search',
@@ -422,6 +424,30 @@ const enTranslation = {
         description:
           'After agreeing with the teacher about priority next steps for improvement, schedule your next visit.',
       },
+    },
+    notes: {
+      title: 'Chronological notes',
+      subtitle:
+        'Write down the facts observed during the sequence. Each note is timestamped automatically.',
+      'subtitle-read-only':
+        'The notes are read-only. They remain visible during the scoring.',
+      running: 'Observation in progress since {{time}}',
+      ended: 'Observation ended at {{time}}',
+      count_interval: '(0-1)[note];(2-inf)[notes];',
+      empty: 'No note yet.',
+      placeholder: 'Describe what you observe…',
+      add: 'Add the note',
+      edit: 'Edit the note',
+      delete: 'Delete the note',
+      locked: 'The scoring is locked until a note is saved',
+      'unlock-at-end': 'The scoring can start at the end of the observation',
+      unlocked: 'Scoring unlocked',
+      end: 'End the observation',
+      'end-title': 'End the observation?',
+      'end-message_interval':
+        '(1)[You saved 1 note. After the end of the observation, the notes can no longer be changed and the scoring will be unlocked.];(2-inf)[You saved {{count}} notes. After the end of the observation, the notes can no longer be changed and the scoring will be unlocked.];',
+      'end-confirm': 'End',
+      'go-to-scoring': 'Go to the scoring',
     },
     checklist: {
       title: 'Document checklist',

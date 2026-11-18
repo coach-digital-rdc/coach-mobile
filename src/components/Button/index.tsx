@@ -24,11 +24,12 @@ const Button: React.FC<IButtonProps & Props> = props => {
   }
 
   return (
+    // The bottom margin can be changed by the screen (e.g. mb={0} in a footer)
     <NButton
+      mb="16px"
       {...props}
       px="16px"
       py="12px"
-      mb="16px"
       bg="primary.200"
       _pressed={{bg: 'primary.300'}}
       borderRadius="12px"

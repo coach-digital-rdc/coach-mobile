@@ -11,6 +11,7 @@ import {getDBConnection} from './database.service';
 import {v4 as uuid} from 'uuid';
 import {ImageService} from './image.service';
 import {NOT_APPLICABLE} from '../helpers/answer.helper';
+import moment from 'moment';
 
 export const SessionService = {
   findSessionFromTeacher: async (
@@ -165,20 +166,38 @@ export const SessionService = {
     );
   },
 
-  // End of the observation: the answers are kept and the evaluation starts.
-  endObservation: async (
+  // End of the observation: the notes become read-only and the scoring is unlocked (B14).
+  // The times of the didactic sequence default to those of the observation.
+  endObservation: async (sessionId: string): Promise<void> => {
+    const db = await getDBConnection();
+    const session = await SessionService.getSessionById(sessionId);
+    const now = new Date();
+    await db.executeSql(
+      `
+      UPDATE session
+      SET session_status = 'EVALUATION', observation_ended_at = COALESCE(observation_ended_at, ?),
+        start_time = COALESCE(start_time, ?), end_time = COALESCE(end_time, ?), _status = 'pending'
+      WHERE id = ?
+    `,
+      [
+        now.toJSON(),
+        moment(session?.observation_started_at || now).format('HH:mm'),
+        moment(now).format('HH:mm'),
+        sessionId,
+      ],
+    );
+  },
+
+  // Answers of the scoring, kept until the session is closed
+  saveEvaluation: async (
     sessionId: string,
     keyPoints: string,
     answers: Partial<Answer>[],
   ): Promise<void> => {
     const db = await getDBConnection();
     await db.executeSql(
-      `
-      UPDATE session
-      SET session_status = 'EVALUATION', key_points = ?, observation_ended_at = COALESCE(observation_ended_at, ?), _status = 'pending'
-      WHERE id = ?
-    `,
-      [keyPoints, new Date().toJSON(), sessionId],
+      "UPDATE session SET key_points = ?, _status = 'pending' WHERE id = ?",
+      [keyPoints, sessionId],
     );
     await SessionService.saveAnswers(sessionId, answers);
   },

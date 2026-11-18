@@ -9,6 +9,7 @@ import {School} from './school';
 import {Session} from './session';
 import {Teacher} from './teacher';
 import {ChecklistItem, Documentation} from './checklist';
+import {ObservationNote} from './observation-note';
 
 export type SyncData = {
   coaches: Coach[];
@@ -23,6 +24,7 @@ export type SyncData = {
   competencies: Competence[];
   checklistItems: ChecklistItem[];
   documentations: Documentation[];
+  observationNotes: ObservationNote[];
 
   total: number;
 };
