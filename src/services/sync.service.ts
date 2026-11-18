@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {Answer} from '../types/answer';
+import {SessionActivity} from '../types/session-activity';
 import {Coach} from '../types/coach';
 import {Feedback} from '../types/feedback';
 import {Image} from '../types/image';
@@ -51,6 +52,9 @@ const SyncService = {
         sessions: firstSync ? [] : await SyncService.getPendingSessions(db),
         answers: firstSync ? [] : await SyncService.getPendingAnswers(db),
         feedbacks: firstSync ? [] : await SyncService.getPendingFeedbacks(db),
+        sessionActivities: firstSync
+          ? []
+          : await SyncService.getPendingSessionActivities(db),
       };
       console.log('2');
 
@@ -80,6 +84,7 @@ const SyncService = {
         await TeacherService.sync(response.data.teachers);
         await SessionService.sync(response.data.sessions);
         await AnswerService.sync(response.data.answers);
+        await SessionService.syncActivities(response.data.sessionActivities);
         await SessionService.syncFeedbacks(response.data.feedbacks);
         await StorageService.setLastSync(new Date());
       }
@@ -98,6 +103,7 @@ const SyncService = {
       SyncService.updateToSyncedTeachers(db),
       SyncService.updateToSyncedSession(db),
       SyncService.updateToSyncedAnswers(db),
+      SyncService.updateToSyncedSessionActivities(db),
       SyncService.updateToSyncedFeedbacks(db),
     ]);
   },
@@ -169,6 +175,24 @@ const SyncService = {
   updateToSyncedSession: async (db: SQLiteDatabase): Promise<void> => {
     await db.executeSql(
       "UPDATE session SET _status = 'synced' WHERE _status != 'synced'",
+    );
+  },
+
+  getPendingSessionActivities: async (
+    db: SQLiteDatabase,
+  ): Promise<SessionActivity[]> => {
+    const results = await db.executeSql(
+      "SELECT * FROM session_activity WHERE _status != 'synced'",
+    );
+
+    return results[0].rows.raw();
+  },
+
+  updateToSyncedSessionActivities: async (
+    db: SQLiteDatabase,
+  ): Promise<void> => {
+    await db.executeSql(
+      "UPDATE session_activity SET _status = 'synced' WHERE _status != 'synced'",
     );
   },
 

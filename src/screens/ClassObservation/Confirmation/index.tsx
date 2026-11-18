@@ -77,21 +77,31 @@ const ClassObservationConfirmation: React.FC = () => {
             : {question_id, value: answers[question_id]},
       );
 
-      const sessionId = await SessionService.createLocalSession(
-        {
-          students_count: session.students_count,
-          subject: session.subject,
-          lesson_time: session.lesson_time,
-          objective: session.objective,
-          school_id: currentSchool?.id,
-          coach_id: currentCoach?.id,
-          key_points: session.key_points,
-          teacher_id: session.teacher_id,
-          latitude: location.latitude,
-          longitude: location.longitude,
-        },
-        parsedAnswers,
-      );
+      const sessionId = session.id
+        ? await SessionService.completeLocalSession(
+            session.id,
+            {
+              key_points: session.key_points,
+              latitude: location.latitude,
+              longitude: location.longitude,
+            },
+            parsedAnswers,
+          )
+        : await SessionService.createLocalSession(
+            {
+              students_count: session.students_count,
+              subject: session.subject,
+              lesson_time: session.lesson_time,
+              objective: session.objective,
+              school_id: currentSchool?.id,
+              coach_id: currentCoach?.id,
+              key_points: session.key_points,
+              teacher_id: session.teacher_id,
+              latitude: location.latitude,
+              longitude: location.longitude,
+            },
+            parsedAnswers,
+          );
 
       navigate(
         PathRoutes.classObservation.completed.replace(':sessionId', sessionId),

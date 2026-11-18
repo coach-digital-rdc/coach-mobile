@@ -53,6 +53,8 @@ export const TeacherService = {
           t.id as id,
           t.name || ' ' || t.surname as name,
           t.subject as subject,
+          t.weekly_load as weekly_load,
+          (SELECT MAX(s.created_at) FROM session as s WHERE s.teacher_id = t.id) as last_session_date,
           i.value as image
         FROM teacher as t 
         LEFT JOIN image as i ON i.id = t.image_id 
@@ -124,6 +126,8 @@ export const TeacherService = {
           i.id as image_id,
           t.pin as pin,
           t.nin as nin,
+          t.sex as sex,
+          t.weekly_load as weekly_load,
           i.name as image_name,
           i.value as image_value
         FROM teacher as t 
@@ -143,8 +147,8 @@ export const TeacherService = {
       teachers?.map(teacher => {
         return db.executeSql(
           `
-          INSERT OR REPLACE INTO teacher(id, name, surname, emis_number, subject, school_id, image_id, pin, nin, birthdate, _status)
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'synced')
+          INSERT OR REPLACE INTO teacher(id, name, surname, emis_number, subject, school_id, image_id, pin, nin, birthdate, sex, weekly_load, _status)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'synced')
         `,
           [
             teacher.id,
@@ -157,6 +161,8 @@ export const TeacherService = {
             teacher.pin,
             teacher.nin,
             teacher.birthdate,
+            teacher.sex,
+            teacher.weekly_load,
           ],
         );
       }),
@@ -168,8 +174,8 @@ export const TeacherService = {
 
     const result = await db.executeSql(
       `
-      INSERT INTO teacher(id, name, surname, emis_number, subject, school_id, image_id, birthdate, pin, nin, created_at, _status)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending')
+      INSERT INTO teacher(id, name, surname, emis_number, subject, school_id, image_id, birthdate, pin, nin, sex, weekly_load, created_at, _status)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending')
     `,
       [
         uuid(),
@@ -182,6 +188,8 @@ export const TeacherService = {
         teacher.birthdate?.toJSON().toString(),
         teacher.pin,
         teacher.nin,
+        teacher.sex,
+        teacher.weekly_load,
         new Date().toJSON(),
       ],
     );
@@ -191,21 +199,26 @@ export const TeacherService = {
 
   update: async (id: string, teacher: Partial<Teacher>): Promise<void> => {
     const db = await getDBConnection();
-    console.log(teacher);
     await db.executeSql(
       `
       UPDATE teacher
-      SET ${
-        teacher.birthdate &&
-        `birthdate = '${new Date(teacher.birthdate).toJSON().toString()}',`
-      } pin = '${teacher.pin}', nin = '${teacher.nin}',
-       name = '${teacher.name}', surname = '${
-        teacher.surname
-      }', emis_number = '${teacher.emis_number || ''}', subject = '${
-        teacher.subject
-      }', image_id = '${teacher.image_id}', _status = 'pending'
-      WHERE id = '${id}'
+      SET birthdate = COALESCE(?, birthdate), pin = ?, nin = ?, name = ?, surname = ?,
+        emis_number = ?, subject = ?, image_id = ?, sex = ?, weekly_load = ?, _status = 'pending'
+      WHERE id = ?
     `,
+      [
+        teacher.birthdate ? new Date(teacher.birthdate).toJSON() : null,
+        teacher.pin,
+        teacher.nin,
+        teacher.name,
+        teacher.surname,
+        teacher.emis_number || '',
+        teacher.subject,
+        teacher.image_id,
+        teacher.sex,
+        teacher.weekly_load,
+        id,
+      ],
     );
   },
 };

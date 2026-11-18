@@ -6,6 +6,7 @@ import {
 } from '../types/competence';
 import {Feedback} from '../types/feedback';
 import {Session} from '../types/session';
+import {SessionActivity} from '../types/session-activity';
 import {getDBConnection} from './database.service';
 import {v4 as uuid} from 'uuid';
 import {ImageService} from './image.service';
@@ -38,8 +39,8 @@ export const SessionService = {
       sessions?.map(session => {
         return db.executeSql(
           `
-          INSERT OR REPLACE INTO session(id, students_count, subject, lesson_time, objective, school_id, coach_id, key_points, teacher_id, latitude, longitude, _status)
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'synced')
+          INSERT OR REPLACE INTO session(id, students_count, subject, lesson_time, objective, school_id, coach_id, key_points, teacher_id, latitude, longitude, feedback_id, session_status, level, school_year, teacher_weekly_load, last_observation_date, last_observation_rating, observer_function, start_time, end_time, advice, signed_place, observation_started_at, observation_ended_at, completed_at, _status)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'synced')
         `,
           [
             session.id,
@@ -53,6 +54,21 @@ export const SessionService = {
             session.teacher_id,
             session.latitude,
             session.longitude,
+            session.feedback_id,
+            session.session_status,
+            session.level,
+            session.school_year,
+            session.teacher_weekly_load,
+            session.last_observation_date,
+            session.last_observation_rating,
+            session.observer_function,
+            session.start_time,
+            session.end_time,
+            session.advice,
+            session.signed_place,
+            session.observation_started_at,
+            session.observation_ended_at,
+            session.completed_at,
           ],
         );
       }),
@@ -72,6 +88,146 @@ export const SessionService = {
           [feedback.id, feedback.value, feedback.answer_id],
         );
       }),
+    );
+  },
+
+  // Creates the session when the header of the sheet is saved (B10, B11): the
+  // observation starts. The answers are added when the observation is completed.
+  startLocalSession: async (
+    session: Partial<Session>,
+    activity: Partial<SessionActivity>,
+  ): Promise<string> => {
+    const db = await getDBConnection();
+    const sessionId = uuid();
+    const now = new Date().toJSON();
+
+    await db.executeSql(
+      `
+      INSERT INTO session(id, subject, school_id, coach_id, teacher_id, level, school_year, teacher_weekly_load, last_observation_date, observer_function, session_status, observation_started_at, created_at, _status)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'OBSERVATION', ?, ?, 'pending')
+    `,
+      [
+        sessionId,
+        session.subject,
+        session.school_id,
+        session.coach_id,
+        session.teacher_id,
+        session.level,
+        session.school_year,
+        session.teacher_weekly_load,
+        session.last_observation_date,
+        session.observer_function,
+        now,
+        now,
+      ],
+    );
+
+    await db.executeSql(
+      `
+      INSERT INTO session_activity(id, session_id, sub_domain, discipline, sheet_code, class_name, p_i, time, essential_knowledge, display_order, created_at, _status)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, 'pending')
+    `,
+      [
+        uuid(),
+        sessionId,
+        activity.sub_domain,
+        activity.discipline,
+        activity.sheet_code,
+        activity.class_name,
+        activity.p_i,
+        activity.time,
+        activity.essential_knowledge,
+        now,
+      ],
+    );
+
+    return sessionId;
+  },
+
+  // Saves the answers and closes the session started by startLocalSession.
+  completeLocalSession: async (
+    sessionId: string,
+    session: Partial<Session>,
+    answers: Partial<Answer>[],
+  ): Promise<string> => {
+    const db = await getDBConnection();
+    const now = new Date().toJSON();
+
+    await db.executeSql(
+      `
+      UPDATE session
+      SET key_points = ?, latitude = ?, longitude = ?, session_status = 'COMPLETED',
+        observation_ended_at = COALESCE(observation_ended_at, ?), completed_at = ?, _status = 'pending'
+      WHERE id = ?
+    `,
+      [
+        session.key_points,
+        session.latitude,
+        session.longitude,
+        now,
+        now,
+        sessionId,
+      ],
+    );
+
+    await Promise.all(
+      answers.map(answer =>
+        db.executeSql(
+          `
+            INSERT INTO answer(id, session_id, question_id, value, not_applicable, _status)
+            VALUES (?, ?, ?, ?, ?, 'pending')
+          `,
+          [
+            uuid(),
+            sessionId,
+            answer.question_id,
+            answer.value,
+            answer.not_applicable ? 1 : 0,
+          ],
+        ),
+      ),
+    );
+
+    return sessionId;
+  },
+
+  // Session started on the device and not completed yet, to resume it
+  findOpenSession: async (teacherId: string): Promise<Session | undefined> => {
+    const db = await getDBConnection();
+    const result = await db.executeSql(
+      `
+      SELECT * FROM session
+      WHERE teacher_id = ? AND session_status IN ('PREPARATION', 'OBSERVATION', 'EVALUATION')
+      ORDER BY created_at DESC LIMIT 1
+    `,
+      [teacherId],
+    );
+    return result[0].rows.raw()[0];
+  },
+
+  syncActivities: async (activities: SessionActivity[]): Promise<void> => {
+    const db = await getDBConnection();
+    await Promise.all(
+      (activities || []).map(activity =>
+        db.executeSql(
+          `
+          INSERT OR REPLACE INTO session_activity(id, session_id, sub_domain, discipline, sheet_code, class_name, p_i, time, essential_knowledge, display_order, _status)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'synced')
+        `,
+          [
+            activity.id,
+            activity.session_id,
+            activity.sub_domain,
+            activity.discipline,
+            activity.sheet_code,
+            activity.class_name,
+            activity.p_i,
+            activity.time,
+            activity.essential_knowledge,
+            activity.display_order,
+          ],
+        ),
+      ),
     );
   },
 
@@ -265,8 +421,8 @@ export const SessionService = {
       sessions?.map(async session => {
         await db.executeSql(
           `
-          INSERT OR REPLACE INTO session(id, students_count, subject, lesson_time, objective, school_id, coach_id, key_points, teacher_id, latitude, longitude, _status)
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'synced')
+          INSERT OR REPLACE INTO session(id, students_count, subject, lesson_time, objective, school_id, coach_id, key_points, teacher_id, latitude, longitude, feedback_id, session_status, level, school_year, teacher_weekly_load, last_observation_date, last_observation_rating, observer_function, start_time, end_time, advice, signed_place, observation_started_at, observation_ended_at, completed_at, _status)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'synced')
         `,
           [
             session.id,
@@ -280,6 +436,21 @@ export const SessionService = {
             session.teacher_id,
             session.latitude,
             session.longitude,
+            session.feedback_id,
+            session.session_status,
+            session.level,
+            session.school_year,
+            session.teacher_weekly_load,
+            session.last_observation_date,
+            session.last_observation_rating,
+            session.observer_function,
+            session.start_time,
+            session.end_time,
+            session.advice,
+            session.signed_place,
+            session.observation_started_at,
+            session.observation_ended_at,
+            session.completed_at,
           ],
         );
 

@@ -255,6 +255,15 @@ const frTranslation = {
   teacher: {
     form: {
       name: 'Prénom',
+      'name-placeholder': 'ex. Daniel',
+      'surname-placeholder': 'ex. MUKENDI',
+      'heading-new': 'Ajouter un.e enseignant.e',
+      subtitle:
+        "L'enseignant.e est enregistré.e sur l'appareil puis envoyé.e au serveur à la prochaine synchronisation.",
+      sex: 'Sexe',
+      female: 'Féminin',
+      male: 'Masculin',
+      'weekly-load': 'Charge hebdomadaire (h)',
       birthdate: "Date de naissance de l'enseignant",
       birthdate_title: 'Choisir une date',
       birthdate_confirm: 'Confirmer',
@@ -264,10 +273,10 @@ const frTranslation = {
       matricule: 'Matricule',
       matricule_description: "Matricule de l'enseignant",
       surname: 'Nom',
-      'title-new': 'Nouvel enseignant',
+      'title-new': 'Nouvel enseignant.e',
       'title-edit': "Modifier l'enseignant",
       subject: 'Discipline principale',
-      'new-teacher-button': "Ajouter l'enseignant",
+      'new-teacher-button': "Ajouter l'enseignant.e",
       'update-teacher-button': 'Enregistrer',
       success: 'Enseignant ajouté',
       success_update: 'Enseignant mis à jour',
@@ -277,6 +286,9 @@ const frTranslation = {
       nin_description: "Numéro national d'identification",
     },
     details: {
+      title: 'Enseignant.e',
+      'new-observation': 'Nouvelle observation',
+      'resume-observation': "Reprendre l'observation",
       subject: 'Discipline principale',
       school: 'Établissement',
       editTeacher: "Modifier l'enseignant",
@@ -284,7 +296,10 @@ const frTranslation = {
     },
     tabs: {
       session: {
-        title: "Séances d'observation",
+        title: 'Observations',
+        'observation-of': 'Observation du {{date}}',
+        'in-progress': 'En cours',
+        closed: 'Clôturée',
         session: "Séance d'observation",
         newClassObservation: 'Nouvelle observation de classe',
         stillNoSession: "Aucune séance d'observation enregistrée",
@@ -296,6 +311,7 @@ const frTranslation = {
       },
       stats: {
         title: "Statistiques de l'enseignant",
+        'evolution-tab': 'Évolution',
         overallRating: 'Appréciation générale',
         currentRating: "L'appréciation actuelle est :",
         ratingAverage:
@@ -363,8 +379,26 @@ const frTranslation = {
   },
   classObservation: {
     title: 'Observation de classe',
+    phases: {
+      preparation: 'Préparation',
+      observation: 'Observation',
+      evaluation: 'Évaluation',
+      closing: 'Clôture',
+    },
     about: {
-      title: "Déroulement de l'observation",
+      title: 'Déroulement de la séance',
+      subtitle:
+        "L'observation se fait en quatre étapes. Chaque étape doit être terminée avant de passer à la suivante.",
+      steps: {
+        preparation:
+          "Échangez avec l'enseignant.e avant la leçon, complétez l'en-tête de la fiche et, si possible, la checklist des documents.",
+        observation:
+          'Installez-vous au fond de la classe et notez les faits observés au fil de la séquence.',
+        evaluation:
+          "Cotez les 30 comportements, puis établissez le plan de développement avec l'enseignant.e.",
+        closing:
+          'Ajoutez vos conseils et recueillez les signatures : la fiche est alors verrouillée et prête à être synchronisée.',
+      },
       'start-button': 'Commencer la préparation',
       step1: {
         title: 'Préparation',
@@ -392,9 +426,35 @@ const frTranslation = {
       },
     },
     setup: {
-      title: 'À propos de la leçon',
-      subtitle: "Posez les questions suivantes à l'enseignant",
-      button: 'Suivant',
+      title: 'En-tête de la fiche',
+      subtitle:
+        'Les informations connues sont reprises automatiquement : vérifiez-les et complétez les autres.',
+      button: 'Enregistrer et continuer',
+      observer: 'Observateur.trice',
+      profile: 'Profil',
+      name: 'Nom',
+      contact: 'Contact',
+      session: 'Séance',
+      school: 'Établissement',
+      teacher: 'Enseignant.e',
+      'last-observation': 'Dernière observation',
+      none: 'Aucune',
+      level: 'Niveau',
+      secondary: 'Secondaire',
+      disciplines: 'Discipline(s)',
+      'weekly-load': 'Charge hebdomadaire (h)',
+      'school-year': 'Année scolaire',
+      activity: 'Activité observée',
+      'sub-domain': 'Sous-domaine',
+      'sub-domain-placeholder': 'ex. Mathématiques',
+      discipline: 'Discipline',
+      'sheet-code': 'N° fiche / code matrice',
+      'class-name': 'Classe',
+      'p-i': 'P/I',
+      time: 'Heure',
+      'essential-knowledge': 'Savoirs essentiels / sujet de la séquence',
+      missing:
+        "Renseignez la discipline de la séance et celle de l'activité observée",
       questions: {
         $0: {title: 'La classe est composée de', placeholder: 'Mixte'},
         $1: {

@@ -253,7 +253,16 @@ const enTranslation = {
   },
   teacher: {
     form: {
-      name: 'Name',
+      name: 'First name',
+      'name-placeholder': 'e.g. Daniel',
+      'surname-placeholder': 'e.g. MUKENDI',
+      'heading-new': 'Add a teacher',
+      subtitle:
+        'The teacher is saved on the device, then sent to the server at the next synchronisation.',
+      sex: 'Sex',
+      female: 'Female',
+      male: 'Male',
+      'weekly-load': 'Weekly load (h)',
       birthdate: "Teacher's date of birth",
       birthdate_title: 'Select a date',
       birthdate_confirm: 'Confirm',
@@ -276,6 +285,9 @@ const enTranslation = {
       nin_description: 'National Identification Number',
     },
     details: {
+      title: 'Teacher',
+      'new-observation': 'New observation',
+      'resume-observation': 'Resume the observation',
       subject: 'Principal Subject',
       school: 'School',
       editTeacher: 'Edit teacher',
@@ -283,7 +295,10 @@ const enTranslation = {
     },
     tabs: {
       session: {
-        title: 'Observation sessions',
+        title: 'Observations',
+        'observation-of': 'Observation of {{date}}',
+        'in-progress': 'In progress',
+        closed: 'Closed',
         session: 'Observation session',
         newClassObservation: 'New class observation',
         stillNoSession: 'There are no observation sessions recorded',
@@ -295,6 +310,7 @@ const enTranslation = {
       },
       stats: {
         title: "Teacher's stats",
+        'evolution-tab': 'Evolution',
         overallRating: 'Overall rating',
         currentRating: 'The current rating is:',
         ratingAverage:
@@ -361,8 +377,26 @@ const enTranslation = {
   },
   classObservation: {
     title: 'Class observation',
+    phases: {
+      preparation: 'Preparation',
+      observation: 'Observation',
+      evaluation: 'Evaluation',
+      closing: 'Closing',
+    },
     about: {
-      title: 'Coaching process',
+      title: 'Session flow',
+      subtitle:
+        'The observation has four steps. Each step must be finished before moving to the next one.',
+      steps: {
+        preparation:
+          'Talk with the teacher before the lesson, fill in the header of the sheet and, if possible, the document checklist.',
+        observation:
+          'Sit at the back of the class and note what you observe during the lesson.',
+        evaluation:
+          'Rate the 30 behaviours, then agree on the development plan with the teacher.',
+        closing:
+          'Add your advice and collect the signatures: the sheet is then locked and ready to be synchronised.',
+      },
       'start-button': 'Start preparation',
       step1: {
         title: 'Preparation',
@@ -390,9 +424,35 @@ const enTranslation = {
       },
     },
     setup: {
-      title: 'About the lesson',
-      subtitle: 'Ask the teacher the following questions',
-      button: 'Next',
+      title: 'Header of the sheet',
+      subtitle:
+        'Known information is filled in automatically: check it and complete the rest.',
+      button: 'Save and continue',
+      observer: 'Observer',
+      profile: 'Profile',
+      name: 'Name',
+      contact: 'Contact',
+      session: 'Session',
+      school: 'School',
+      teacher: 'Teacher',
+      'last-observation': 'Last observation',
+      none: 'None',
+      level: 'Level',
+      secondary: 'Secondary',
+      disciplines: 'Subject(s)',
+      'weekly-load': 'Weekly load (h)',
+      'school-year': 'School year',
+      activity: 'Observed activity',
+      'sub-domain': 'Sub-domain',
+      'sub-domain-placeholder': 'e.g. Mathematics',
+      discipline: 'Subject',
+      'sheet-code': 'Sheet no. / matrix code',
+      'class-name': 'Class',
+      'p-i': 'P/I',
+      time: 'Time',
+      'essential-knowledge': 'Essential knowledge / lesson topic',
+      missing:
+        'Fill in the subject of the session and of the observed activity',
       questions: {
         $0: {title: 'Classroom consists of', placeholder: 'Both'},
         $1: {

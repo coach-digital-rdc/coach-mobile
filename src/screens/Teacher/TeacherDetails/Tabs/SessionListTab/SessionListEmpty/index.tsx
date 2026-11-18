@@ -6,7 +6,8 @@ import Icon from '../../../../../../components/Icon';
 import {useTranslation} from 'react-i18next';
 
 type Props = {
-  handleCreate: () => void;
+  // Without it, the button is not shown (the teacher profile has its own)
+  handleCreate?: () => void;
 };
 
 const SessionListEmpty: React.FC<Props> = ({handleCreate}) => {
@@ -32,19 +33,21 @@ const SessionListEmpty: React.FC<Props> = ({handleCreate}) => {
         {t('teacher.tabs.session.stillNoSessionDescription')}
       </Text>
 
-      <Button mt={8} onPress={handleCreate}>
-        <HStack>
-          <Icon name={'plus'} color={'white'} />
-          <Text
-            ml={3}
-            fontSize={'TMD'}
-            fontWeight={500}
-            textAlign={'center'}
-            color={'white'}>
-            {t('teacher.tabs.session.newClassObservation')}
-          </Text>
-        </HStack>
-      </Button>
+      {handleCreate && (
+        <Button mt={8} onPress={handleCreate}>
+          <HStack>
+            <Icon name={'plus'} color={'white'} />
+            <Text
+              ml={3}
+              fontSize={'TMD'}
+              fontWeight={500}
+              textAlign={'center'}
+              color={'white'}>
+              {t('teacher.tabs.session.newClassObservation')}
+            </Text>
+          </HStack>
+        </Button>
+      )}
     </VStack>
   );
 };

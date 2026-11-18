@@ -1,32 +1,29 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {Center, HStack, Text, useTheme} from 'native-base';
+import {Center} from 'native-base';
 import PathRoutes from '../../../../../routers/paths';
-import Icon from '../../../../../components/Icon';
 import {useNavigate} from 'react-router-native';
-import {useTranslation} from 'react-i18next';
 import InfiniteScroll from '../../../../../components/InfiniteScroll';
 import SessionListEmpty from './SessionListEmpty';
 import {SessionService} from '../../../../../services/session.service';
 import SessionItem from './SessionItem';
 import {Session} from '../../../../../types/session';
-import Button from '../../../../../components/Button';
 
 const ITEMS_PER_PAGE = 20;
 
 type Props = {
   teacherId: string;
+  onResume?: (session: Session) => void;
 };
 
-const SessionList: React.FC<Props> = ({teacherId}) => {
-  const theme = useTheme();
+const OPEN_STATUSES = ['PREPARATION', 'OBSERVATION', 'EVALUATION'];
+
+const SessionList: React.FC<Props> = ({teacherId, onResume}) => {
   const [page, setPage] = useState(1);
   const [isTheEnd, setIsTheEnd] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [sessionList, setSessionList] = useState<Session[]>([]);
 
   const navigate = useNavigate();
-
-  const {t} = useTranslation();
 
   const loadFirstPageWithFilter = useCallback(async () => {
     setSessionList([]);
@@ -65,12 +62,6 @@ const SessionList: React.FC<Props> = ({teacherId}) => {
     }
   };
 
-  const startNewClassObservation = () => {
-    navigate(
-      PathRoutes.classObservation.about.replace(':teacherId', teacherId),
-    );
-  };
-
   return (
     <>
       <InfiniteScroll
@@ -80,7 +71,7 @@ const SessionList: React.FC<Props> = ({teacherId}) => {
         loadNextPage={loadNextPage}
         emptyComponent={
           <Center mt={'80px'}>
-            <SessionListEmpty handleCreate={startNewClassObservation} />
+            <SessionListEmpty />
           </Center>
         }
         renderItem={({item, index}) => (
@@ -88,21 +79,14 @@ const SessionList: React.FC<Props> = ({teacherId}) => {
             key={index}
             index={index}
             session={item}
-            onPress={() => navigate(PathRoutes.session.details, {state: item})}
+            onPress={() =>
+              onResume && OPEN_STATUSES.includes(item.session_status || '')
+                ? onResume(item)
+                : navigate(PathRoutes.session.details, {state: item})
+            }
           />
         )}
       />
-
-      {sessionList.length > 0 && (
-        <Button variant="outlined" onPress={startNewClassObservation}>
-          <HStack alignSelf={'center'} space={3} alignItems={'center'}>
-            <Icon name={'plus'} color={theme.colors.primary[200]} />
-            <Text color={'primary.200'}>
-              {t('teacher.tabs.session.newClassObservation')}
-            </Text>
-          </HStack>
-        </Button>
-      )}
     </>
   );
 };

@@ -1,3 +1,4 @@
+import {SessionActivity} from './session-activity';
 import {Answer} from './answer';
 import {Coach} from './coach';
 import {CoachSchool} from './coach_school';
@@ -17,6 +18,7 @@ export type SyncData = {
   teachers: Teacher[];
   feedbacks: Feedback[];
   answers: Answer[];
+  sessionActivities: SessionActivity[];
   competencies: Competence[];
 
   total: number;

@@ -63,8 +63,16 @@ const ClassObservationForm: React.FC<any> = () => {
     });
   };
 
+  // The session started with the header stays open: it can be resumed from the teacher profile
   const goBack = () => {
-    navigate(PathRoutes.classObservation.setup, {replace: true, state});
+    if (state?.session?.id) {
+      navigate(
+        PathRoutes.teacher.details.replace(':id', state.session.teacher_id),
+        {replace: true},
+      );
+    } else {
+      navigate(PathRoutes.classObservation.setup, {replace: true, state});
+    }
   };
 
   const renderQuestion = useCallback(
