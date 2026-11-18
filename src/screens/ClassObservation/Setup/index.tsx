@@ -64,7 +64,23 @@ const ClassObservationSetup: React.FC = () => {
   ];
 
   const subjectOptions =
-    COUNTRY === 'np'
+    COUNTRY === 'cd'
+      ? [
+          t(`teacher.subjects.cd.$1`),
+          t(`teacher.subjects.cd.$2`),
+          t(`teacher.subjects.cd.$3`),
+          t(`teacher.subjects.cd.$4`),
+          t(`teacher.subjects.cd.$5`),
+          t(`teacher.subjects.cd.$6`),
+          t(`teacher.subjects.cd.$7`),
+          t(`teacher.subjects.cd.$8`),
+          t(`teacher.subjects.cd.$9`),
+          t(`teacher.subjects.cd.$10`),
+          t(`teacher.subjects.cd.$11`),
+          t(`teacher.subjects.cd.$12`),
+          t(`teacher.subjects.cd.$13`),
+        ]
+      : COUNTRY === 'np'
       ? [
           t(`teacher.subjects.np.$1`),
           t(`teacher.subjects.np.$2`),

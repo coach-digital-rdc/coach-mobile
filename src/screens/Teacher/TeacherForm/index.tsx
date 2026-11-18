@@ -156,7 +156,23 @@ const TeacherFormScreen: React.FC = () => {
   }
 
   const subjectOptions =
-    COUNTRY === 'np'
+    COUNTRY === 'cd'
+      ? [
+          t(`teacher.subjects.cd.$1`),
+          t(`teacher.subjects.cd.$2`),
+          t(`teacher.subjects.cd.$3`),
+          t(`teacher.subjects.cd.$4`),
+          t(`teacher.subjects.cd.$5`),
+          t(`teacher.subjects.cd.$6`),
+          t(`teacher.subjects.cd.$7`),
+          t(`teacher.subjects.cd.$8`),
+          t(`teacher.subjects.cd.$9`),
+          t(`teacher.subjects.cd.$10`),
+          t(`teacher.subjects.cd.$11`),
+          t(`teacher.subjects.cd.$12`),
+          t(`teacher.subjects.cd.$13`),
+        ]
+      : COUNTRY === 'np'
       ? [
           t(`teacher.subjects.np.$1`),
           t(`teacher.subjects.np.$2`),
@@ -307,7 +323,9 @@ const TeacherFormScreen: React.FC = () => {
                     fontSize={'LMD'}
                     fontWeight={500}
                     color={'gray.700'}>
-                    {COUNTRY === 'np'
+                    {COUNTRY === 'cd'
+                      ? t('teacher.form.matricule')
+                      : COUNTRY === 'np'
                       ? t('teacher.form.teacher_code')
                       : t('teacher.form.nin')}
                   </Text>
@@ -321,7 +339,9 @@ const TeacherFormScreen: React.FC = () => {
                   fontSize={'TSM'}
                   fontWeight={400}
                   color={'gray.600'}>
-                  {COUNTRY === 'np'
+                  {COUNTRY === 'cd'
+                    ? t('teacher.form.matricule_description')
+                    : COUNTRY === 'np'
                     ? t('teacher.form.teacher_code_description')
                     : t('teacher.form.nin_description')}
                 </Text>

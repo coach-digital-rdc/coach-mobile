@@ -29,6 +29,14 @@ const BottomNavigator: React.FC = () => {
         route: PathRoutes.teacherLearningCircles.onboarding,
       },
     ],
+
+    cd: [
+      {
+        label: t('bottom_navigator.tlc'),
+        icon: 'process',
+        route: PathRoutes.teacherLearningCircles.onboarding,
+      },
+    ],
   };
 
   const bottomItems = [
