@@ -247,10 +247,19 @@ const enTranslation = {
       },
     },
     pending: {
-      page_title: 'Incomplete sessions',
-      title: 'Incomplete sessions',
-      subtitle: 'Complete the feedback sessions with the following teachers',
-      list_subtitle: 'Feedback pending',
+      page_title: 'Sessions in progress',
+      title: 'Sessions in progress',
+      subtitle:
+        'Sessions started and not closed. They are kept on the device, even without connection.',
+      list_subtitle: 'Coaching session pending',
+      empty: 'Start an observation to see it here.',
+      started_interval:
+        '(0-1)[Started on {{date}} · {{count}} note];(2-inf)[Started on {{date}} · {{count}} notes];',
+      status: {
+        PREPARATION: 'Preparation',
+        OBSERVATION: 'Observation',
+        EVALUATION: 'Evaluation',
+      },
     },
   },
   teacher: {

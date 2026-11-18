@@ -19,6 +19,7 @@ import moment from 'moment';
 import {TeacherItemType} from '../../types/teacher';
 import PathRoutes from '../../routers/paths';
 import {StorageService} from '../../services/storage.service';
+import {SessionService} from '../../services/session.service';
 import SyncService from '../../services/sync.service';
 import {TeacherService} from '../../services/teacher.service';
 import {useCoachContext} from '../../providers/coach.provider';
@@ -66,14 +67,11 @@ const HomeScreen: React.FC = () => {
       counts.pendingTeachers + counts.pendingSessions + counts.pendingFeedbacks,
     );
     setLastSync(await StorageService.getLastSync());
-    const pendingTeachers: any =
-      await TeacherService.getTeachersWithPendingSessions(
-        '',
-        currentSchool?.id || '',
-        100,
-        1,
-      );
-    setPending(pendingTeachers?.length || 0);
+    // Sessions started and not closed, as in the "Séances en cours" screen
+    const openSessions = await SessionService.listOpenSessions(
+      currentSchool?.id || '',
+    );
+    setPending(openSessions.length);
   }, [currentSchool]);
 
   useEffect(() => {

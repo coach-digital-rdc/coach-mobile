@@ -9,6 +9,7 @@ import {SessionService} from '../../../services/session.service';
 import {useCoachContext} from '../../../providers/coach.provider';
 import {Session} from '../../../types/session';
 import PathRoutes from '../../../routers/paths';
+import {getResumeRoute} from '../../../helpers/resume.helper';
 import TabButton from '../../../components/TabButton';
 import Button from '../../../components/Button';
 import Icon from '../../../components/Icon';
@@ -42,23 +43,11 @@ const TeacherDetailsScreen: React.FC = () => {
     }
   }, [id]);
 
-  // The session is resumed at its step: checklist, observation form or summary
+  // The session is resumed at its step: checklist, notes or scoring
   const resumeSession = useCallback(
     (session: Session) => {
-      const current = {id: session.id, teacher_id: session.teacher_id};
-      if (session.session_status === 'PREPARATION') {
-        navigate(PathRoutes.classObservation.checklist, {
-          state: {session: current},
-        });
-      } else if (session.session_status === 'EVALUATION') {
-        navigate(PathRoutes.classObservation.form, {
-          state: {session: current},
-        });
-      } else {
-        navigate(PathRoutes.classObservation.notes, {
-          state: {session: current},
-        });
-      }
+      const {path, state} = getResumeRoute(session);
+      navigate(path, {state});
     },
     [navigate],
   );

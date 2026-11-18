@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import Page from '../../../components/Page';
-import CompetenceView from '../../ClassObservation/Confirmation/CompetenceView';
+import CompetenceView from './CompetenceView';
 import {useLocation} from 'react-router-native';
 import {useTranslation} from 'react-i18next';
 import {Center, Spinner} from 'native-base';

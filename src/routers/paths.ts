@@ -73,7 +73,6 @@ const PathRoutes = {
     advice: '/classObservation/advice',
     signatures: '/classObservation/signatures',
     form: '/classObservation/forms',
-    confirmation: '/classObservation/confirmation',
     completed: '/classObservation/completed/:sessionId',
   },
 

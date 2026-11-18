@@ -248,10 +248,19 @@ const frTranslation = {
       },
     },
     pending: {
-      page_title: 'Séances inachevées',
-      title: 'Séances inachevées',
-      subtitle: "Terminez l'entretien avec les enseignants suivants",
+      page_title: 'Séances en cours',
+      title: 'Séances en cours',
+      subtitle:
+        "Séances commencées et non clôturées. Elles sont enregistrées sur l'appareil, même sans connexion.",
       list_subtitle: 'Entretien en attente',
+      empty: 'Commencez une observation pour la voir apparaître ici.',
+      started_interval:
+        '(0-1)[Commencée le {{date}} · {{count}} note];(2-inf)[Commencée le {{date}} · {{count}} notes];',
+      status: {
+        PREPARATION: 'Préparation',
+        OBSERVATION: 'Observation',
+        EVALUATION: 'Évaluation',
+      },
     },
   },
   teacher: {

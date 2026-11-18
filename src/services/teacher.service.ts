@@ -67,51 +67,6 @@ export const TeacherService = {
     return result[0].rows.raw()[0];
   },
 
-  getTeachersWithPendingSessions: async (
-    filter: string,
-    school_id: string,
-    pageSize: number,
-    pageNumber: number,
-  ): Promise<TeacherDetailsType> => {
-    const db = await getDBConnection();
-    const result = (await db.executeSql(
-      `
-      SELECT
-      t.id as id,
-      i.value as image,
-      s.created_at AS last_session_date,
-      t.name || ' ' || t.surname as name,
-      (SELECT COUNT(*) FROM session as s1 WHERE s1.teacher_id = t.id) as sessions
-    FROM teacher as t
-    LEFT JOIN image as i ON i.id = t.image_id
-    LEFT JOIN (
-      SELECT teacher_id, MAX(created_at) AS created_at
-      FROM session
-      GROUP BY teacher_id
-    ) as s ON t.id = s.teacher_id
-    WHERE
-      t.school_id = ?
-    AND
-      UPPER(t.name) LIKE UPPER(?) || '%'
-    AND
-      NOT EXISTS (
-        SELECT 1
-        FROM session as s2
-        LEFT JOIN answer as a2 on a2.session_id = s2.id
-        LEFT JOIN feedback as f2 on f2.answer_id = a2.id
-        WHERE f2.id NOT NULL AND s2.teacher_id = t.id
-      )
-    LIMIT ?
-    OFFSET ?;             
-      `,
-      [school_id, filter, pageSize, (pageNumber - 1) * pageSize],
-    )) as any[];
-
-    console.log(result[0].rows.raw());
-
-    return result[0].rows.raw();
-  },
-
   getTeacherToEdit: async (id: string): Promise<TeacherToEditType> => {
     const db = await getDBConnection();
     const result = (await db.executeSql(

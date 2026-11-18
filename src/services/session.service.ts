@@ -286,35 +286,23 @@ export const SessionService = {
     );
   },
 
-  // Saves the answers and closes the session started by startLocalSession.
-  completeLocalSession: async (
-    sessionId: string,
-    session: Partial<Session>,
-    answers: Partial<Answer>[],
-  ): Promise<string> => {
+  // Sessions started and not closed yet in the school, with the teacher and the number of notes
+  listOpenSessions: async (
+    schoolId: string,
+  ): Promise<(Session & {teacher_name: string; notes: number})[]> => {
     const db = await getDBConnection();
-    const now = new Date().toJSON();
-
-    await db.executeSql(
+    const result = await db.executeSql(
       `
-      UPDATE session
-      SET key_points = ?, latitude = ?, longitude = ?, session_status = 'COMPLETED',
-        observation_ended_at = COALESCE(observation_ended_at, ?), completed_at = ?, _status = 'pending'
-      WHERE id = ?
+      SELECT s.*, t.name || ' ' || t.surname as teacher_name,
+        (SELECT COUNT(*) FROM observation_note as n WHERE n.session_id = s.id AND n.deleted_at IS NULL) as notes
+      FROM session as s
+      INNER JOIN teacher as t ON t.id = s.teacher_id
+      WHERE s.school_id = ? AND s.session_status IN ('PREPARATION', 'OBSERVATION', 'EVALUATION')
+      ORDER BY s.created_at DESC
     `,
-      [
-        session.key_points,
-        session.latitude,
-        session.longitude,
-        now,
-        now,
-        sessionId,
-      ],
+      [schoolId],
     );
-
-    await SessionService.saveAnswers(sessionId, answers);
-
-    return sessionId;
+    return result[0].rows.raw();
   },
 
   // Session started on the device and not completed yet, to resume it
@@ -355,55 +343,6 @@ export const SessionService = {
         ),
       ),
     );
-  },
-
-  createLocalSession: async (
-    session: Partial<Session>,
-    answers: Partial<Answer>[],
-  ): Promise<string> => {
-    const db = await getDBConnection();
-    const sessionId = uuid();
-
-    await db.executeSql(
-      `
-      INSERT INTO session(id, students_count, subject, lesson_time, objective, school_id, coach_id, key_points, teacher_id, latitude, longitude, _status)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending')
-    `,
-      [
-        sessionId,
-        session.students_count,
-        session.subject,
-        session.lesson_time,
-        session.objective,
-        session.school_id,
-        session.coach_id,
-        session.key_points,
-        session.teacher_id,
-        session.latitude,
-        session.longitude,
-      ],
-    );
-
-    await Promise.all(
-      answers.map(
-        async answer =>
-          await db.executeSql(
-            `
-              INSERT INTO answer(id, session_id, question_id, value, not_applicable, _status)
-              VALUES (?, ?, ?, ?, ?, 'pending')
-            `,
-            [
-              uuid(),
-              sessionId,
-              answer.question_id,
-              answer.value,
-              answer.not_applicable ? 1 : 0,
-            ],
-          ),
-      ),
-    );
-
-    return sessionId;
   },
 
   getAnswersByQuestionAndSession: async (
