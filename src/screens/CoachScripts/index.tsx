@@ -4,8 +4,6 @@ import Pdf from 'react-native-pdf';
 import {Spinner, View} from 'native-base';
 import {Dimensions} from 'react-native';
 import {useTranslation} from 'react-i18next';
-import {COUNTRY} from '@env';
-import {NepalScript} from './nepalScript';
 
 const CoachScriptsScreen: React.FC = () => {
   const {t} = useTranslation();
@@ -24,12 +22,7 @@ const CoachScriptsScreen: React.FC = () => {
           <Pdf
             trustAllCerts={true}
             source={{
-              uri:
-                COUNTRY === 'cd'
-                  ? 'bundle-assets://Manuel_utilisation_RDC.pdf'
-                  : COUNTRY === 'np'
-                  ? NepalScript
-                  : 'bundle-assets://Sierra_Leone_Coach_Manual.pdf',
+              uri: 'bundle-assets://Manuel_utilisation_RDC.pdf',
               cache: true,
             }}
             style={{

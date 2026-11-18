@@ -1,8 +1,5 @@
-import {COUNTRY} from '@env';
-import indicatorNPImages from '../../../../../../assets/images/teacherStats/indicator/np';
-import indicatorSLImages from '../../../../../../assets/images/teacherStats/indicator/sl';
-
-const Images = COUNTRY === 'np' ? indicatorNPImages : indicatorSLImages;
+// Illustrations of the former statistics, replaced by the evolution of the global scores (lot 2)
+import Images from '../../../../../../assets/images/teacherStats/indicator/sl';
 
 export const chartData = [
   {start: 0, image: Images.needsWork.low},

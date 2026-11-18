@@ -27,10 +27,8 @@ import {
   NOT_APPLICABLE,
   getAnswerChoices,
   getSuggestedScore,
-  isChoiceQuestion,
   toAnswers,
 } from '../../../helpers/answer.helper';
-import StarRating from '../../../components/StarRating';
 import BottomSheetTooltip from './BottomSheetTooltip';
 import {NoteTimeline} from '../Notes';
 import PhaseStepper from '../../../components/PhaseStepper';
@@ -56,18 +54,6 @@ const ChoiceRow: React.FC<{
   onPress: (value: number) => void;
 }> = ({question, value, onPress}) => {
   const {t} = useTranslation();
-  // Star rating of the other grids (Sierra Leone, Nepal)
-  if (!isChoiceQuestion(question)) {
-    return (
-      <HStack mt="8px" pl="48px">
-        <StarRating
-          size={question.scale}
-          value={value || 0}
-          onPress={onPress}
-        />
-      </HStack>
-    );
-  }
   const choices = getAnswerChoices(question);
   // N/A first, as in the mockups
   const ordered = [

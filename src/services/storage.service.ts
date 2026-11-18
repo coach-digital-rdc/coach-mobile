@@ -2,7 +2,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Coach} from '../types/coach';
 import {School} from '../types/school';
 import moment from 'moment';
-import {COUNTRY} from '@env';
 import i18n from '../i18n';
 
 const KEYS = {

@@ -76,19 +76,6 @@ const PathRoutes = {
     completed: '/classObservation/completed/:sessionId',
     report: '/classObservation/report/:sessionId',
   },
-
-  session: {
-    details: '/session/details',
-    classObservation: '/session/class-observation',
-    feedback: '/session/feedback',
-  },
-
-  feedbackSession: {
-    about: '/feedbackSession/about/:sessionId',
-    chooseCompetence: '/feedbackSession/chooseCompetence',
-    form: '/feedbackSession/form',
-    completed: '/feedbackSession/completed',
-  },
 };
 
 export default PathRoutes;

@@ -1,7 +1,6 @@
 import React from 'react';
 import {HStack, Image, Text, VStack} from 'native-base';
 import {useTranslation} from 'react-i18next';
-import {COUNTRY} from '@env';
 import {LoginLogo} from '../../assets/images/logos';
 
 // Logo and name of the application, as on the login screen of the mockups.
@@ -25,9 +24,7 @@ const LogoLockup: React.FC<{size?: number}> = ({size = 56}) => {
           fontWeight={600}
           letterSpacing="0.5px"
           color="gray.500">
-          {`${t('login.main.tagline')}${
-            COUNTRY === 'cd' ? ' · RDC' : ''
-          }`.toUpperCase()}
+          {`${t('login.main.tagline')} · RDC`.toUpperCase()}
         </Text>
       </VStack>
     </HStack>

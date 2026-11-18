@@ -1,11 +1,11 @@
 import {enablePromise, openDatabase} from 'react-native-sqlite-storage';
-import {COUNTRY} from '@env';
 
 enablePromise(true);
 
 export const getDBConnection = async () => {
   return openDatabase(
-    {name: `v2_coachdb_${COUNTRY}`, location: 'default'},
+    // Name of the local database, kept from the first builds of the DRC application
+    {name: 'v2_coachdb_cd', location: 'default'},
     () => console.log('Database connected!'),
     err => console.log('err! ', err),
   );

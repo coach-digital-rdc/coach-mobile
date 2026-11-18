@@ -1,14 +1,13 @@
-# Coach Digital – Mobile
+# Coach Digital RDC – Mobile
 
-Field application (React Native 0.72, local SQLite database, synchronisation with the API).
+Field application (React Native 0.72, local SQLite database, synchronisation with the API) of Coach Digital for the classroom observation tool of the DRC (PAAF / SERNAFOR), derived from [WBG-Coach](https://github.com/WBG-Coach). French is the default language, English the second one. The multi-country version (Sierra Leone, Nepal) is kept under the git tag `avant-version-rdc`.
 
 ## Setup dev
 
   - Requirements: Node.js 18+, npm; Android Studio, SDK and JDK 17 for Android; Xcode and CocoaPods for iOS. Watchman is recommended on macOS
   - Tested on 18/11/2026 with Node.js 24, JDK 17, Gradle 8.0.1 and an Android 14 emulator (API 34)
   - Copy `.env.example` to `.env`:
-    - `API_URL`: API URL with the country prefix. On the Android emulator use `10.0.2.2` to reach the computer; on a physical phone use the computer's IP address on the same Wi-Fi
-    - `COUNTRY`: lowercase, same value as in the backend
+    - `API_URL`: API URL (e.g. `http://10.0.2.2:3000/api`). On the Android emulator use `10.0.2.2` to reach the computer; on a physical phone use the computer's IP address on the same Wi-Fi
     - `LOGIN_MODE`: `OTP` or `PASSWORD`
   - Run `npm install`
   - Terminal 1: `npm start` (Metro, port 8081; add `-- --reset-cache` to clear the cache). Without Watchman, Metro may stop with `EMFILE: too many open files, watch`: start it with `CI=true npm start` (no file watching, restart Metro after each change) or install Watchman (`brew install watchman`)

@@ -20,13 +20,6 @@ import ClassObservationAdvice from '../screens/ClassObservation/Advice';
 import ClassObservationSignatures from '../screens/ClassObservation/Signatures';
 import ClassObservationCompleted from '../screens/ClassObservation/Completed';
 import ClassObservationReport from '../screens/ClassObservation/Report';
-import SessionDetailsScreen from '../screens/SessionDetails';
-import FeedbackSessionAbout from '../screens/FeedbackSession/About';
-import FeedbackSessionChooseAnswer from '../screens/FeedbackSession/ChooseAnswer';
-import FeedbackSessionForm from '../screens/FeedbackSession/Form';
-import FeedbackSessionCompleted from '../screens/FeedbackSession/Completed';
-import FeedbackDetailScreen from '../screens/SessionDetails/FeedbackDetails';
-import ClassObservationDetailsScreen from '../screens/SessionDetails/ClassObservationDetails';
 import CompetenceStats from '../screens/Teacher/TeacherDetails/Tabs/TeacherStats/CompetenceStats';
 import QuickStatsScreen from '../screens/Home/QuickActions/Stats';
 import CoachCreatedScreen from '../screens/CoachCreated';
@@ -151,34 +144,6 @@ const RouterProvider: React.FC = () => {
         <Route
           path={PathRoutes.classObservation.report}
           Component={ClassObservationReport}
-        />
-        <Route
-          path={PathRoutes.session.details}
-          Component={SessionDetailsScreen}
-        />
-        <Route
-          path={PathRoutes.session.classObservation}
-          Component={ClassObservationDetailsScreen}
-        />
-        <Route
-          path={PathRoutes.session.feedback}
-          Component={FeedbackDetailScreen}
-        />
-        <Route
-          path={PathRoutes.feedbackSession.about}
-          Component={FeedbackSessionAbout}
-        />
-        <Route
-          path={PathRoutes.feedbackSession.chooseCompetence}
-          Component={FeedbackSessionChooseAnswer}
-        />
-        <Route
-          path={PathRoutes.feedbackSession.form}
-          Component={FeedbackSessionForm}
-        />
-        <Route
-          path={PathRoutes.feedbackSession.completed}
-          Component={FeedbackSessionCompleted}
         />
         <Route
           path={PathRoutes.teacherLearningCircles.onboarding}

@@ -4,7 +4,6 @@ import {useLocation, useNavigate, useParams} from 'react-router-native';
 import {useNetInfo} from '@react-native-community/netinfo';
 import {useTranslation} from 'react-i18next';
 import moment from 'moment';
-import {COUNTRY} from '@env';
 import SyncService from '../../../services/sync.service';
 import {SessionService} from '../../../services/session.service';
 import {TeacherService} from '../../../services/teacher.service';
@@ -182,22 +181,6 @@ const ClassObservationCompleted: React.FC = () => {
           }>
           {t('classObservation.observationCompleted.pdf')}
         </Button>
-        {COUNTRY !== 'cd' && (
-          <Button
-            w="full"
-            mb={0}
-            onPress={() =>
-              navigate(
-                PathRoutes.feedbackSession.about.replace(
-                  ':sessionId',
-                  sessionId,
-                ),
-                {replace: true},
-              )
-            }>
-            {t('classObservation.observationCompleted.button')}
-          </Button>
-        )}
         <Button
           w="full"
           mb={0}

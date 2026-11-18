@@ -1,4 +1,3 @@
-import {COUNTRY} from '@env';
 import React, {useCallback, useEffect, useState} from 'react';
 import {Center} from 'native-base';
 import PathRoutes from '../../../../../routers/paths';
@@ -83,8 +82,7 @@ const SessionList: React.FC<Props> = ({teacherId, onResume}) => {
             onPress={() =>
               onResume && OPEN_STATUSES.includes(item.session_status || '')
                 ? onResume(item)
-                : COUNTRY === 'cd' && item.session_status === 'COMPLETED'
-                ? // Summary of the closed session and its PDF documents
+                : // Summary of the closed session and its PDF documents
                   navigate(
                     PathRoutes.classObservation.completed.replace(
                       ':sessionId',
@@ -92,7 +90,6 @@ const SessionList: React.FC<Props> = ({teacherId, onResume}) => {
                     ),
                     {state: {fromTeacher: true}},
                   )
-                : navigate(PathRoutes.session.details, {state: item})
             }
           />
         )}

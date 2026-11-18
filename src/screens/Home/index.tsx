@@ -14,7 +14,6 @@ import {SafeAreaView, TouchableOpacity} from 'react-native';
 import {useNavigate} from 'react-router-native';
 import {useTranslation} from 'react-i18next';
 import {isTablet as Tablet} from 'react-native-device-info';
-import {COUNTRY} from '@env';
 import moment from 'moment';
 import {TeacherItemType} from '../../types/teacher';
 import PathRoutes from '../../routers/paths';
@@ -141,17 +140,11 @@ const HomeScreen: React.FC = () => {
       label: t('home.tiles.manual'),
       onPress: () => navigate(PathRoutes.coachScripts),
     },
-    COUNTRY === 'np'
-      ? {
-          icon: 'users-alt',
-          label: t('home.tiles.cop'),
-          onPress: () => navigate(PathRoutes.communityOfPractice.onboarding),
-        }
-      : {
-          icon: 'users-alt',
-          label: t('home.tiles.tlc'),
-          onPress: () => navigate(PathRoutes.teacherLearningCircles.onboarding),
-        },
+    {
+      icon: 'users-alt',
+      label: t('home.tiles.tlc'),
+      onPress: () => navigate(PathRoutes.teacherLearningCircles.onboarding),
+    },
     {
       icon: 'sync',
       label: t('home.tiles.sync'),
