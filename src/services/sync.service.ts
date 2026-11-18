@@ -26,6 +26,7 @@ import {ObservationNote} from '../types/observation-note';
 import {ScoreService} from './score.service';
 import {CompetenceScore} from '../types/competence-score';
 import {PdpService} from './pdp.service';
+import {SignatureService} from './signature.service';
 
 const SyncService = {
   getUnsyncedItemsCount: async (): Promise<{
@@ -72,6 +73,9 @@ const SyncService = {
           ? []
           : await SyncService.getPendingCompetenceScores(db),
         pdps: firstSync ? [] : await SyncService.getPending(db, 'pdp'),
+        sessionSignatures: firstSync
+          ? []
+          : await SyncService.getPending(db, 'session_signature'),
         pdpObjectives: firstSync
           ? []
           : await SyncService.getPending(db, 'pdp_objective'),
@@ -113,6 +117,7 @@ const SyncService = {
           response.data.pdpRuleSets,
           response.data.pdpLibraryItems,
         );
+        await SignatureService.syncSignatures(response.data.sessionSignatures);
         await PdpService.syncPdps(
           response.data.pdps,
           response.data.pdpObjectives,
@@ -140,6 +145,7 @@ const SyncService = {
       SyncService.updateToSyncedObservationNotes(db),
       SyncService.updateToSyncedCompetenceScores(db),
       SyncService.updateToSynced(db, 'pdp'),
+      SyncService.updateToSynced(db, 'session_signature'),
       SyncService.updateToSynced(db, 'pdp_objective'),
       SyncService.updateToSyncedFeedbacks(db),
     ]);

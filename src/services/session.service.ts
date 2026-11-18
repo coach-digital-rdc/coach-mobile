@@ -188,6 +188,19 @@ export const SessionService = {
     );
   },
 
+  // Closure of the session (B17): the sheet can no longer be changed
+  closeSession: async (sessionId: string): Promise<void> => {
+    const db = await getDBConnection();
+    const now = new Date().toJSON();
+    await db.executeSql(
+      `
+      UPDATE session SET session_status = 'COMPLETED', completed_at = ?, _status = 'pending'
+      WHERE id = ?
+    `,
+      [now, sessionId],
+    );
+  },
+
   // Times of the didactic sequence, advice and place of the signature (B16)
   saveAdvice: async (
     sessionId: string,

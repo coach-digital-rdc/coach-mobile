@@ -425,6 +425,41 @@ const enTranslation = {
           'After agreeing with the teacher about priority next steps for improvement, schedule your next visit.',
       },
     },
+    signatures: {
+      title: 'Signatures',
+      subtitle:
+        'Each signer signs with the finger. The teacher may refuse to sign and give the reason; only the school head may be absent.',
+      role: {
+        TEACHER: 'Teacher',
+        SCHOOL_HEAD: 'School head',
+        OBSERVER: 'Observer',
+      },
+      name: 'Name',
+      'sign-here': 'Tap to sign',
+      sign: 'Sign',
+      validate: 'Confirm the signature',
+      clear: 'Clear',
+      refuses: 'Refuses to sign',
+      refusal: 'Reason for refusing to sign',
+      'refusal-placeholder':
+        'e.g. the teacher disputes the score of sub-domain III.1',
+      absent: 'Absent',
+      absence: 'Reason for the absence',
+      'absence-placeholder': 'e.g. at a meeting at the sub-division',
+      'observer-is-head':
+        'You are the school head: your observer signature stands for this box.',
+      'before-closing': 'Before closing',
+      'condition-scoring':
+        'Scoring complete ({{answered}}/{{total}} behaviours, {{scored}}/{{scoreTotal}} scores)',
+      'condition-pdp': 'PDP validated with the teacher',
+      'condition-signatures':
+        'Signatures of the teacher, the school head and the observer',
+      close: 'Close the session',
+      'close-title': 'Close the session?',
+      'close-message':
+        'Once closed, the sheet can no longer be changed. It will be sent to the server at the next synchronisation.',
+      'close-confirm': 'Close',
+    },
     advice: {
       title: 'Advice and times',
       subtitle:
@@ -509,6 +544,7 @@ const enTranslation = {
       running: 'Observation in progress since {{time}}',
       ended: 'Observation ended at {{time}}',
       count_interval: '(0-1)[note];(2-inf)[notes];',
+      'count-label_interval': '(0-1)[{{count}} note];(2-inf)[{{count}} notes];',
       empty: 'No note yet.',
       placeholder: 'Describe what you observe…',
       add: 'Add the note',
@@ -647,7 +683,18 @@ const enTranslation = {
       },
     },
     observationCompleted: {
-      title: 'Class observation complete',
+      title: 'Session closed',
+      'closed-at': 'Closed on {{date}} at {{time}}.',
+      teacher: 'Teacher',
+      observation: 'Observation',
+      duration: '{{minutes}} min',
+      pdp: 'PDP',
+      'pdp-summary': '{{count}} objectives',
+      'pdp-validated': ', validated',
+      sync: 'Synchronisation',
+      synced: 'Synchronised',
+      pending: 'Pending',
+      pdf: 'PDF documents (coming soon)',
       subtitle: 'Thank you. The class observation section is complete!',
       whatsNext: "What's next?",
       startFeedback:

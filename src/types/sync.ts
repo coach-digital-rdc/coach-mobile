@@ -12,6 +12,7 @@ import {ChecklistItem, Documentation} from './checklist';
 import {ObservationNote} from './observation-note';
 import {CompetenceScore} from './competence-score';
 import {Pdp, PdpLibraryItem, PdpObjective, PdpRuleSet} from './pdp';
+import {SessionSignature} from './session-signature';
 
 export type SyncData = {
   coaches: Coach[];
@@ -29,6 +30,7 @@ export type SyncData = {
   observationNotes: ObservationNote[];
   competenceScores: CompetenceScore[];
   pdps: Pdp[];
+  sessionSignatures: SessionSignature[];
   pdpObjectives: PdpObjective[];
   pdpRuleSets: PdpRuleSet[];
   pdpLibraryItems: PdpLibraryItem[];

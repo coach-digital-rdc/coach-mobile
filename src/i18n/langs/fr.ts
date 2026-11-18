@@ -427,6 +427,41 @@ const frTranslation = {
           "Après vous être accordé avec l'enseignant sur les priorités, planifiez votre prochaine visite.",
       },
     },
+    signatures: {
+      title: 'Signatures',
+      subtitle:
+        "Chaque signataire signe avec le doigt. L'enseignant.e peut refuser de signer en indiquant le motif ; seul le chef d'établissement peut être absent.",
+      role: {
+        TEACHER: 'Enseignant.e',
+        SCHOOL_HEAD: "Chef d'établissement",
+        OBSERVER: 'Observateur.trice',
+      },
+      name: 'Nom',
+      'sign-here': 'Touchez pour signer',
+      sign: 'Signer',
+      validate: 'Valider la signature',
+      clear: 'Effacer',
+      refuses: 'Refuse de signer',
+      refusal: 'Motif du refus de signer',
+      'refusal-placeholder':
+        "ex. l'enseignant.e conteste la cotation du sous-domaine III.1",
+      absent: 'Absent.e',
+      absence: "Motif de l'absence",
+      'absence-placeholder': 'ex. en réunion à la sous-division',
+      'observer-is-head':
+        "Vous êtes le chef d'établissement : votre signature d'observateur.trice vaut pour cette case.",
+      'before-closing': 'Avant de clôturer',
+      'condition-scoring':
+        'Cotation complète ({{answered}}/{{total}} comportements, {{scored}}/{{scoreTotal}} cotes)',
+      'condition-pdp': "PDP validé avec l'enseignant.e",
+      'condition-signatures':
+        "Signatures de l'enseignant.e, du chef d'établissement et de l'observateur.trice",
+      close: 'Clôturer la séance',
+      'close-title': 'Clôturer la séance ?',
+      'close-message':
+        'Une fois clôturée, la fiche ne peut plus être modifiée. Elle sera envoyée au serveur à la prochaine synchronisation.',
+      'close-confirm': 'Clôturer',
+    },
     advice: {
       title: 'Conseils et horaires',
       subtitle:
@@ -511,6 +546,7 @@ const frTranslation = {
       running: 'Observation en cours depuis {{time}}',
       ended: 'Observation terminée à {{time}}',
       count_interval: '(0-1)[note];(2-inf)[notes];',
+      'count-label_interval': '(0-1)[{{count}} note];(2-inf)[{{count}} notes];',
       empty: "Aucune note pour l'instant.",
       placeholder: 'Décrivez ce que vous observez…',
       add: 'Ajouter la note',
@@ -650,7 +686,18 @@ const frTranslation = {
       },
     },
     observationCompleted: {
-      title: 'Observation terminée',
+      title: 'Séance clôturée',
+      'closed-at': 'Clôturée le {{date}} à {{time}}.',
+      teacher: 'Enseignant.e',
+      observation: 'Observation',
+      duration: '{{minutes}} min',
+      pdp: 'PDP',
+      'pdp-summary': '{{count}} objectifs',
+      'pdp-validated': ', validé',
+      sync: 'Synchronisation',
+      synced: 'Synchronisée',
+      pending: 'En attente',
+      pdf: 'Documents PDF (bientôt disponibles)',
       subtitle: "Merci. L'observation de classe est terminée !",
       whatsNext: 'Et ensuite ?',
       startFeedback:

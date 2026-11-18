@@ -1,118 +1,195 @@
-import React, {useEffect} from 'react';
-import {Button, Center, HStack, Text, useTheme, VStack} from 'native-base';
-import {isTablet as Tablet} from 'react-native-device-info';
+import React, {useEffect, useState} from 'react';
+import {Center, HStack, Text, VStack, useTheme} from 'native-base';
 import {useNavigate, useParams} from 'react-router-native';
 import {useNetInfo} from '@react-native-community/netinfo';
-import SyncService from '../../../services/sync.service';
-import PathRoutes from '../../../routers/paths';
 import {useTranslation} from 'react-i18next';
+import moment from 'moment';
+import {COUNTRY} from '@env';
+import SyncService from '../../../services/sync.service';
+import {SessionService} from '../../../services/session.service';
+import {TeacherService} from '../../../services/teacher.service';
+import {NoteService} from '../../../services/note.service';
+import {PdpService} from '../../../services/pdp.service';
+import {Session} from '../../../types/session';
+import PhaseStepper from '../../../components/PhaseStepper';
+import PathRoutes from '../../../routers/paths';
+import Button from '../../../components/Button';
 import Icon from '../../../components/Icon';
 import Page from '../../../components/Page';
 
+const InfoRow: React.FC<{label: string; children: React.ReactNode}> = ({
+  label,
+  children,
+}) => (
+  <HStack
+    py="10px"
+    space={3}
+    alignItems="center"
+    borderBottomWidth="1px"
+    borderBottomColor="gray.100">
+    <Text w="120px" fontSize="13px" fontWeight={600} color="gray.500">
+      {label}
+    </Text>
+    <VStack flex={1}>{children}</VStack>
+  </HStack>
+);
+
+// "Séance clôturée" of the mockups: summary of the closed session. The sheet is sent
+// to the server as soon as the device is connected.
 const ClassObservationCompleted: React.FC = () => {
-  const params = useParams<{sessionId: string}>();
-  const starsLength = Array(5).fill({});
-  const {isConnected} = useNetInfo();
-  const navigate = useNavigate();
-  const {t} = useTranslation();
-  const isTablet = Tablet();
   const theme = useTheme();
+  const {t} = useTranslation();
+  const navigate = useNavigate();
+  const {isConnected} = useNetInfo();
+  const {sessionId = ''} = useParams<{sessionId: string}>();
+  const [session, setSession] = useState<Session>();
+  const [teacherName, setTeacherName] = useState('');
+  const [notesCount, setNotesCount] = useState(0);
+  const [pdp, setPdp] = useState<{count: number; validated: boolean}>();
 
-  useEffect(() => {
-    if (isConnected) {
-      SyncService.trySyncData();
+  const load = async () => {
+    const current = await SessionService.getSessionById(sessionId);
+    setSession(current);
+    if (current?.teacher_id) {
+      const teacher = await TeacherService.getTeacherDetails(
+        current.teacher_id,
+      );
+      setTeacherName(teacher?.name || '');
     }
-  }, [isConnected]);
-
-  const startFeedbackSession = () => {
-    navigate(
-      PathRoutes.feedbackSession.about.replace(
-        ':sessionId',
-        params.sessionId || '',
-      ),
-      {replace: true},
+    setNotesCount((await NoteService.listNotes(sessionId)).length);
+    const saved = await PdpService.getPdp(sessionId);
+    setPdp(
+      saved && {
+        count: saved.objectives.length,
+        validated: saved.pdp.status === 'VALIDATED',
+      },
     );
   };
 
+  useEffect(() => {
+    load();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sessionId]);
+
+  useEffect(() => {
+    if (isConnected) {
+      SyncService.trySyncData().then(load);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isConnected]);
+
+  const duration =
+    session?.observation_started_at && session?.observation_ended_at
+      ? moment(session.observation_ended_at).diff(
+          moment(session.observation_started_at),
+          'minutes',
+        )
+      : undefined;
+  const synced = session?._status === 'synced';
+
   return (
-    <Page>
-      <Center flex={1} flexDirection={'column'}>
-        <Center
-          w={'48px'}
-          h={'48px'}
-          borderRadius={'24px'}
-          background={'green.100'}>
-          <Icon name={'check'} color={theme.colors.green['300']} size={30} />
-        </Center>
-
-        <HStack mt={2} space={3}>
-          {starsLength.map((_, index) => (
-            <Icon
-              size={30}
-              key={index}
-              name={'star-solid'}
-              color={theme.colors.yellow['200']}
-            />
-          ))}
-        </HStack>
-
-        <Text mt={8} fontSize={'HSM'} fontWeight={600} color={'gray.700'}>
-          {t('classObservation.observationCompleted.title')}
-        </Text>
-        <Text mt={2} fontSize={'TMD'} fontWeight={400} color={'gray.600'}>
-          {t('classObservation.observationCompleted.subtitle')}
-        </Text>
-
-        <HStack
-          p={3}
-          mt={8}
-          width={'100%'}
-          borderRadius={'8px'}
-          background={'violet.0'}
-          space={2}
-          alignItems={'center'}>
+    <Page
+      back
+      title={t('classObservation.title')}
+      onBack={() => navigate(PathRoutes.home.main, {replace: true})}
+      noPadding>
+      <PhaseStepper current="closing" />
+      <VStack flex={1} px="16px" justifyContent="center">
+        <Center>
           <Icon
-            size={20}
-            name={'info-circle-solid'}
-            color={theme.colors.violet['200']}
+            name="check-circle-solid"
+            size={64}
+            color={theme.colors.green['200']}
           />
-          <VStack flex={1}>
-            <Text fontSize={'LSM'} fontWeight={500} color={'gray.700'}>
-              {t('classObservation.observationCompleted.whatsNext')}
-            </Text>
-            <Text mt={1} fontSize={'TXS'} fontWeight={400} color={'gray.700'}>
-              {t('classObservation.observationCompleted.startFeedback')}
-            </Text>
-          </VStack>
-        </HStack>
-      </Center>
-
-      <VStack
-        w={'100%'}
-        px={isTablet ? '32px' : 4}
-        background={'white'}
-        pt={3}
-        space={4}
-        borderRadius={'8px 8px 0px 0px'}>
-        <Button
-          color={'white'}
-          variant={'solid'}
-          marginTop={'auto'}
-          borderRadius={'8px'}
-          background={'primary.200'}
-          onPress={startFeedbackSession}>
-          {t('classObservation.observationCompleted.button')}
-        </Button>
-
-        <Button
-          marginTop={'auto'}
-          variant={'outline'}
-          borderRadius={'8px'}
-          borderColor={'white'}
-          onPress={() => navigate(PathRoutes.home.main, {replace: true})}>
-          <Text color={'primary.200'}>
-            {t('classObservation.observationCompleted.buttonBack')}
+          <Text mt="12px" fontSize="24px" fontWeight={600} color="gray.700">
+            {t('classObservation.observationCompleted.title')}
           </Text>
+          {!!session?.completed_at && (
+            <Text mt="4px" fontSize="14px" color="gray.600">
+              {t('classObservation.observationCompleted.closed-at', {
+                date: moment(session.completed_at).format('L'),
+                time: moment(session.completed_at).format('HH:mm'),
+              })}
+            </Text>
+          )}
+        </Center>
+        <VStack mt="24px">
+          <InfoRow label={t('classObservation.observationCompleted.teacher')}>
+            <Text fontSize="14px" color="gray.700">
+              {teacherName}
+            </Text>
+          </InfoRow>
+          <InfoRow
+            label={t('classObservation.observationCompleted.observation')}>
+            <Text fontSize="14px" color="gray.700">
+              {duration !== undefined
+                ? t('classObservation.observationCompleted.duration', {
+                    minutes: duration,
+                  }) + ' · '
+                : ''}
+              {t('classObservation.notes.count-label_interval', {
+                postProcess: 'interval',
+                count: notesCount,
+              })}
+            </Text>
+          </InfoRow>
+          <InfoRow label={t('classObservation.observationCompleted.pdp')}>
+            <Text fontSize="14px" color="gray.700">
+              {pdp
+                ? t('classObservation.observationCompleted.pdp-summary', {
+                    count: pdp.count,
+                  }) +
+                  (pdp.validated
+                    ? t('classObservation.observationCompleted.pdp-validated')
+                    : '')
+                : '—'}
+            </Text>
+          </InfoRow>
+          <InfoRow label={t('classObservation.observationCompleted.sync')}>
+            <Text
+              alignSelf="flex-start"
+              px="8px"
+              borderRadius="999px"
+              overflow="hidden"
+              fontSize="11px"
+              fontWeight={600}
+              bg={synced ? 'green.0' : 'yellow.0'}
+              color={synced ? 'green.300' : 'yellow.300'}>
+              {synced
+                ? t('classObservation.observationCompleted.synced')
+                : t('classObservation.observationCompleted.pending')}
+            </Text>
+          </InfoRow>
+        </VStack>
+      </VStack>
+
+      <VStack px="16px" pb="16px" pt="8px" space={3}>
+        {/* The PDF documents come with B24 and B25 */}
+        <Button w="full" mb={0} disabled>
+          {t('classObservation.observationCompleted.pdf')}
+        </Button>
+        {COUNTRY !== 'cd' && (
+          <Button
+            w="full"
+            mb={0}
+            onPress={() =>
+              navigate(
+                PathRoutes.feedbackSession.about.replace(
+                  ':sessionId',
+                  sessionId,
+                ),
+                {replace: true},
+              )
+            }>
+            {t('classObservation.observationCompleted.button')}
+          </Button>
+        )}
+        <Button
+          w="full"
+          mb={0}
+          variant="outlined"
+          onPress={() => navigate(PathRoutes.home.main, {replace: true})}>
+          {t('classObservation.observationCompleted.buttonBack')}
         </Button>
       </VStack>
     </Page>
