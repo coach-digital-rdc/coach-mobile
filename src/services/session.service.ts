@@ -107,10 +107,16 @@ export const SessionService = {
         async answer =>
           await db.executeSql(
             `
-              INSERT INTO answer(id, session_id, question_id, value, _status)
-              VALUES (?, ?, ?, ?, 'pending')
+              INSERT INTO answer(id, session_id, question_id, value, not_applicable, _status)
+              VALUES (?, ?, ?, ?, ?, 'pending')
             `,
-            [uuid(), sessionId, answer.question_id, answer.value],
+            [
+              uuid(),
+              sessionId,
+              answer.question_id,
+              answer.value,
+              answer.not_applicable ? 1 : 0,
+            ],
           ),
       ),
     );
@@ -283,10 +289,16 @@ export const SessionService = {
               async answer =>
                 await db.executeSql(
                   `
-                  INSERT OR REPLACE INTO answer(id, session_id, question_id, value, _status)
-                  VALUES (?, ?, ?, ?, 'synced')
+                  INSERT OR REPLACE INTO answer(id, session_id, question_id, value, not_applicable, _status)
+                  VALUES (?, ?, ?, ?, ?, 'synced')
                 `,
-                  [answer.id, session.id, answer.question_id, answer.value],
+                  [
+                    answer.id,
+                    session.id,
+                    answer.question_id,
+                    answer.value,
+                    answer.not_applicable ? 1 : 0,
+                  ],
                 ),
             ),
           );

@@ -28,10 +28,16 @@ export const AnswerService = {
       answers?.map(answer => {
         return db.executeSql(
           `
-          INSERT OR REPLACE INTO answer(id, value, question_id, session_id, _status)
-          VALUES (?, ?, ?, ?, 'synced')
+          INSERT OR REPLACE INTO answer(id, value, question_id, session_id, not_applicable, _status)
+          VALUES (?, ?, ?, ?, ?, 'synced')
         `,
-          [answer.id, answer.value, answer.question_id, answer.session_id],
+          [
+            answer.id,
+            answer.value,
+            answer.question_id,
+            answer.session_id,
+            answer.not_applicable ? 1 : 0,
+          ],
         );
       }),
     );

@@ -4,7 +4,9 @@ import {Question} from './question';
 export type Answer = {
   id: string;
 
-  value: string;
+  // Empty when not_applicable is set ("N/A")
+  value: string | null;
+  not_applicable?: boolean | number;
   question_id: string;
   session_id: string;
 

@@ -19,6 +19,7 @@ import {Competence} from '../../../types/competence';
 import CompetenceView from './CompetenceView';
 import Page from '../../../components/Page';
 import {Answer} from '../../../types/answer';
+import {NOT_APPLICABLE} from '../../../helpers/answer.helper';
 
 const ClassObservationConfirmation: React.FC = () => {
   const theme = useTheme();
@@ -45,7 +46,11 @@ const ClassObservationConfirmation: React.FC = () => {
 
           return {
             ...question,
-            answers: [{value} as Answer],
+            answers: [
+              value === NOT_APPLICABLE
+                ? ({value: null, not_applicable: 1} as Answer)
+                : ({value} as Answer),
+            ],
           };
         });
 
@@ -66,7 +71,10 @@ const ClassObservationConfirmation: React.FC = () => {
       const location = await GeolocationService.getLocation();
 
       const parsedAnswers: Partial<Answer>[] = Object.keys(answers).map(
-        question_id => ({question_id, value: answers[question_id]}),
+        question_id =>
+          answers[question_id] === NOT_APPLICABLE
+            ? {question_id, value: null, not_applicable: 1}
+            : {question_id, value: answers[question_id]},
       );
 
       const sessionId = await SessionService.createLocalSession(
