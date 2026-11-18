@@ -3,6 +3,7 @@ import {Coach} from '../types/coach';
 import {School} from '../types/school';
 import moment from 'moment';
 import {COUNTRY} from '@env';
+import i18n from '../i18n';
 
 const KEYS = {
   databaseVersion: `V2_LOCAL_DATABASE_VERSION`,
@@ -27,7 +28,9 @@ export const StorageService = {
   },
   getLastSyncFormated: async () => {
     const date = await AsyncStorage.getItem(KEYS.lastSync);
-    return date ? moment(new Date(date)).format('LLL') : 'no sync';
+    return date
+      ? moment(new Date(date)).format('LLL')
+      : i18n.t('settings.never-synced');
   },
   getLastSync: async () => {
     const date = await AsyncStorage.getItem(KEYS.lastSync);

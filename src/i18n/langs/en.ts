@@ -12,6 +12,7 @@ const enTranslation = {
     'load-more': 'Load more',
     optional: 'Optional',
     search: 'Search',
+    'image-view': 'Image view',
     'image-picker': {
       'upload-image-modal-title': 'Upload as image',
       'upload-image-modal-description':
@@ -30,6 +31,7 @@ const enTranslation = {
     cop: 'COP',
   },
   components: {
+    starRating: {low: 'Low', mid: 'Mid', high: 'High'},
     starsTag: {
       notEvaluted: 'Poor',
       needsWork: 'Needs work',
@@ -56,7 +58,7 @@ const enTranslation = {
       create_account_button: ' Register now',
     },
     otp: {
-      title: 'Enter the 4-digit code sent to you at',
+      title: 'Enter the 6-digit code sent to you at',
       error: 'Incorrect code. Please try again.',
       button: 'Verify',
       not_receive_code: "Didn't receive a verification code?",
@@ -108,6 +110,7 @@ const enTranslation = {
     'logout-description': 'Start from the beginning ',
     language: 'Language',
     lastSync: 'Last sync: {{value}}',
+    'never-synced': 'no sync',
     appVersion: 'App version',
     'unsynced-items': 'Unsynchronized items',
     'unsynced-teacher': 'Teachers:',

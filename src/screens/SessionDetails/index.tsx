@@ -62,9 +62,7 @@ const SessionDetailsScreen: React.FC = () => {
             {t('teacher.tabs.session.session')}
           </Text>
           <Text fontSize={'TMD'} fontWeight={400} color={'gray.700'}>
-            {moment(new Date(new Date(session.created_at))).format(
-              'DD MMM, YYYY - HH:mm',
-            )}
+            {moment(new Date(new Date(session.created_at))).format('lll')}
           </Text>
         </VStack>
         {competences ? (

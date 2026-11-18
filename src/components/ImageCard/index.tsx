@@ -62,9 +62,7 @@ const ImageCard: React.FC<Props> = ({
               {name}
             </Text>
             <Text fontSize={'TSM'} fontWeight={400} color={'gray.600'}>
-              {moment(new Date(new Date(created_at))).format(
-                'DD MMM, YYYY - HH:mm',
-              )}
+              {moment(new Date(new Date(created_at))).format('lll')}
             </Text>
 
             <HStack space={1} alignItems={'center'}>
@@ -130,7 +128,7 @@ const ImageCard: React.FC<Props> = ({
         size={'lg'}>
         <Modal.Content background={'white'}>
           <Modal.CloseButton />
-          <Modal.Header color={'black'}>Image view</Modal.Header>
+          <Modal.Header color={'black'}>{t('common.image-view')}</Modal.Header>
           <Modal.Body p={0}>
             {showImage && (
               <Center h={'lg'}>

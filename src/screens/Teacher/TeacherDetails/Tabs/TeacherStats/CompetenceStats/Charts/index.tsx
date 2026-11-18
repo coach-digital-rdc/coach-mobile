@@ -168,9 +168,7 @@ const CompetenceCharts: React.FC<Props> = ({competence_id, teacher_id}) => {
                     fontSize={'TSM'}
                     fontWeight={400}
                     color={'gray.600'}>
-                    {moment(new Date((item as any).created_at)).format(
-                      'DD MMM, YYYY - HH:mm',
-                    )}
+                    {moment(new Date((item as any).created_at)).format('lll')}
                   </Text>
                 </VStack>
 
