@@ -244,8 +244,9 @@ const enTranslation = {
     },
   },
   logout: {
-    title: 'Are you sure you want to sign out?',
-    'confirm-button': 'Yes',
+    title: 'Log out?',
+    message: 'Sessions not synchronised yet stay on the device.',
+    'confirm-button': 'Log out',
     'cancel-button': 'Cancel',
   },
   settings: {
@@ -325,6 +326,8 @@ const enTranslation = {
     start: 'Start',
   },
   qrScan: {
+    'camera-error':
+      'The camera is not available: choose the school from the list',
     title: 'Scan the QR code',
     hint: 'Place the QR code in the frame',
     found: 'Code recognised',

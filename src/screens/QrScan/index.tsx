@@ -29,6 +29,7 @@ const QrScanScreen: React.FC = () => {
   const device = useCameraDevice('back');
   const [school, setSchool] = useState<School>();
   const [invalid, setInvalid] = useState(false);
+  const [cameraError, setCameraError] = useState(false);
 
   useEffect(() => {
     if (!hasPermission) {
@@ -71,6 +72,8 @@ const QrScanScreen: React.FC = () => {
             isActive={true}
             codeScanner={codeScanner}
             style={StyleSheet.absoluteFill}
+            // The school can still be chosen from the list
+            onError={() => setCameraError(true)}
           />
         )}
         <Center flex={1}>
@@ -93,6 +96,8 @@ const QrScanScreen: React.FC = () => {
           <Text mt="16px" fontSize="15px" fontWeight={600} color="white">
             {school
               ? t('qrScan.found')
+              : cameraError
+              ? t('qrScan.camera-error')
               : invalid
               ? t('qrScan.invalid')
               : t('qrScan.hint')}

@@ -1,11 +1,11 @@
 import React, {createContext, useState, useContext, ReactNode} from 'react';
 import {StorageService} from '../services/storage.service';
 import {SchoolService} from '../services/school.service';
-import {Button, HStack, Modal, Text} from 'native-base';
 import {useTranslation} from 'react-i18next';
 import {School} from '../types/school';
 import {Coach} from '../types/coach';
 import {useNavigate} from 'react-router-native';
+import ConfirmDialog from '../components/ConfirmDialog';
 import PathRoutes from '../routers/paths';
 import {CoachService} from '../services/coach.service';
 import {CoachSchool} from '../types/coach_school';
@@ -102,40 +102,15 @@ const CoachProvider: React.FC<{children: ReactNode}> = ({children}) => {
         currentCoach,
         currentSchool,
       }}>
-      <Modal isOpen={showStartOver}>
-        <Modal.Content bg={'white'} p={4}>
-          <Text
-            mb={6}
-            color={'black'}
-            fontSize={'HXS'}
-            fontWeight={600}
-            textAlign={'center'}>
-            {t('logout.title')}
-          </Text>
-
-          <HStack space={4}>
-            <Button
-              flex={1}
-              color={'white'}
-              variant={'solid'}
-              marginTop={'auto'}
-              borderRadius={'8px'}
-              background={'primary.200'}
-              onPress={() => logout()}>
-              {t('logout.confirm-button')}
-            </Button>
-            <Button
-              flex={1}
-              variant={'solid'}
-              marginTop={'auto'}
-              borderRadius={'8px'}
-              background={'transparent'}
-              onPress={() => setShowStartOver(false)}>
-              <Text color={'primary.200'}>{t('logout.cancel-button')}</Text>
-            </Button>
-          </HStack>
-        </Modal.Content>
-      </Modal>
+      {/* Confirmation of the mockups; the sessions stay on the device */}
+      <ConfirmDialog
+        isOpen={showStartOver}
+        title={t('logout.title')}
+        message={t('logout.message')}
+        confirmLabel={t('logout.confirm-button')}
+        onConfirm={logout}
+        onCancel={() => setShowStartOver(false)}
+      />
       {children}
     </CoachContext.Provider>
   );

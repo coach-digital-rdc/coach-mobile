@@ -244,8 +244,10 @@ const frTranslation = {
     },
   },
   logout: {
-    title: 'Voulez-vous vraiment vous déconnecter ?',
-    'confirm-button': 'Oui',
+    title: 'Se déconnecter ?',
+    message:
+      "Les séances non synchronisées restent enregistrées sur l'appareil.",
+    'confirm-button': 'Se déconnecter',
     'cancel-button': 'Annuler',
   },
   settings: {
@@ -325,6 +327,8 @@ const frTranslation = {
     start: 'Commencer',
   },
   qrScan: {
+    'camera-error':
+      "La caméra n'est pas disponible : choisissez l'établissement dans la liste",
     title: 'Scanner le QR code',
     hint: 'Placez le QR code dans le cadre',
     found: 'Code reconnu',
