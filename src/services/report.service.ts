@@ -1,5 +1,7 @@
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import RNFS from 'react-native-fs';
+import ReactNativeBlobUtil from 'react-native-blob-util';
+import {PermissionsAndroid, Platform} from 'react-native';
 import moment from 'moment';
 import CompetenceService from './competence.service';
 import {SessionService} from './session.service';
@@ -23,6 +25,9 @@ export type ReportKind = 'observation' | 'pdp';
 
 // A4 in points
 const A4 = {width: 595, height: 842};
+
+// Folder of the documents in the Downloads of the phone
+const DOWNLOAD_FOLDER = 'Coach Digital';
 
 // The two PDF documents of a closed session (B24, B25), generated on the device so that
 // they are available right after the closure, even without connection.
@@ -119,6 +124,32 @@ export const ReportService = {
       kind === 'observation' ? 'Fiche_observation' : 'PDP'
     }_${teacher}_${day}`;
   },
+
+  // Copies the PDF into Downloads/Coach Digital. From Android 10 the file goes through
+  // the media store, which needs no permission; before, writing needs the permission.
+  download: async (path: string, fileName: string): Promise<void> => {
+    if (Platform.OS === 'android' && Platform.Version < 29) {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+      );
+      if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+        throw new Error('Storage permission denied');
+      }
+    }
+    await ReactNativeBlobUtil.MediaCollection.copyToMediaStore(
+      {
+        name: `${fileName}.pdf`,
+        parentFolder: DOWNLOAD_FOLDER,
+        mimeType: 'application/pdf',
+      },
+      'Download',
+      path,
+    );
+  },
+
+  // Opens the PDF with the PDF reader of the phone
+  open: (path: string) =>
+    ReactNativeBlobUtil.android.actionViewIntent(path, 'application/pdf'),
 
   // Generates the PDF in the cache of the application and returns its path
   generate: async (kind: ReportKind, data: ReportData): Promise<string> => {

@@ -1,5 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import {Center, HStack, Spinner, Text, VStack, useTheme} from 'native-base';
+import {
+  Center,
+  HStack,
+  Spinner,
+  Text,
+  VStack,
+  useTheme,
+  useToast,
+} from 'native-base';
 import {TouchableOpacity} from 'react-native';
 import {useNavigate, useParams} from 'react-router-native';
 import {useTranslation} from 'react-i18next';
@@ -10,6 +18,7 @@ import {ReportKind, ReportService} from '../../../services/report.service';
 import {ReportData} from '../../../helpers/report.helper';
 import PathRoutes from '../../../routers/paths';
 import Icon from '../../../components/Icon';
+import Toast from '../../../components/Toast';
 import Page from '../../../components/Page';
 
 const KINDS: ReportKind[] = ['observation', 'pdp'];
@@ -26,6 +35,8 @@ const ClassObservationReport: React.FC = () => {
   const [data, setData] = useState<ReportData>();
   const [files, setFiles] = useState<{[kind: string]: string}>({});
   const [error, setError] = useState(false);
+  const [downloading, setDownloading] = useState(false);
+  const toast = useToast();
 
   useEffect(() => {
     ReportService.loadData(sessionId, currentCoach, currentSchool)
@@ -51,6 +62,48 @@ const ClassObservationReport: React.FC = () => {
       filename: ReportService.fileName(kind, data),
       failOnCancel: false,
     }).catch(() => undefined);
+
+  // Copy of the document in Downloads/Coach Digital; the message lets the user open it
+  const download = async () => {
+    if (!files[kind] || !data || downloading) {
+      return;
+    }
+    const path = files[kind];
+    const fileName = ReportService.fileName(kind, data);
+    setDownloading(true);
+    try {
+      await ReportService.download(path, fileName);
+      toast.show({
+        placement: 'top',
+        duration: 5000,
+        render: () => (
+          <TouchableOpacity onPress={() => ReportService.open(path)}>
+            <Toast
+              icon="check-circle"
+              type="success"
+              title={t('classObservation.report.downloaded')}
+              description={t('classObservation.report.downloaded-detail', {
+                file: `${fileName}.pdf`,
+              })}
+            />
+          </TouchableOpacity>
+        ),
+      });
+    } catch (err) {
+      toast.show({
+        placement: 'top',
+        render: () => (
+          <Toast
+            icon="exclamation-circle"
+            type="error"
+            title={t('classObservation.report.download-error')}
+          />
+        ),
+      });
+    } finally {
+      setDownloading(false);
+    }
+  };
 
   const goBack = () =>
     navigate(
@@ -102,6 +155,25 @@ const ClassObservationReport: React.FC = () => {
             {data ? `${ReportService.fileName(kind, data)}.pdf` : ''}
           </Text>
         </HStack>
+        <TouchableOpacity
+          disabled={!files[kind] || downloading}
+          accessibilityLabel={t('classObservation.report.download')}
+          onPress={download}>
+          <HStack space={1} alignItems="center">
+            {downloading ? (
+              <Spinner size="sm" />
+            ) : (
+              <Icon
+                name="download-alt"
+                size={18}
+                color={theme.colors.primary['200']}
+              />
+            )}
+            <Text fontSize="14px" fontWeight={600} color="primary.200">
+              {t('classObservation.report.download')}
+            </Text>
+          </HStack>
+        </TouchableOpacity>
         <TouchableOpacity
           disabled={!files[kind]}
           accessibilityLabel={t('classObservation.report.share')}

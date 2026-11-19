@@ -418,6 +418,11 @@ const frTranslation = {
       observation: "Fiche d'observation",
       pdp: 'PDP (rapport de coaching)',
       share: 'Partager',
+      download: 'Télécharger',
+      downloaded: 'Document enregistré',
+      'downloaded-detail':
+        "Téléchargements › Coach Digital › {{file}}. Touchez ce message pour l'ouvrir.",
+      'download-error': "Le document n'a pas pu être enregistré",
       generating: 'Préparation du document…',
       error:
         "Le document n'a pas pu être généré. Réessayez depuis l'écran de la séance clôturée.",

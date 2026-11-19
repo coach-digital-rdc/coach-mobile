@@ -416,6 +416,11 @@ const enTranslation = {
       observation: 'Observation sheet',
       pdp: 'PDP (coaching report)',
       share: 'Share',
+      download: 'Download',
+      downloaded: 'Document saved',
+      'downloaded-detail':
+        'Downloads › Coach Digital › {{file}}. Tap this message to open it.',
+      'download-error': 'The document could not be saved',
       generating: 'Preparing the document…',
       error:
         'The document could not be generated. Try again from the closed session screen.',
