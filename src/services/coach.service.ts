@@ -96,14 +96,32 @@ export const CoachService = {
     surname,
     birthdate,
     image_id,
+    sex,
+    function: observerFunction,
+    duty_station,
+    postal_box,
   }: Partial<Coach>): Promise<void> => {
     const db = await getDBConnection();
     await db.executeSql(
       `
-      INSERT OR REPLACE INTO coach(id, nin, pin, name, email, phone, surname, birthdate, image_id, _status)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'synced')
+      INSERT OR REPLACE INTO coach(id, nin, pin, name, email, phone, surname, birthdate, image_id, sex, function, duty_station, postal_box, _status)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'synced')
     `,
-      [id, nin, pin, name, email, phone, surname, birthdate, image_id],
+      [
+        id,
+        nin,
+        pin,
+        name,
+        email,
+        phone,
+        surname,
+        birthdate,
+        image_id,
+        sex,
+        observerFunction,
+        duty_station,
+        postal_box,
+      ],
     );
   },
 

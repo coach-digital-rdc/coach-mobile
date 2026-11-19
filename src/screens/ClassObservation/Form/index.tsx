@@ -27,10 +27,8 @@ import {
   NOT_APPLICABLE,
   getAnswerChoices,
   getSuggestedScore,
-  isChoiceQuestion,
   toAnswers,
 } from '../../../helpers/answer.helper';
-import StarRating from '../../../components/StarRating';
 import BottomSheetTooltip from './BottomSheetTooltip';
 import {NoteTimeline} from '../Notes';
 import PhaseStepper from '../../../components/PhaseStepper';
@@ -38,7 +36,7 @@ import SessionStrip from '../../../components/SessionStrip';
 import PathRoutes from '../../../routers/paths';
 import Button from '../../../components/Button';
 import Icon from '../../../components/Icon';
-import Page from '../../../components/Page';
+import Page, {GUTTER} from '../../../components/Page';
 
 // Colour of a selected answer, as in the mockups: low in red, medium in yellow, high in green
 const CHOICE_COLORS: {[label: string]: string} = {
@@ -56,18 +54,6 @@ const ChoiceRow: React.FC<{
   onPress: (value: number) => void;
 }> = ({question, value, onPress}) => {
   const {t} = useTranslation();
-  // Star rating of the other grids (Sierra Leone, Nepal)
-  if (!isChoiceQuestion(question)) {
-    return (
-      <HStack mt="8px" pl="48px">
-        <StarRating
-          size={question.scale}
-          value={value || 0}
-          onPress={onPress}
-        />
-      </HStack>
-    );
-  }
   const choices = getAnswerChoices(question);
   // N/A first, as in the mockups
   const ordered = [
@@ -332,7 +318,7 @@ const ClassObservationForm: React.FC = () => {
     return (
       <Page back title={t('classObservation.title')} onBack={goBack}>
         <PhaseStepper current="observation" />
-        <Center flex={1} px="16px">
+        <Center flex={1} px={GUTTER}>
           <Center w="72px" h="72px" borderRadius="36px" bg="yellow.0">
             <Icon name="lock" size={36} color={theme.colors.yellow['300']} />
           </Center>
@@ -361,7 +347,7 @@ const ClassObservationForm: React.FC = () => {
   return (
     <Page back title={t('classObservation.title')} onBack={goBack} noPadding>
       <PhaseStepper current="evaluation" />
-      <ScrollView flex={1} px="16px" showsVerticalScrollIndicator={false}>
+      <ScrollView flex={1} px={GUTTER} showsVerticalScrollIndicator={false}>
         <SessionStrip teacher={teacherName} detail={session.subject} />
         <Text fontSize="24px" fontWeight={600} color="gray.700">
           {t('classObservation.form.title')}
@@ -501,7 +487,7 @@ const ClassObservationForm: React.FC = () => {
       </ScrollView>
 
       <VStack
-        px="16px"
+        px={GUTTER}
         pb="16px"
         pt="8px"
         borderTopWidth="1px"

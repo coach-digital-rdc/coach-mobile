@@ -9,8 +9,142 @@ const frTranslation = {
     na: 'N/A',
   },
   splash: {
+    'update-title': 'Nouvelle version disponible',
+    'update-message':
+      "La version {{value}} de l'application est disponible. Installez-la pour bénéficier des dernières corrections et de la grille à jour.",
+    'update-required':
+      "La version {{value}} de l'application est nécessaire pour continuer. Installez-la pour bénéficier des dernières corrections et de la grille à jour.",
+    update: 'Mettre à jour',
+    later: 'Plus tard',
     tagline: 'Observation des pratiques de classe',
     version: 'Version {{value}}',
+  },
+  observer: {
+    function: {
+      INSPECTOR: 'Inspecteur.trice',
+      ADVISOR: 'Conseiller.ère pédagogique',
+      SCHOOL_HEAD: "Chef d'établissement",
+      PEER: 'Pair (enseignant.e)',
+    },
+    scope: {
+      INSPECTOR: "Établissements de votre zone d'intervention",
+      ADVISOR: "Établissements de votre zone d'intervention",
+      SCHOOL_HEAD: 'Établissement dont vous êtes responsable',
+      PEER: 'Établissement auquel vous êtes rattaché.e',
+    },
+  },
+  tlc: {
+    // Empty state of the community of practice (kept in the code, not offered)
+    checkingStats: {
+      empty: {
+        title: 'Données insuffisantes pour cet établissement',
+        description:
+          "Réalisez des observations de classe et des entretiens pour obtenir les statistiques de l'établissement la prochaine fois",
+      },
+    },
+    title: "Cercles d'apprentissage",
+    heading: "Cercles d'apprentissage des enseignant.e.s",
+    subtitle:
+      "Animez une séance collective autour d'une pratique de classe. Chaque unité dure environ une heure.",
+    results: "Résultats de l'établissement",
+    'results-detail':
+      '{{school}} · {{observations}} observations de {{teachers}} enseignant.e.s. Les unités sont classées selon les comportements le plus souvent cotés Faible.',
+    weak: '{{code}} coté Faible dans {{count}} observation(s) sur {{total}}',
+    recommended: 'Recommandée',
+    unit: {
+      start: "Commencer l'unité",
+      steps: {
+        attendance: {
+          title: 'Liste de présence',
+          time: '5 min',
+          text: "Cochez les enseignant.e.s de l'établissement qui participent au cercle.",
+        },
+        introduction: {
+          title: "Introduction de l'unité",
+          time: '15 min',
+          text: "Présentez aux enseignant.e.s le thème de l'unité et ce qu'il apporte en classe.",
+        },
+        situations: {
+          title: 'Situations de classe',
+          time: '10 min',
+          text: 'Lisez les exemples à voix haute et discutez-en en groupe.',
+        },
+        explanation: {
+          title: 'Explication des situations',
+          time: '10 min',
+          text: "Expliquez ce qui était bien et ce qui ne l'était pas.",
+        },
+        activities: {
+          title: 'Activités',
+          time: '15 min',
+          text: 'Analysez deux échanges en classe, puis présentez la tâche à réaliser.',
+        },
+      },
+      sections: {
+        attendance: 'Présence',
+        intro: 'Intro',
+        situations: 'Situations',
+        explanation: 'Explication',
+        activities: 'Activités',
+        end: 'Fin',
+      },
+      buttons: {
+        'start-intro': "Commencer l'introduction",
+        next: 'Suivant',
+        'see-examples': 'Voir les exemples',
+        'see-explanation': "Voir l'explication",
+        'go-activities': 'Passer aux activités',
+        'see-responses': 'Voir les réponses',
+        'see-task': 'Voir la tâche',
+        rate: 'Évaluer la séance',
+        finish: 'Terminer la séance',
+      },
+      attendance: 'Liste de présence',
+      'attendance-hint':
+        'Cochez les enseignant.e.s de {{school}} qui participent au cercle.',
+      'absent-from-list': 'Enseignant.e absent.e de la liste',
+      'name-placeholder': 'Nom et prénom',
+      add: 'Ajouter',
+      added: 'Ajouté.e pendant la séance',
+      introduction: 'Introduction',
+      learn: 'Dans cette unité, vous allez apprendre :',
+      situations: 'Situations de classe',
+      'situations-hint':
+        'Lisez les exemples à voix haute et posez les questions aux enseignant.e.s.',
+      discuss: 'À discuter en groupe',
+      explanation: 'Explication',
+      'explanation-hint':
+        "Expliquez aux enseignant.e.s ce qui était bien et ce qui ne l'était pas dans les exemples.",
+      bad: 'Exemple à éviter',
+      good: 'Bon exemple',
+      activities: 'Activités',
+      responses: 'Réponses',
+      'what-next': 'Et ensuite ?',
+      task: 'Tâche',
+      'task-1': 'Tâche 1',
+      end: 'Fin de la séance',
+      'end-text':
+        "Merci d'avoir animé ce cercle d'apprentissage. Les enseignant.e.s présenteront leur tâche au prochain cercle.",
+      participants_interval:
+        '(0-1)[{{count}} enseignant.e a participé];(2-inf)[{{count}} enseignant.e.s ont participé];',
+      rating: 'Comment évaluez-vous la participation des enseignant.e.s ?',
+      teacher: 'Enseignant.e',
+      class: 'La classe',
+      learner: 'Apprenant.e',
+      saved_interval:
+        '(0-1)[Séance de cercle enregistrée · {{count}} participant.e];(2-inf)[Séance de cercle enregistrée · {{count}} participant.e.s];',
+    },
+  },
+  appreciation: {
+    VERY_GOOD: 'Très bien',
+    GOOD: 'Bien',
+    FAIRLY_GOOD: 'Assez bien',
+    INSUFFICIENT: 'Insuffisant',
+    WEAK: 'Faible',
+  },
+  language: {
+    hint: 'La langue peut être changée à tout moment dans les paramètres.',
+    continue: 'Continuer',
   },
   common: {
     cancel: 'Annuler',
@@ -83,6 +217,18 @@ const frTranslation = {
       change_coach_button: "Changer d'observateur",
     },
     createAccount: {
+      heading: 'Compte observateur',
+      subtitle:
+        "Ces informations sont reprises dans l'en-tête de chaque fiche d'observation.",
+      sex: 'Sexe',
+      function: 'Fonction',
+      zone: "Zone d'intervention",
+      'zone-placeholder': 'ex. Province éducationnelle Kinshasa-Lukunga',
+      'duty-station': "Poste d'attache",
+      'duty-station-placeholder': 'ex. École secondaire Bon Espoir',
+      'postal-box': 'Boîte postale',
+      error:
+        "Le compte n'a pas pu être créé. Vérifiez la connexion et l'adresse e-mail.",
       title: 'Nouveau compte',
       takePhoto: 'Prendre/choisir une photo',
       name: 'Prénom',
@@ -112,8 +258,10 @@ const frTranslation = {
     },
   },
   logout: {
-    title: 'Voulez-vous vraiment vous déconnecter ?',
-    'confirm-button': 'Oui',
+    title: 'Se déconnecter ?',
+    message:
+      "Les séances non synchronisées restent enregistrées sur l'appareil.",
+    'confirm-button': 'Se déconnecter',
     'cancel-button': 'Annuler',
   },
   settings: {
@@ -121,17 +269,41 @@ const frTranslation = {
     logout: 'Se déconnecter',
     'logout-description': 'Recommencer depuis le début ',
     language: 'Langue',
-    lastSync: 'Dernière synchronisation : {{value}}',
+    school: 'Établissement',
+    change: 'Changer',
+    sync: 'Synchronisation',
+    'last-sync': 'Dernière : {{value}}',
     'never-synced': 'jamais',
-    'try-sync': 'Synchroniser',
+    manual: "Manuel d'utilisation",
+    'manual-offline': 'Consultable hors ligne',
     appVersion: "Version de l'application",
-    'unsynced-items': 'Éléments non synchronisés',
-    'unsynced-teacher': 'Enseignants :',
-    'unsynced-session': 'Séances :',
-    'unsynced-feedback': 'Retours :',
     'sync-error-title': 'Impossible de synchroniser les données',
     'sync-error-description': 'Vérifiez votre connexion et réessayez',
-    changeLanguage: {title: 'Choisir la langue', button: 'Suivant'},
+  },
+  sync: {
+    title: 'Synchronisation',
+    subtitle:
+      "L'application fonctionne sans connexion. Synchronisez dès que vous avez du réseau pour envoyer vos séances et recevoir les mises à jour.",
+    last: 'Dernière synchronisation',
+    grid: "Grille d'observation",
+    'grid-value': 'RDC · {{count}} comportements',
+    rules: 'Règles du PDP',
+    'rules-value': 'Version {{version}}, publiée le {{date}}',
+    pending: 'Éléments à envoyer',
+    'all-synced': 'Tout est synchronisé',
+    kinds: {
+      sessions: 'Séances',
+      notes: "Notes d'observation",
+      checklist: 'Réponses de la checklist',
+      scoring: 'Cotation',
+      pdp: 'Plans de développement',
+      signatures: 'Signatures',
+      teachers: 'Enseignant.e.s',
+    },
+    offline: 'Pas de connexion pour le moment',
+    button: 'Synchroniser maintenant',
+    running: 'Synchronisation en cours…',
+    success: 'Synchronisation réussie',
   },
   coachSelect: {
     title: 'Choisissez votre profil',
@@ -153,16 +325,31 @@ const frTranslation = {
       '(0)[Aucun enseignant];(1)[1 enseignant];(2-inf)[{{count}} enseignants];',
   },
   syncDetails: {
+    preparing: "Préparation de l'appareil",
+    downloading: 'Téléchargement des données de {{school}}…',
     title: 'Configuration terminée',
-    description: "L'appareil a été configuré avec les données de base de",
-    start: "Commencer à utiliser l'application",
-    'description-list': 'Vous pourrez :',
-
-    list_0: '- Choisir {{ value }} dans la liste des établissements',
-    list_1: '- Créer des enseignants',
-    list_2: '- Choisir des enseignants déjà créés',
-    list_3: '- Consulter les données des enseignants déjà créés',
-    list_4: '- Consulter les données de {{ value }}',
+    description:
+      "L'appareil peut maintenant être utilisé sans connexion. Données téléchargées :",
+    offline:
+      "Pas de connexion : l'appareil utilise les données déjà présentes. Synchronisez dès que possible.",
+    teachers_interval:
+      "(0-1)[{{count}} enseignant.e de l'établissement];(2-inf)[{{count}} enseignant.e.s de l'établissement];",
+    grid: "Grille d'observation RDC : {{competencies}} sous-domaines, {{questions}} comportements",
+    checklist: 'Checklist documentaire : {{count}} documents',
+    rules: 'Règles du PDP, version {{version}}',
+    manual: "Manuel d'utilisation (consultable hors ligne)",
+    start: 'Commencer',
+  },
+  qrScan: {
+    'camera-error':
+      "La caméra n'est pas disponible : choisissez l'établissement dans la liste",
+    title: 'Scanner le QR code',
+    hint: 'Placez le QR code dans le cadre',
+    found: 'Code reconnu',
+    invalid: "Ce QR code n'est pas celui d'un établissement",
+    permission: "Autorisez l'accès à la caméra pour scanner le QR code.",
+    confirm: "Confirmer l'établissement",
+    list: 'Choisir dans la liste',
   },
   home: {
     salutation: 'Bonjour',
@@ -175,6 +362,8 @@ const frTranslation = {
       sync: 'Synchronisation',
     },
     sync: {
+      outdated:
+        'Pas de synchronisation depuis {{days}} jours : synchronisez pour recevoir les dernières règles du PDP',
       done: 'Synchronisé {{date}}',
       never: 'Pas encore synchronisé',
       pending_interval:
@@ -264,6 +453,16 @@ const frTranslation = {
     },
   },
   teacher: {
+    evolution: {
+      subtitle: 'Cotes globales des sous-domaines, de 1 à 5, par observation.',
+      empty: "L'évolution apparaîtra après la première séance clôturée.",
+    },
+    pdp: {
+      title: 'PDP du {{date}}',
+      detail: 'Indicateur : {{indicator}} · échéance {{date}}',
+      hint: "Les progrès se mesurent à l'observation suivante : voir l'onglet « Évolution ».",
+      empty: 'Aucun PDP validé pour le moment.',
+    },
     form: {
       name: 'Prénom',
       'name-placeholder': 'ex. Daniel',
@@ -306,6 +505,7 @@ const frTranslation = {
       description: 'Enseignant de {{subject}} à {{school}}',
     },
     tabs: {
+      pdp: 'PDP',
       session: {
         title: 'Observations',
         'observation-of': 'Observation du {{date}}',
@@ -348,29 +548,6 @@ const frTranslation = {
       },
     },
     subjects: {
-      np: {
-        $1: 'Anglais',
-        $2: 'Mathématiques',
-        $3: 'Sciences et technologie',
-        $4: 'Études sociales et valeurs humaines',
-        $5: 'Santé, éducation physique et arts',
-        $6: 'Langue maternelle et matières locales',
-        $7: 'Hamro serofero',
-        $8: 'Népali',
-        $9: 'Autre',
-      },
-      sl: {
-        $1: 'Arabe',
-        $2: 'Arts créatifs et du spectacle',
-        $3: 'Sciences générales',
-        $4: 'Économie domestique',
-        $5: 'Langue',
-        $6: 'Mathématiques',
-        $7: 'Éducation physique et santé',
-        $8: 'Aptitude quantitative et verbale',
-        $9: 'Études sociales/éducation civique',
-        $10: 'Autre',
-      },
       cd: {
         $1: 'Français',
         $2: 'Anglais',
@@ -436,6 +613,20 @@ const frTranslation = {
           "Après vous être accordé avec l'enseignant sur les priorités, planifiez votre prochaine visite.",
       },
     },
+    report: {
+      title: 'Documents PDF',
+      observation: "Fiche d'observation",
+      pdp: 'PDP (rapport de coaching)',
+      share: 'Partager',
+      download: 'Télécharger',
+      downloaded: 'Document enregistré',
+      'downloaded-detail':
+        "Téléchargements › Coach Digital › {{file}}. Touchez ce message pour l'ouvrir.",
+      'download-error': "Le document n'a pas pu être enregistré",
+      generating: 'Préparation du document…',
+      error:
+        "Le document n'a pas pu être généré. Réessayez depuis l'écran de la séance clôturée.",
+    },
     signatures: {
       title: 'Signatures',
       subtitle:
@@ -472,6 +663,8 @@ const frTranslation = {
       'close-confirm': 'Clôturer',
     },
     advice: {
+      appreciation: 'Appréciation de la séance',
+      'appreciation-changed': 'Modifiée · proposée {{value}}',
       title: 'Conseils et horaires',
       subtitle:
         "Les heures sont reprises de l'observation ; corrigez-les si besoin.",
@@ -706,7 +899,7 @@ const frTranslation = {
       sync: 'Synchronisation',
       synced: 'Synchronisée',
       pending: 'En attente',
-      pdf: 'Documents PDF (bientôt disponibles)',
+      pdf: 'Voir les documents PDF',
       subtitle: "Merci. L'observation de classe est terminée !",
       whatsNext: 'Et ensuite ?',
       startFeedback:
@@ -879,169 +1072,6 @@ const frTranslation = {
       title: 'Communauté de pratique terminée',
       description:
         'Félicitations, vous avez terminé la Communauté de pratique !',
-      button: 'Terminer',
-    },
-  },
-  tlc: {
-    page_title: "Cercles d'apprentissage",
-
-    loadingBar: {
-      checkingStats: 'Statistiques',
-      unitSelect: 'Unité',
-      introduction: 'Introduction',
-      situations: 'Situations',
-      explanation: 'Explication',
-      activities: 'Activités',
-      finish: 'Fin',
-    },
-
-    onboarding: {
-      title: 'Pour commencer',
-      subtitle:
-        "Découvrez les étapes du Cercle d'apprentissage et commencez une séance",
-      button: 'Commencer',
-
-      process: {
-        step1: {
-          title: "Consulter les statistiques de l'établissement",
-          subtitle: '5 min',
-          description:
-            "Consultez les statistiques de l'établissement pour choisir l'unité",
-        },
-        step2: {
-          title: "Choisir l'unité",
-          subtitle: '5 min',
-          description:
-            "Choisissez une unité dans la liste pour ce Cercle d'apprentissage",
-        },
-        step3: {
-          title: "Introduction de l'unité",
-          subtitle: '15 min',
-          description:
-            "Expliquez aux enseignants l'objet de l'unité et ce qu'elle peut leur apporter",
-        },
-        step4: {
-          title: 'Situations',
-          subtitle: '10 min',
-          description:
-            'Présentez aux enseignants des situations de classe et faites-les réagir',
-        },
-        step5: {
-          title: 'Explication des situations',
-          subtitle: '10 min',
-          description:
-            'Expliquez pourquoi ces situations étaient bonnes ou mauvaises',
-        },
-        step6: {
-          title: 'Activités',
-          subtitle: '15 min',
-          description:
-            'Faites des activités avec les enseignants pour mettre en pratique ce qu’ils ont appris',
-        },
-      },
-    },
-    checkingStats: {
-      title: 'Appréciation générale',
-      graphDesc:
-        "Cette appréciation est la moyenne de l'établissement dans tous les sous-domaines",
-      ratingTitle: 'Appréciation par sous-domaine',
-      ratingDesc: "Moyenne de l'établissement dans chaque sous-domaine",
-      empty: {
-        title: 'Données insuffisantes pour cet établissement',
-        description:
-          "Réalisez des observations de classe et des entretiens pour obtenir les statistiques de l'établissement la prochaine fois",
-      },
-      button: 'Suivant',
-    },
-    unitSelect: {
-      title: "Choisir l'unité",
-      description:
-        'Chaque unité porte sur une pratique clé, que les enseignants travaillent ensemble',
-      button: "Commencer l'unité",
-    },
-    introduction: {
-      $1: {
-        title: 'Introduction',
-        description:
-          "Ce Cercle d'apprentissage porte sur l'usage d'un langage positif en classe pour créer un environnement d'apprentissage encourageant pour les élèves.",
-
-        learn: {
-          title: 'Dans cette unité, vous verrez :',
-
-          $1: {
-            title: 'Pourquoi un langage positif est important en classe',
-          },
-          $2: {
-            title:
-              'Comment utiliser un langage positif en classe pour encourager les élèves',
-          },
-        },
-
-        button: 'Suivant',
-      },
-      $2: {
-        title: 'Pourquoi utiliser un langage positif en classe ?',
-        description:
-          "Il est important de créer en classe un environnement où les élèves se sentent en sécurité et soutenus sur le plan affectif. Tous les élèves se sentent les bienvenus si l'enseignant les traite tous avec respect.",
-        button: 'Voir les exemples',
-      },
-    },
-    situations: {
-      title: 'Situations',
-      description:
-        'Lisez à voix haute les exemples ci-dessous et posez les questions aux enseignants',
-
-      steps: {
-        $1: {
-          title: 'Exemple 1',
-          description:
-            "L'enseignant explique une notion à la classe puis donne un exercice. Il remarque qu'un élève n'arrive pas à faire le travail demandé. Il va vers lui et lui dit : « tu n'es pas un bon élève », « tu ne fais jamais ton travail » ou « tu n'y arriveras pas ».",
-          box: {
-            title: 'Discutez de la question suivante',
-            description:
-              "Comment pensez-vous que l'élève va se sentir ? Comment va-t-il se comporter ?",
-          },
-        },
-
-        $2: {
-          title: 'Exemple 2',
-          description:
-            "L'enseignant explique une notion à la classe puis donne un exercice. Il remarque qu'un élève n'arrive pas à faire le travail demandé. Il va vers lui et lui dit : « tu es un bon élève, et si tu fais un effort tu peux y arriver ».",
-          box: {
-            title: 'Discutez de la question suivante',
-            description:
-              "Comment pensez-vous que l'élève va se sentir ? Comment va-t-il se comporter ?",
-          },
-        },
-      },
-
-      button: "Voir l'explication",
-    },
-    explanation: {
-      title: 'Explication',
-      description:
-        'Expliquez aux enseignants ce qui était mauvais et ce qui était bon dans les exemples',
-
-      steps: {
-        $1: {
-          title: 'Exemple 1',
-          description:
-            "Dans le premier échange, les mots de l'enseignant ne soutiennent ni n'encouragent l'élève. Celui-ci ne se sentira pas bien et ne sera pas motivé pour travailler. L'enseignant doit soutenir les élèves pour qu'ils travaillent davantage.",
-        },
-        $2: {
-          title: 'Exemple 2',
-          description:
-            "Dans le second exemple, l'enseignant voit que l'élève a des difficultés et essaie de le soutenir par des mots positifs et encourageants.",
-        },
-      },
-      button: 'Suivant',
-    },
-    activities: {button: 'Suivant'},
-    finish: {
-      title: "Évaluer l'activité",
-      description: "Comment s'est-elle déroulée ?",
-      question:
-        "Les enseignants ont-ils bien répondu ? Ont-ils compris l'usage d'un langage positif ?",
       button: 'Terminer',
     },
   },

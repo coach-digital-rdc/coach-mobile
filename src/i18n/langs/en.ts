@@ -9,8 +9,142 @@ const enTranslation = {
     na: 'N/A',
   },
   splash: {
+    'update-title': 'New version available',
+    'update-message':
+      'Version {{value}} of the application is available. Install it to get the latest fixes and the updated grid.',
+    'update-required':
+      'Version {{value}} of the application is required to continue. Install it to get the latest fixes and the updated grid.',
+    update: 'Update',
+    later: 'Later',
     tagline: 'Classroom practice observation',
     version: 'Version {{value}}',
+  },
+  observer: {
+    function: {
+      INSPECTOR: 'Inspector',
+      ADVISOR: 'Pedagogical advisor',
+      SCHOOL_HEAD: 'School head',
+      PEER: 'Peer (teacher)',
+    },
+    scope: {
+      INSPECTOR: 'Schools of your area of intervention',
+      ADVISOR: 'Schools of your area of intervention',
+      SCHOOL_HEAD: 'School you are in charge of',
+      PEER: 'School you are attached to',
+    },
+  },
+  tlc: {
+    // Empty state of the community of practice (kept in the code, not offered)
+    checkingStats: {
+      empty: {
+        title: 'No sufficient data for this school',
+        description:
+          'Complete class observations and feedback sessions to unlock the statistics of the school next time',
+      },
+    },
+    title: 'Learning circles',
+    heading: 'Teacher learning circles',
+    subtitle:
+      'Lead a group session on a classroom practice. Each unit takes about one hour.',
+    results: 'Results of the school',
+    'results-detail':
+      '{{school}} · {{observations}} observations of {{teachers}} teachers. Units are ranked by the behaviours most often scored Low.',
+    weak: '{{code}} scored Low in {{count}} of {{total}} observation(s)',
+    recommended: 'Recommended',
+    unit: {
+      start: 'Start the unit',
+      steps: {
+        attendance: {
+          title: 'Attendance list',
+          time: '5 min',
+          text: 'Tick the teachers of the school who take part in the circle.',
+        },
+        introduction: {
+          title: 'Introduction of the unit',
+          time: '15 min',
+          text: 'Present the topic of the unit to the teachers and what it brings to the classroom.',
+        },
+        situations: {
+          title: 'Classroom situations',
+          time: '10 min',
+          text: 'Read the examples aloud and discuss them as a group.',
+        },
+        explanation: {
+          title: 'Explanation of the situations',
+          time: '10 min',
+          text: 'Explain what was good and what was not.',
+        },
+        activities: {
+          title: 'Activities',
+          time: '15 min',
+          text: 'Analyse two classroom exchanges, then present the task to carry out.',
+        },
+      },
+      sections: {
+        attendance: 'Attendance',
+        intro: 'Intro',
+        situations: 'Situations',
+        explanation: 'Explanation',
+        activities: 'Activities',
+        end: 'End',
+      },
+      buttons: {
+        'start-intro': 'Start the introduction',
+        next: 'Next',
+        'see-examples': 'See the examples',
+        'see-explanation': 'See the explanation',
+        'go-activities': 'Go to the activities',
+        'see-responses': 'See the responses',
+        'see-task': 'See the task',
+        rate: 'Rate the session',
+        finish: 'End the session',
+      },
+      attendance: 'Attendance list',
+      'attendance-hint':
+        'Tick the teachers of {{school}} who take part in the circle.',
+      'absent-from-list': 'Teacher missing from the list',
+      'name-placeholder': 'Full name',
+      add: 'Add',
+      added: 'Added during the session',
+      introduction: 'Introduction',
+      learn: 'In this unit, you will learn:',
+      situations: 'Classroom situations',
+      'situations-hint':
+        'Read the examples aloud and ask the questions to the teachers.',
+      discuss: 'To discuss as a group',
+      explanation: 'Explanation',
+      'explanation-hint':
+        'Explain to the teachers what was good and what was not in the examples.',
+      bad: 'Example to avoid',
+      good: 'Good example',
+      activities: 'Activities',
+      responses: 'Responses',
+      'what-next': 'What next?',
+      task: 'Task',
+      'task-1': 'Task 1',
+      end: 'End of the session',
+      'end-text':
+        'Thank you for leading this learning circle. The teachers will present their task at the next circle.',
+      participants_interval:
+        '(0-1)[{{count}} teacher took part];(2-inf)[{{count}} teachers took part];',
+      rating: 'How do you rate the participation of the teachers?',
+      teacher: 'Teacher',
+      class: 'The class',
+      learner: 'Learner',
+      saved_interval:
+        '(0-1)[Circle session saved · {{count}} participant];(2-inf)[Circle session saved · {{count}} participants];',
+    },
+  },
+  appreciation: {
+    VERY_GOOD: 'Very good',
+    GOOD: 'Good',
+    FAIRLY_GOOD: 'Fairly good',
+    INSUFFICIENT: 'Insufficient',
+    WEAK: 'Weak',
+  },
+  language: {
+    hint: 'The language can be changed at any time in the settings.',
+    continue: 'Continue',
   },
   common: {
     cancel: 'Cancel',
@@ -84,6 +218,18 @@ const enTranslation = {
       change_coach_button: 'Change coach',
     },
     createAccount: {
+      heading: 'Observer account',
+      subtitle:
+        'This information is shown in the header of each observation sheet.',
+      sex: 'Sex',
+      function: 'Function',
+      zone: 'Area of intervention',
+      'zone-placeholder': 'e.g. Kinshasa-Lukunga education province',
+      'duty-station': 'Duty station',
+      'duty-station-placeholder': 'e.g. Bon Espoir secondary school',
+      'postal-box': 'Postal box',
+      error:
+        'The account could not be created. Check the connection and the e-mail address.',
       title: 'New account',
       takePhoto: 'Take/Choose photo',
       name: 'First name',
@@ -112,26 +258,51 @@ const enTranslation = {
     },
   },
   logout: {
-    title: 'Are you sure you want to sign out?',
-    'confirm-button': 'Yes',
+    title: 'Log out?',
+    message: 'Sessions not synchronised yet stay on the device.',
+    'confirm-button': 'Log out',
     'cancel-button': 'Cancel',
   },
   settings: {
     title: 'Settings',
-    logout: 'Sign out',
-    'logout-description': 'Start from the beginning ',
+    logout: 'Log out',
+    'logout-description': 'Start over',
     language: 'Language',
-    lastSync: 'Last sync: {{value}}',
-    'never-synced': 'no sync',
-    'try-sync': 'Try sync',
+    school: 'School',
+    change: 'Change',
+    sync: 'Synchronisation',
+    'last-sync': 'Last: {{value}}',
+    'never-synced': 'never',
+    manual: 'User manual',
+    'manual-offline': 'Available offline',
     appVersion: 'App version',
-    'unsynced-items': 'Unsynchronized items',
-    'unsynced-teacher': 'Teachers:',
-    'unsynced-session': 'Sessions:',
-    'unsynced-feedback': 'Feedback:',
-    'sync-error-title': 'Unable to synchronize data',
+    'sync-error-title': 'Unable to synchronise the data',
     'sync-error-description': 'Check your connection and try again',
-    changeLanguage: {title: 'Select language', button: 'Next'},
+  },
+  sync: {
+    title: 'Synchronisation',
+    subtitle:
+      'The application works without connection. Synchronise as soon as you have network to send your sessions and receive the updates.',
+    last: 'Last synchronisation',
+    grid: 'Observation grid',
+    'grid-value': 'DRC · {{count}} behaviours',
+    rules: 'PDP rules',
+    'rules-value': 'Version {{version}}, published on {{date}}',
+    pending: 'Items to send',
+    'all-synced': 'Everything is synchronised',
+    kinds: {
+      sessions: 'Sessions',
+      notes: 'Observation notes',
+      checklist: 'Checklist answers',
+      scoring: 'Scoring',
+      pdp: 'Development plans',
+      signatures: 'Signatures',
+      teachers: 'Teachers',
+    },
+    offline: 'No connection at the moment',
+    button: 'Synchronise now',
+    running: 'Synchronising…',
+    success: 'Synchronisation successful',
   },
   coachSelect: {
     title: 'Select your profile',
@@ -153,16 +324,31 @@ const enTranslation = {
       '(0)[No teachers here];(1)[1 teacher here];(2-inf)[{{count}} teachers here];',
   },
   syncDetails: {
+    preparing: 'Preparing the device',
+    downloading: 'Downloading the data of {{school}}…',
     title: 'Setup complete',
-    description: 'The device was setup with the basic data from',
-    start: 'Start using the app',
-    'description-list': "You'll be able to :",
-
-    list_0: '- Select {{ value }} in the school list',
-    list_1: '- Create new teachers',
-    list_2: '- Select teachers created before',
-    list_3: "- View previously created teacher's data",
-    list_4: '- View {{ value }} data',
+    description:
+      'The device can now be used without connection. Data downloaded:',
+    offline:
+      'No connection: the device uses the data already present. Synchronise as soon as possible.',
+    teachers_interval:
+      '(0-1)[{{count}} teacher of the school];(2-inf)[{{count}} teachers of the school];',
+    grid: 'DRC observation grid: {{competencies}} sub-domains, {{questions}} behaviours',
+    checklist: 'Document checklist: {{count}} documents',
+    rules: 'PDP rules, version {{version}}',
+    manual: 'User manual (available offline)',
+    start: 'Start',
+  },
+  qrScan: {
+    'camera-error':
+      'The camera is not available: choose the school from the list',
+    title: 'Scan the QR code',
+    hint: 'Place the QR code in the frame',
+    found: 'Code recognised',
+    invalid: 'This QR code is not the one of a school',
+    permission: 'Allow access to the camera to scan the QR code.',
+    confirm: 'Confirm the school',
+    list: 'Choose from the list',
   },
   home: {
     salutation: 'Hi',
@@ -175,6 +361,8 @@ const enTranslation = {
       sync: 'Synchronisation',
     },
     sync: {
+      outdated:
+        'No synchronisation for {{days}} days: synchronise to receive the latest PDP rules',
       done: 'Synced {{date}}',
       never: 'Not synced yet',
       pending_interval:
@@ -263,6 +451,17 @@ const enTranslation = {
     },
   },
   teacher: {
+    evolution: {
+      subtitle:
+        'Global scores of the sub-domains, from 1 to 5, by observation.',
+      empty: 'The evolution will appear after the first closed session.',
+    },
+    pdp: {
+      title: 'PDP of {{date}}',
+      detail: 'Indicator: {{indicator}} · due {{date}}',
+      hint: 'Progress is measured at the next observation: see the "Evolution" tab.',
+      empty: 'No validated PDP yet.',
+    },
     form: {
       name: 'First name',
       'name-placeholder': 'e.g. Daniel',
@@ -305,6 +504,7 @@ const enTranslation = {
       description: '{{subject}} teacher at {{school}}',
     },
     tabs: {
+      pdp: 'PDP',
       session: {
         title: 'Observations',
         'observation-of': 'Observation of {{date}}',
@@ -346,29 +546,6 @@ const enTranslation = {
       },
     },
     subjects: {
-      np: {
-        $1: 'English',
-        $2: 'Mathematics',
-        $3: 'Science and Technology',
-        $4: 'Social Studies and Human Values',
-        $5: 'Health Physical and Creative Arts',
-        $6: 'Mother Tongue and Local Subjects',
-        $7: 'Hamro serofero',
-        $8: 'Nepali',
-        $9: 'Other',
-      },
-      sl: {
-        $1: 'Arabic',
-        $2: 'Creative and Performing Arts',
-        $3: 'General Science',
-        $4: 'Home economics',
-        $5: 'Language Art',
-        $6: 'Mathematics',
-        $7: 'PHE',
-        $8: 'Quantitative and Verbal Aptitude',
-        $9: 'Social Studies/Civics',
-        $10: 'Other',
-      },
       cd: {
         $1: 'French',
         $2: 'English',
@@ -434,6 +611,20 @@ const enTranslation = {
           'After agreeing with the teacher about priority next steps for improvement, schedule your next visit.',
       },
     },
+    report: {
+      title: 'PDF documents',
+      observation: 'Observation sheet',
+      pdp: 'PDP (coaching report)',
+      share: 'Share',
+      download: 'Download',
+      downloaded: 'Document saved',
+      'downloaded-detail':
+        'Downloads › Coach Digital › {{file}}. Tap this message to open it.',
+      'download-error': 'The document could not be saved',
+      generating: 'Preparing the document…',
+      error:
+        'The document could not be generated. Try again from the closed session screen.',
+    },
     signatures: {
       title: 'Signatures',
       subtitle:
@@ -470,6 +661,8 @@ const enTranslation = {
       'close-confirm': 'Close',
     },
     advice: {
+      appreciation: 'Appreciation of the session',
+      'appreciation-changed': 'Changed · suggested {{value}}',
       title: 'Advice and times',
       subtitle:
         'The times are taken from the observation; correct them if needed.',
@@ -703,7 +896,7 @@ const enTranslation = {
       sync: 'Synchronisation',
       synced: 'Synchronised',
       pending: 'Pending',
-      pdf: 'PDF documents (coming soon)',
+      pdf: 'See the PDF documents',
       subtitle: 'Thank you. The class observation section is complete!',
       whatsNext: "What's next?",
       startFeedback:
@@ -871,168 +1064,6 @@ const enTranslation = {
       title: 'Community of Practice complete',
       description:
         'Congratulations, you just completed the Community of Practice!',
-      button: 'Finish',
-    },
-  },
-  tlc: {
-    page_title: 'Teacher Learning Circles',
-
-    loadingBar: {
-      checkingStats: 'Check stats',
-      unitSelect: 'Unit select',
-      introduction: 'Introduction',
-      situations: 'Situations',
-      explanation: 'Explanation',
-      activities: 'Activities',
-      finish: 'Finish',
-    },
-
-    onboarding: {
-      title: 'Getting started',
-      subtitle:
-        'Check out the Teaching Learning Circle steps and start a new session',
-      button: 'Get started',
-
-      process: {
-        step1: {
-          title: 'Check school stats',
-          subtitle: '5 min',
-          description:
-            'View the school statistics to help you decide which unit to choose',
-        },
-        step2: {
-          title: 'Select unit',
-          subtitle: '5 min',
-          description:
-            'Select a unit from the list to work in this Teaching Learning Circle',
-        },
-        step3: {
-          title: 'Unit introduction',
-          subtitle: '15 min',
-          description:
-            'Explain to the teachers what this unit is about and how it can help them be a better teacher',
-        },
-        step4: {
-          title: 'Situational examples',
-          subtitle: '10 min',
-          description:
-            'Explain to the teachers what this unit is about and how it can help them be a better teacher',
-        },
-        step5: {
-          title: 'Situation explanation',
-          subtitle: '10 min',
-          description: 'Explain why those situations were good or bad',
-        },
-        step6: {
-          title: 'Activities',
-          subtitle: '15 min',
-          description:
-            'Do some activities with the teachers to exercise what they learned',
-        },
-      },
-    },
-    checkingStats: {
-      title: 'Overall rating',
-      graphDesc:
-        'This rating is the average of the school in all Teaching Practices',
-      ratingTitle: 'Rating per Teaching Practice',
-      ratingDesc: 'How is the average of the school in each Teaching Practice',
-      empty: {
-        title: 'No sufficient data for this school',
-        description:
-          'Complete class observations and feedback sessions to unlock the statistics of the school next time',
-      },
-      button: 'Next',
-    },
-    unitSelect: {
-      title: 'Choose unit',
-      description:
-        'Each unit focus on one key teaching practice for teachers to learn from ans with each other',
-      button: 'Start unit',
-    },
-    introduction: {
-      $1: {
-        title: 'Introduction',
-        description:
-          'This Teacher Learning Circle is about using positive language in the classroom to create an encouraging learning environment for students.',
-
-        learn: {
-          title: "In this unit you'll learn:",
-
-          $1: {
-            title: 'Why using positive language is important in a classroom',
-          },
-          $2: {
-            title:
-              'How positive language can be used in the classroom to encourage students',
-          },
-        },
-
-        button: 'Next',
-      },
-      $2: {
-        title: 'Why is it useful to use positive language in the classroom?',
-        description:
-          'It is important to create a classroom environment where students can feel emotionally safe and supported. All students feel welcome if the teacher treats them all respectfully.',
-        button: 'Start examples',
-      },
-    },
-    situations: {
-      title: 'Situational examples',
-      description:
-        'Read out loud the examples below and ask the questions for the teachers',
-
-      steps: {
-        $1: {
-          title: 'Example 1',
-          description:
-            'The teacher teaches a concept to the class and gives them classwork. The teacher notices that one student is not able to do the work assigned to him. The teacher goes to the student and starts telling him that ‘you are not a good student’, ‘you never do your work’ or ‘you cannot do this work’.',
-          box: {
-            title: 'Discuss the following question',
-            description:
-              'How do you think the student will feel? How do you think they will behave?',
-          },
-        },
-
-        $2: {
-          title: 'Example 2',
-          description:
-            'The teacher teaches a concept to the class and gives them classwork. The teacher notices that one student is not able to do the work assigned to him. The teacher goes to the student and tells him ‘you are a great student and if you try harder you can do this’',
-          box: {
-            title: 'Discuss the following question',
-            description:
-              'How do you think the student will feel? How do you think they will behave?',
-          },
-        },
-      },
-
-      button: 'Check explanation',
-    },
-    explanation: {
-      title: 'Explanation',
-      description:
-        'Let the teachers know what was bad and what was good in the examples',
-
-      steps: {
-        $1: {
-          title: 'Example 1',
-          description:
-            'In the first exchange, the words that the teacher uses are not supporting and encouraging for the student. The student will not feel good after hearing the words and will not be motivated to work hard. A teacher should try to be supportive to the students so students can work harder.',
-        },
-        $2: {
-          title: 'Example 2',
-          description:
-            'In the second example the teacher sees that the student is finding it difficult to work and then tries to support him by saying positive words and encouraging them.',
-        },
-      },
-      button: 'Next',
-    },
-    activities: {button: 'Next'},
-    finish: {
-      title: 'Rate the activity',
-      description: 'How did it go?',
-      question:
-        'Did they manage to answer correctly? Did they understood the correct use of positive language?',
       button: 'Finish',
     },
   },

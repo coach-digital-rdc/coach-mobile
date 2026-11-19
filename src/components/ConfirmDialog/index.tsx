@@ -9,6 +9,9 @@ type Props = {
   message: string;
   confirmLabel: string;
   isLoading?: boolean;
+  cancelLabel?: string;
+  // A required step (e.g. a mandatory update) has no cancel button
+  hideCancel?: boolean;
   onConfirm: () => void;
   onCancel: () => void;
 };
@@ -20,13 +23,19 @@ const ConfirmDialog: React.FC<Props> = ({
   message,
   confirmLabel,
   isLoading,
+  cancelLabel,
+  hideCancel,
   onConfirm,
   onCancel,
 }) => {
   const {t} = useTranslation();
 
   return (
-    <Modal isOpen={isOpen} onClose={onCancel}>
+    <Modal
+      isOpen={isOpen}
+      // A required step cannot be closed with the back button either
+      onClose={hideCancel ? () => {} : onCancel}
+      closeOnOverlayClick={!hideCancel}>
       <VStack w="90%" maxW="420px" p="20px" borderRadius="16px" bg="white">
         <Text fontSize="18px" fontWeight={700} color="gray.700">
           {title}
@@ -35,9 +44,11 @@ const ConfirmDialog: React.FC<Props> = ({
           {message}
         </Text>
         <HStack mt="20px" space={3}>
-          <Button flex={1} mb={0} variant="outlined" onPress={onCancel}>
-            {t('common.cancel')}
-          </Button>
+          {!hideCancel && (
+            <Button flex={1} mb={0} variant="outlined" onPress={onCancel}>
+              {cancelLabel || t('common.cancel')}
+            </Button>
+          )}
           <Button flex={1} mb={0} isLoading={isLoading} onPress={onConfirm}>
             {confirmLabel}
           </Button>

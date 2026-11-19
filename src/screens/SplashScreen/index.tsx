@@ -13,12 +13,24 @@ import {useCoachContext} from '../../providers/coach.provider';
 import {LOGIN_MODE} from '@env';
 import {useCameraPermission} from 'react-native-vision-camera';
 import {runSeeds} from '../../database/seeds';
+import {Linking} from 'react-native';
+import {AppService} from '../../services/app.service';
+import {compareVersions} from '../../helpers/version.helper';
+import ConfirmDialog from '../../components/ConfirmDialog';
+import moment from 'moment';
+import i18n from '../../i18n';
 
 const SplashScreen: React.FC = () => {
   const navigate = useNavigate();
   const {t} = useTranslation();
   const {isConnected} = useNetInfo();
   const [isLoading, setIsLoading] = useState(false);
+  const [update, setUpdate] = useState<{
+    latest: string;
+    url: string | null;
+    mandatory: boolean;
+    route: string;
+  }>();
   const {selectCoach, selectSchool} = useCoachContext();
   const {hasPermission, requestPermission} = useCameraPermission();
 
@@ -33,6 +45,11 @@ const SplashScreen: React.FC = () => {
 
         const currentCoach = await StorageService.getCurrentCoach();
         const currentSchool = await StorageService.getCurrentSchool();
+        const language = await StorageService.getLanguage();
+        if (language) {
+          await i18n.changeLanguage(language);
+          moment.locale(language);
+        }
 
         if (isConnected && currentSchool) {
           await SyncService.trySyncData();
@@ -43,22 +60,47 @@ const SplashScreen: React.FC = () => {
         await selectCoach(currentCoach);
         await selectSchool(currentSchool);
 
-        if (LOGIN_MODE === 'OTP') {
+        let route: string;
+        if (!language) {
+          // First start: the user chooses the language
+          route = PathRoutes.language;
+        } else if (LOGIN_MODE === 'OTP') {
           if (!currentCoach) {
-            navigate(PathRoutes.login.main, {replace: true});
+            route = PathRoutes.login.main;
           } else if (!currentSchool) {
-            navigate(PathRoutes.selectSchool, {replace: true});
+            route = PathRoutes.selectSchool;
           } else {
-            navigate(PathRoutes.home.main, {replace: true});
+            route = PathRoutes.home.main;
           }
         } else {
           if (!currentSchool) {
-            navigate(PathRoutes.selectSchool, {replace: true});
+            route = PathRoutes.selectSchool;
           } else if (!currentCoach) {
-            navigate(PathRoutes.selectAccount, {replace: true});
+            route = PathRoutes.selectAccount;
           } else {
-            navigate(PathRoutes.home.main, {replace: true});
+            route = PathRoutes.home.main;
           }
+        }
+
+        // A newer version is offered, and required below the minimum version (B28)
+        // The network state may not be known yet: the request has a short timeout
+        const versions =
+          isConnected !== false ? await AppService.getVersions() : undefined;
+        const installed = getVersion();
+        if (
+          versions?.latest_version &&
+          compareVersions(installed, versions.latest_version) < 0
+        ) {
+          setUpdate({
+            latest: versions.latest_version,
+            url: versions.download_url,
+            mandatory:
+              !!versions.min_version &&
+              compareVersions(installed, versions.min_version) < 0,
+            route,
+          });
+        } else {
+          navigate(route, {replace: true});
         }
       }
     } catch {}
@@ -91,6 +133,21 @@ const SplashScreen: React.FC = () => {
       <Text position="absolute" bottom="32px" fontSize="12px" color="gray.500">
         {t('splash.version', {value: getVersion()})}
       </Text>
+      <ConfirmDialog
+        isOpen={!!update}
+        title={t('splash.update-title')}
+        message={t(
+          update?.mandatory
+            ? 'splash.update-required'
+            : 'splash.update-message',
+          {value: update?.latest},
+        )}
+        confirmLabel={t('splash.update')}
+        cancelLabel={t('splash.later') || ''}
+        hideCancel={update?.mandatory}
+        onConfirm={() => update?.url && Linking.openURL(update.url)}
+        onCancel={() => update && navigate(update.route, {replace: true})}
+      />
     </Center>
   );
 };

@@ -10,7 +10,7 @@ import {Session} from '../../../../types/session';
 import BottomNavigator from '../../BottomNavigator';
 import ListRow from '../../../../components/ListRow';
 import Icon from '../../../../components/Icon';
-import Page from '../../../../components/Page';
+import Page, {GUTTER} from '../../../../components/Page';
 
 const STATUS_TONES: {[status: string]: [string, string]} = {
   PREPARATION: ['primary.0', 'primary.200'],
@@ -42,7 +42,7 @@ const PendingSessionsScreen: React.FC = () => {
 
   return (
     <Page title={t('home.pending.page_title')} noPadding>
-      <ScrollView flex={1} px="16px">
+      <ScrollView flex={1} px={GUTTER}>
         <Text mt="8px" fontSize="24px" fontWeight={600} color="gray.700">
           {t('home.pending.title')}
         </Text>

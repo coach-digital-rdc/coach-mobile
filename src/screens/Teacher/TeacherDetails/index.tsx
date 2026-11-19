@@ -14,7 +14,8 @@ import TabButton from '../../../components/TabButton';
 import Button from '../../../components/Button';
 import Icon from '../../../components/Icon';
 import Page from '../../../components/Page';
-import TeacherStatsTab from './Tabs/TeacherStats';
+import EvolutionTab from './Tabs/EvolutionTab';
+import PdpTab from './Tabs/PdpTab';
 import SessionList from './Tabs/SessionListTab';
 
 type params = {
@@ -58,8 +59,12 @@ const TeacherDetailsScreen: React.FC = () => {
       label: 'teacher.tabs.session.title',
     },
     {
-      Component: <TeacherStatsTab teacherId={id || ''} />,
+      Component: <EvolutionTab teacherId={id || ''} />,
       label: 'teacher.tabs.stats.evolution-tab',
+    },
+    {
+      Component: <PdpTab teacherId={id || ''} />,
+      label: 'teacher.tabs.pdp',
     },
   ];
 

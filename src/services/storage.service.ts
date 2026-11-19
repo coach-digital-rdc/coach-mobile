@@ -2,7 +2,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Coach} from '../types/coach';
 import {School} from '../types/school';
 import moment from 'moment';
-import {COUNTRY} from '@env';
 import i18n from '../i18n';
 
 const KEYS = {
@@ -11,9 +10,15 @@ const KEYS = {
   lastSync: 'LAST_SYNC',
   currentCoach: 'CURRENT_COACH',
   currentSchool: 'CURRENT_SCHOOL',
+  language: 'LANGUAGE',
 };
 
 export const StorageService = {
+  // Language chosen on the first start or in the settings
+  getLanguage: () => AsyncStorage.getItem(KEYS.language),
+  setLanguage: async (language: string) => {
+    await AsyncStorage.setItem(KEYS.language, language);
+  },
   getDatabaseVersion: () => {
     return AsyncStorage.getItem(KEYS.databaseVersion);
   },

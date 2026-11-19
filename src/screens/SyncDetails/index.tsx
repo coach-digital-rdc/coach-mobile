@@ -1,102 +1,159 @@
-import {Button, Image, Spinner, Text, VStack} from 'native-base';
-
-import Page from '../../components/Page';
-import {useTranslation} from 'react-i18next';
-import {SetupCompleteImg} from '../../assets/images/scan';
-
-import {useEffect, useState} from 'react';
-import {useCoachContext} from '../../providers/coach.provider';
-import PathRoutes from '../../routers/paths';
+import React, {useEffect, useState} from 'react';
+import {
+  Center,
+  HStack,
+  ScrollView,
+  Spinner,
+  Text,
+  VStack,
+  useTheme,
+} from 'native-base';
 import {useNavigate} from 'react-router-native';
-import SyncService from '../../services/sync.service';
+import {useTranslation} from 'react-i18next';
 import {useNetInfo} from '@react-native-community/netinfo';
+import {useCoachContext} from '../../providers/coach.provider';
+import {getDBConnection} from '../../services/database.service';
+import {PdpService} from '../../services/pdp.service';
+import SyncService from '../../services/sync.service';
+import PathRoutes from '../../routers/paths';
+import Button from '../../components/Button';
+import Icon from '../../components/Icon';
+import Page, {GUTTER} from '../../components/Page';
 
+// Data available on the device once it is configured
+const countOnDevice = async (schoolId?: string) => {
+  const db = await getDBConnection();
+  const count = async (sql: string, params: any[] = []) =>
+    (await db.executeSql(sql, params))[0].rows.raw()[0].count as number;
+  return {
+    teachers: await count(
+      'SELECT COUNT(*) as count FROM teacher WHERE school_id = ?',
+      [schoolId],
+    ),
+    competencies: await count('SELECT COUNT(*) as count FROM competence'),
+    questions: await count('SELECT COUNT(*) as count FROM question'),
+    documents: await count('SELECT COUNT(*) as count FROM checklist_item'),
+    rules: (await PdpService.getPublishedRuleSet())?.version,
+  };
+};
+
+// "Préparation de l'appareil" of the mockups: the data of the school are downloaded,
+// then the device can be used without connection.
 const SyncDetails: React.FC = () => {
+  const theme = useTheme();
   const {t} = useTranslation();
-  const [isLoading, setIsLoading] = useState(false);
-  const {currentSchool, currentCoach} = useCoachContext();
   const navigate = useNavigate();
   const {isConnected} = useNetInfo();
+  const {currentSchool, currentCoach} = useCoachContext();
+  const [isLoading, setIsLoading] = useState(true);
+  const [counts, setCounts] =
+    useState<Awaited<ReturnType<typeof countOnDevice>>>();
 
   useEffect(() => {
-    if (isConnected) {
+    if (isConnected === null) {
+      return;
+    }
+    const prepare = async () => {
       setIsLoading(true);
-      SyncService.trySyncData(true)
-        .then(() => setIsLoading(false))
-        .catch(err => console.log('ERROR ', err))
-        .finally(() => setIsLoading(false));
-    }
-  }, [isConnected]);
+      if (isConnected) {
+        await SyncService.trySyncData(true);
+      }
+      setCounts(await countOnDevice(currentSchool?.id));
+      setIsLoading(false);
+    };
+    prepare();
+  }, [isConnected, currentSchool]);
 
-  const goToNextPage = () => {
-    if (currentCoach) {
-      navigate(PathRoutes.home.main, {replace: true});
-    } else {
-      navigate(PathRoutes.selectAccount, {replace: true});
-    }
-  };
+  const goToNextPage = () =>
+    navigate(currentCoach ? PathRoutes.home.main : PathRoutes.selectAccount, {
+      replace: true,
+    });
+
+  const items = counts
+    ? [
+        t('syncDetails.teachers_interval', {
+          postProcess: 'interval',
+          count: counts.teachers,
+        }),
+        t('syncDetails.grid', {
+          competencies: counts.competencies,
+          questions: counts.questions,
+        }),
+        t('syncDetails.checklist', {count: counts.documents}),
+        counts.rules
+          ? t('syncDetails.rules', {version: counts.rules})
+          : undefined,
+        t('syncDetails.manual'),
+      ].filter(Boolean)
+    : [];
 
   return (
-    <Page setting>
-      {isLoading ? (
-        <Spinner />
-      ) : (
-        <>
-          <VStack my="auto" maxW="420px" mx="auto">
-            <Image
-              w="172px"
-              h="172px"
-              mt="45px"
-              source={SetupCompleteImg}
-              mx="auto"
-              alt="Setup completed"
-            />
-            <Text
-              mt="24px"
-              textAlign="center"
-              fontSize={20}
-              color="#111417"
-              fontWeight="600">
-              {t('syncDetails.title')}
-            </Text>
-            <Text mt="4px" color="#576375" fontSize={16} textAlign="center">
-              {t('syncDetails.description')}
-            </Text>
-            <Text
-              my="8px"
-              color="#576375"
-              fontSize={20}
-              textAlign="center"
-              bold>
-              {currentSchool?.name}
-            </Text>
-            <Text color="#576375" fontSize={16} textAlign="left">
-              {t('syncDetails.description-list')}
-            </Text>
-            <Text mt="4px" color="#576375">
-              {t('syncDetails.list_0', {value: currentSchool?.name})}
-            </Text>
-            <Text color="#576375">{t('syncDetails.list_1')}</Text>
-            {isConnected && (
-              <>
-                <Text color="#576375">{t('syncDetails.list_2')}</Text>
-                <Text color="#576375">{t('syncDetails.list_3')}</Text>
-                <Text color="#576375">
-                  {t('syncDetails.list_4', {value: currentSchool?.name})}
-                </Text>
-              </>
-            )}
-          </VStack>
-
-          <Button
-            bg="#3373CC"
-            mt="auto"
-            _text={{fontWeight: 500, fontSize: 16}}
-            onPress={goToNextPage}>
-            {t('syncDetails.start')}
-          </Button>
-        </>
-      )}
+    <Page noPadding>
+      <ScrollView flex={1} px={GUTTER} contentContainerStyle={{flexGrow: 1}}>
+        <Center flex={1} py="32px">
+          {isLoading ? (
+            <>
+              <Center w="80px" h="80px" borderRadius="40px" bg="primary.0">
+                <Icon
+                  name="sync"
+                  size={40}
+                  color={theme.colors.primary['200']}
+                />
+              </Center>
+              <Text mt="16px" fontSize="24px" fontWeight={600} color="gray.700">
+                {t('syncDetails.preparing')}
+              </Text>
+              <Text
+                mt="8px"
+                textAlign="center"
+                fontSize="14px"
+                color="gray.600">
+                {t('syncDetails.downloading', {school: currentSchool?.name})}
+              </Text>
+              <Spinner mt="24px" size="lg" color="primary.200" />
+            </>
+          ) : (
+            <>
+              <Icon
+                name="check-circle-solid"
+                size={56}
+                color={theme.colors.green['200']}
+              />
+              <Text mt="16px" fontSize="24px" fontWeight={600} color="gray.700">
+                {t('syncDetails.title')}
+              </Text>
+              <Text
+                mt="8px"
+                textAlign="center"
+                fontSize="14px"
+                color="gray.600">
+                {isConnected
+                  ? t('syncDetails.description')
+                  : t('syncDetails.offline')}
+              </Text>
+              <VStack mt="20px" w="full" space={2}>
+                {items.map(item => (
+                  <HStack key={item} space={2} alignItems="center">
+                    <Icon
+                      name="check"
+                      size={16}
+                      color={theme.colors.green['300']}
+                    />
+                    <Text flex={1} fontSize="14px" color="gray.700">
+                      {item}
+                    </Text>
+                  </HStack>
+                ))}
+              </VStack>
+            </>
+          )}
+        </Center>
+      </ScrollView>
+      <VStack px={GUTTER} pb="16px" pt="8px">
+        <Button w="full" mb={0} disabled={isLoading} onPress={goToNextPage}>
+          {t('syncDetails.start')}
+        </Button>
+      </VStack>
     </Page>
   );
 };

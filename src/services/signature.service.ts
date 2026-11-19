@@ -11,6 +11,10 @@ export type SignatureInput = {
 };
 
 const SVG_PREFIX = 'data:image/svg+xml;utf8,';
+// Blue of a ballpoint pen; the first signatures were drawn in black and are shown in blue too
+const PEN_COLOR = '#1A3FA8';
+const toPenColor = (svg: string) =>
+  svg.replace(/stroke="#111417"/g, `stroke="${PEN_COLOR}"`);
 
 // Signatures of the session (B17): one per signer; the drawing is kept in the image table,
 // which is already sent to the server.
@@ -36,7 +40,9 @@ export const SignatureService = {
         [row.signer_role]: {
           ...row,
           svg: image_value?.startsWith(SVG_PREFIX)
-            ? decodeURIComponent(image_value.slice(SVG_PREFIX.length))
+            ? toPenColor(
+                decodeURIComponent(image_value.slice(SVG_PREFIX.length)),
+              )
             : undefined,
         },
       }),

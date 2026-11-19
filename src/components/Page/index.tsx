@@ -4,6 +4,9 @@ import {isTablet} from 'react-native-device-info';
 import Header, {HeaderProps} from '../Header';
 import {SafeAreaView} from 'react-native';
 
+// Side margin of the screens: 16 px on a phone, 32 px on a tablet, as in the mockups
+export const GUTTER = isTablet() ? '32px' : '16px';
+
 type Props = {
   children: React.ReactNode;
   noPadding?: boolean;

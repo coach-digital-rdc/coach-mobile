@@ -5,13 +5,12 @@ import {TouchableOpacity} from 'react-native';
 import PathRoutes from '../../../routers/paths';
 import {useNavigate} from 'react-router-native';
 import {useTranslation} from 'react-i18next';
-import {COUNTRY} from '@env';
 
 type Props = {
   active?: 'home' | 'pending' | 'circles' | 'settings';
 };
 
-// Bottom bar of the mockups: home, sessions in progress, circles (CoP in Nepal) and settings.
+// Bottom bar of the mockups: home, sessions in progress, learning circles and settings.
 const BottomNavigator: React.FC<Props> = ({active}) => {
   const navigate = useNavigate();
   const theme = useTheme();
@@ -30,19 +29,12 @@ const BottomNavigator: React.FC<Props> = ({active}) => {
       icon: 'history',
       route: PathRoutes.home.pendingSessions,
     },
-    COUNTRY === 'np'
-      ? {
-          id: 'circles',
-          label: t('bottom_navigator.cop'),
-          icon: 'users-alt',
-          route: PathRoutes.communityOfPractice.onboarding,
-        }
-      : {
-          id: 'circles',
-          label: t('bottom_navigator.tlc'),
-          icon: 'users-alt',
-          route: PathRoutes.teacherLearningCircles.onboarding,
-        },
+    {
+      id: 'circles',
+      label: t('bottom_navigator.tlc'),
+      icon: 'users-alt',
+      route: PathRoutes.teacherLearningCircles.main,
+    },
     {
       id: 'settings',
       label: t('bottom_navigator.settings'),

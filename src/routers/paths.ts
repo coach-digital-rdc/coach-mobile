@@ -1,6 +1,8 @@
 const PathRoutes = {
   splash: '/',
 
+  language: '/language',
+
   selectSchool: '/selectSchool',
 
   selectAccount: '/selectAccount',
@@ -11,11 +13,14 @@ const PathRoutes = {
 
   syncDetails: '/syncDetails',
 
+  qrScan: '/qrScan',
+
+  sync: '/sync',
+
   coachScripts: '/coachScripts',
 
   settings: {
     main: '/settings',
-    changeLanguage: '/settings/changeLanguage',
   },
 
   login: {
@@ -39,18 +44,11 @@ const PathRoutes = {
   teacher: {
     details: '/teacher/:id/:tabIndex?',
     form: '/teacher/form/:id',
-    competenceStats: '/teacher/competences/:competence_index/:id',
   },
 
   teacherLearningCircles: {
-    onboarding: '/teacherlearningcircles/onboarding',
-    checkingStats: '/teacherlearningcircles/checkingStats',
-    unitSelect: '/teacherlearningcircles/unitSelect',
-    introduction: '/teacherlearningcircles/introduction/:unitId',
-    situations: '/teacherlearningcircles/situations/:unitId',
-    explanation: '/teacherlearningcircles/explanation/:unitId',
-    activities: '/teacherlearningcircles/activities/:unitId',
-    finish: '/teacherlearningcircles/finish/:unitId',
+    main: '/tlc',
+    unit: '/tlc/unit/:unitId',
   },
 
   communityOfPractice: {
@@ -74,19 +72,7 @@ const PathRoutes = {
     signatures: '/classObservation/signatures',
     form: '/classObservation/forms',
     completed: '/classObservation/completed/:sessionId',
-  },
-
-  session: {
-    details: '/session/details',
-    classObservation: '/session/class-observation',
-    feedback: '/session/feedback',
-  },
-
-  feedbackSession: {
-    about: '/feedbackSession/about/:sessionId',
-    chooseCompetence: '/feedbackSession/chooseCompetence',
-    form: '/feedbackSession/form',
-    completed: '/feedbackSession/completed',
+    report: '/classObservation/report/:sessionId',
   },
 };
 

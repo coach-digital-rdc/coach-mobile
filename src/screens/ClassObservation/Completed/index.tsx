@@ -1,10 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {Center, HStack, Text, VStack, useTheme} from 'native-base';
-import {useNavigate, useParams} from 'react-router-native';
+import {useLocation, useNavigate, useParams} from 'react-router-native';
 import {useNetInfo} from '@react-native-community/netinfo';
 import {useTranslation} from 'react-i18next';
 import moment from 'moment';
-import {COUNTRY} from '@env';
 import SyncService from '../../../services/sync.service';
 import {SessionService} from '../../../services/session.service';
 import {TeacherService} from '../../../services/teacher.service';
@@ -15,7 +14,7 @@ import PhaseStepper from '../../../components/PhaseStepper';
 import PathRoutes from '../../../routers/paths';
 import Button from '../../../components/Button';
 import Icon from '../../../components/Icon';
-import Page from '../../../components/Page';
+import Page, {GUTTER} from '../../../components/Page';
 
 const InfoRow: React.FC<{label: string; children: React.ReactNode}> = ({
   label,
@@ -41,6 +40,7 @@ const ClassObservationCompleted: React.FC = () => {
   const {t} = useTranslation();
   const navigate = useNavigate();
   const {isConnected} = useNetInfo();
+  const {state} = useLocation();
   const {sessionId = ''} = useParams<{sessionId: string}>();
   const [session, setSession] = useState<Session>();
   const [teacherName, setTeacherName] = useState('');
@@ -91,10 +91,14 @@ const ClassObservationCompleted: React.FC = () => {
     <Page
       back
       title={t('classObservation.title')}
-      onBack={() => navigate(PathRoutes.home.main, {replace: true})}
+      onBack={() =>
+        state?.fromTeacher
+          ? navigate(-1)
+          : navigate(PathRoutes.home.main, {replace: true})
+      }
       noPadding>
       <PhaseStepper current="closing" />
-      <VStack flex={1} px="16px" justifyContent="center">
+      <VStack flex={1} px={GUTTER} justifyContent="center">
         <Center>
           <Icon
             name="check-circle-solid"
@@ -163,27 +167,20 @@ const ClassObservationCompleted: React.FC = () => {
         </VStack>
       </VStack>
 
-      <VStack px="16px" pb="16px" pt="8px" space={3}>
-        {/* The PDF documents come with B24 and B25 */}
-        <Button w="full" mb={0} disabled>
+      <VStack px={GUTTER} pb="16px" pt="8px" space={3}>
+        <Button
+          w="full"
+          mb={0}
+          onPress={() =>
+            navigate(
+              PathRoutes.classObservation.report.replace(
+                ':sessionId',
+                sessionId,
+              ),
+            )
+          }>
           {t('classObservation.observationCompleted.pdf')}
         </Button>
-        {COUNTRY !== 'cd' && (
-          <Button
-            w="full"
-            mb={0}
-            onPress={() =>
-              navigate(
-                PathRoutes.feedbackSession.about.replace(
-                  ':sessionId',
-                  sessionId,
-                ),
-                {replace: true},
-              )
-            }>
-            {t('classObservation.observationCompleted.button')}
-          </Button>
-        )}
         <Button
           w="full"
           mb={0}

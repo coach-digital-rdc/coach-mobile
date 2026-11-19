@@ -14,6 +14,14 @@ export type Coach = {
 
   image_id?: string;
 
+  // Profile of the observer (B21)
+  sex?: string | null;
+  // INSPECTOR, ADVISOR, SCHOOL_HEAD or PEER
+  function?: string | null;
+  // Duty station, or area of intervention of an inspector or an advisor
+  duty_station?: string | null;
+  postal_box?: string | null;
+
   sessions?: Session[];
   coachSchools?: CoachSchool[];
 

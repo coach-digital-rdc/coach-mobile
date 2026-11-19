@@ -14,7 +14,6 @@ import {SafeAreaView, TouchableOpacity} from 'react-native';
 import {useNavigate} from 'react-router-native';
 import {useTranslation} from 'react-i18next';
 import {isTablet as Tablet} from 'react-native-device-info';
-import {COUNTRY} from '@env';
 import moment from 'moment';
 import {TeacherItemType} from '../../types/teacher';
 import PathRoutes from '../../routers/paths';
@@ -36,6 +35,9 @@ import TeacherItem from './TeacherItem';
 const ITEMS_PER_PAGE = 20;
 
 // Home screen laid out as in the mockups: banner, sync status, shortcut tiles and teachers.
+// Number of days without synchronisation after which the home screen warns
+const OUTDATED_DAYS = 7;
+
 const HomeScreen: React.FC = () => {
   const theme = useTheme();
   const isTablet = Tablet();
@@ -45,6 +47,9 @@ const HomeScreen: React.FC = () => {
   const [isSyncing, setIsSyncing] = useState(false);
   const [lastSync, setLastSync] = useState<string | null>(null);
   const [unsynced, setUnsynced] = useState(0);
+  // Without synchronisation for a long time, the PDP rules may no longer be the latest (B20)
+  const outdated =
+    !!lastSync && moment().diff(moment(lastSync), 'days') >= OUTDATED_DAYS;
   const [pending, setPending] = useState(0);
   const [filter, setFilter] = useState('');
   const [page, setPage] = useState(1);
@@ -62,10 +67,9 @@ const HomeScreen: React.FC = () => {
   }, [currentCoach, currentSchool, navigate]);
 
   const loadStatus = useCallback(async () => {
-    const counts = await SyncService.getUnsyncedItemsCount();
-    setUnsynced(
-      counts.pendingTeachers + counts.pendingSessions + counts.pendingFeedbacks,
-    );
+    // Everything waiting on the device, as in the "Synchronisation" screen
+    const pending = await SyncService.getPendingCounts();
+    setUnsynced(pending.reduce((sum, item) => sum + item.count, 0));
     setLastSync(await StorageService.getLastSync());
     // Sessions started and not closed, as in the "Séances en cours" screen
     const openSessions = await SessionService.listOpenSessions(
@@ -141,21 +145,15 @@ const HomeScreen: React.FC = () => {
       label: t('home.tiles.manual'),
       onPress: () => navigate(PathRoutes.coachScripts),
     },
-    COUNTRY === 'np'
-      ? {
-          icon: 'users-alt',
-          label: t('home.tiles.cop'),
-          onPress: () => navigate(PathRoutes.communityOfPractice.onboarding),
-        }
-      : {
-          icon: 'users-alt',
-          label: t('home.tiles.tlc'),
-          onPress: () => navigate(PathRoutes.teacherLearningCircles.onboarding),
-        },
+    {
+      icon: 'users-alt',
+      label: t('home.tiles.tlc'),
+      onPress: () => navigate(PathRoutes.teacherLearningCircles.main),
+    },
     {
       icon: 'sync',
       label: t('home.tiles.sync'),
-      onPress: () => navigate(PathRoutes.settings.main),
+      onPress: () => navigate(PathRoutes.sync),
     },
   ];
 
@@ -189,14 +187,14 @@ const HomeScreen: React.FC = () => {
         </VStack>
 
         <VStack px={padding} pt="16px" pb="24px">
-          <TouchableOpacity onPress={() => navigate(PathRoutes.settings.main)}>
+          <TouchableOpacity onPress={() => navigate(PathRoutes.sync)}>
             <HStack
               px="12px"
               py="8px"
               space={2}
               alignItems="center"
               borderRadius="10px"
-              bg={unsynced ? 'yellow.0' : 'green.0'}>
+              bg={unsynced || outdated ? 'yellow.0' : 'green.0'}>
               {isSyncing ? (
                 <Spinner size="sm" />
               ) : (
@@ -204,7 +202,7 @@ const HomeScreen: React.FC = () => {
                   name="sync"
                   size={16}
                   color={
-                    unsynced
+                    unsynced || outdated
                       ? theme.colors.yellow['300']
                       : theme.colors.green['300']
                   }
@@ -213,8 +211,12 @@ const HomeScreen: React.FC = () => {
               <Text
                 flex={1}
                 fontSize="13px"
-                color={unsynced ? 'yellow.300' : 'green.300'}>
-                {unsynced
+                color={unsynced || outdated ? 'yellow.300' : 'green.300'}>
+                {outdated
+                  ? t('home.sync.outdated', {
+                      days: moment().diff(moment(lastSync), 'days'),
+                    })
+                  : unsynced
                   ? t('home.sync.pending_interval', {
                       postProcess: 'interval',
                       count: unsynced,
@@ -227,7 +229,7 @@ const HomeScreen: React.FC = () => {
                 name="angle-right"
                 size={14}
                 color={
-                  unsynced
+                  unsynced || outdated
                     ? theme.colors.yellow['300']
                     : theme.colors.green['300']
                 }

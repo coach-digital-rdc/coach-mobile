@@ -7,12 +7,14 @@ import Button from '../Button';
 
 const WIDTH = 600;
 const HEIGHT = 200;
+// Blue of a ballpoint pen, as on the signed paper tool
+export const PEN_COLOR = '#1A3FA8';
 
 const toSvg = (paths: string[]) =>
   `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${WIDTH} ${HEIGHT}" width="${WIDTH}" height="${HEIGHT}">${paths
     .map(
       path =>
-        `<path d="${path}" fill="none" stroke="#111417" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>`,
+        `<path d="${path}" fill="none" stroke="${PEN_COLOR}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>`,
     )
     .join('')}</svg>`;
 
@@ -97,7 +99,7 @@ const DrawingArea: React.FC<{onChange: (paths: string[]) => void}> = ({
               key={index}
               d={path}
               fill="none"
-              stroke="#111417"
+              stroke={PEN_COLOR}
               strokeWidth={4}
               strokeLinecap="round"
               strokeLinejoin="round"

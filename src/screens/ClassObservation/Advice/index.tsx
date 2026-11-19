@@ -13,13 +13,19 @@ import {useTranslation} from 'react-i18next';
 import moment from 'moment';
 import {SessionService} from '../../../services/session.service';
 import {TeacherService} from '../../../services/teacher.service';
+import {ScoreService} from '../../../services/score.service';
+import {
+  APPRECIATIONS,
+  getSuggestedAppreciation,
+} from '../../../helpers/appreciation.helper';
+import RadioCard from '../../../components/RadioCard';
 import {Session} from '../../../types/session';
 import PhaseStepper from '../../../components/PhaseStepper';
 import SessionStrip from '../../../components/SessionStrip';
 import FormField from '../../../components/FormField';
 import PathRoutes from '../../../routers/paths';
 import Button from '../../../components/Button';
-import Page from '../../../components/Page';
+import Page, {GUTTER} from '../../../components/Page';
 
 // "Conseils et horaires" of the mockups (B16): times of the didactic sequence, taken from
 // the observation, advice to the teacher and place of the signature.
@@ -36,6 +42,8 @@ const ClassObservationAdvice: React.FC = () => {
     advice: '',
     signed_place: '',
   });
+  const [suggested, setSuggested] = useState<string>();
+  const [appreciation, setAppreciation] = useState<string>();
   const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
@@ -47,11 +55,25 @@ const ClassObservationAdvice: React.FC = () => {
         advice: current?.advice || '',
         signed_place: current?.signed_place || '',
       });
+      setAppreciation(current?.appreciation || undefined);
       if (current?.teacher_id) {
         TeacherService.getTeacherDetails(current.teacher_id).then(teacher =>
           setTeacherName(teacher?.name || ''),
         );
       }
+    });
+  }, [sessionId]);
+
+  // The appreciation is suggested from the global scores of the sub-domains
+  useEffect(() => {
+    ScoreService.getScores(sessionId).then(scores => {
+      const value = getSuggestedAppreciation(
+        Object.values(scores).map(
+          score => score.value ?? score.suggested_value,
+        ),
+      );
+      setSuggested(value);
+      setAppreciation(current => current || value);
     });
   }, [sessionId]);
 
@@ -64,6 +86,8 @@ const ClassObservationAdvice: React.FC = () => {
       end_time: form.end_time.trim(),
       advice: form.advice.trim(),
       signed_place: form.signed_place.trim(),
+      suggested_appreciation: suggested,
+      appreciation,
     });
 
   const handleContinue = async () => {
@@ -95,7 +119,7 @@ const ClassObservationAdvice: React.FC = () => {
   return (
     <Page back title={t('classObservation.title')} onBack={goBack} noPadding>
       <PhaseStepper current="evaluation" />
-      <ScrollView flex={1} px="16px" showsVerticalScrollIndicator={false}>
+      <ScrollView flex={1} px={GUTTER} showsVerticalScrollIndicator={false}>
         <SessionStrip teacher={teacherName} detail={session.subject} />
         <Text fontSize="24px" fontWeight={600} color="gray.700">
           {t('classObservation.advice.title')}
@@ -129,6 +153,39 @@ const ClassObservationAdvice: React.FC = () => {
             onChangeText={advice => change({advice})}
           />
         </VStack>
+        <HStack
+          mt="16px"
+          mb="6px"
+          alignItems="center"
+          justifyContent="space-between">
+          <Text fontSize="13px" fontWeight={500} color="gray.700">
+            {t('classObservation.advice.appreciation')}
+          </Text>
+          {!!suggested && (
+            <Text
+              px="8px"
+              borderRadius="999px"
+              overflow="hidden"
+              fontSize="11px"
+              fontWeight={600}
+              bg={appreciation !== suggested ? 'yellow.0' : 'gray.100'}
+              color={appreciation !== suggested ? 'yellow.300' : 'gray.600'}>
+              {appreciation !== suggested
+                ? t('classObservation.advice.appreciation-changed', {
+                    value: t(`appreciation.${suggested}`),
+                  })
+                : t('classObservation.form.suggested')}
+            </Text>
+          )}
+        </HStack>
+        {APPRECIATIONS.map(item => (
+          <RadioCard
+            key={item}
+            title={t(`appreciation.${item}`)}
+            selected={appreciation === item}
+            onPress={() => setAppreciation(item)}
+          />
+        ))}
         <HStack mb="16px" space={3}>
           <FormField
             label={t('classObservation.advice.place')}
@@ -143,7 +200,7 @@ const ClassObservationAdvice: React.FC = () => {
           />
         </HStack>
       </ScrollView>
-      <VStack px="16px" pb="16px" pt="8px">
+      <VStack px={GUTTER} pb="16px" pt="8px">
         <Button w="full" mb={0} isLoading={isSaving} onPress={handleContinue}>
           {t('classObservation.advice.button')}
         </Button>

@@ -68,20 +68,6 @@ def enableProguardInReleaseBuilds = false
  */
 def jscFlavor = 'org.webkit:android-jsc:+'
 
-// Application id, name and icon of the country set in the .env file (COUNTRY).
-def envCountry = {
-    def envFile = rootProject.file("../.env")
-    def line = envFile.exists() ? envFile.readLines().find { it.trim().startsWith("COUNTRY=") } : null
-    return line ? line.split("=", 2)[1].trim() : "sl"
-}()
-def countryApps = [
-    cd: [applicationId: "com.coachdigital.rdc", appName: "Coach RDC", icon: "ic_launcher_cd"],
-    sl: [applicationId: "com.coachappsl", appName: "TEACH/COACH SL", icon: "ic_launcher"],
-]
-def countryApp = countryApps[envCountry] ?: countryApps.sl
-// Country resources (logo shown while the app loads), in src/country/<country>/res
-def countryRes = envCountry == "cd" ? "cd" : "sl"
-
 android {
     packagingOptions {
         pickFirst 'lib/x86/libc++_shared.so'
@@ -98,13 +84,10 @@ android {
 
     namespace 'com.coachappsl'
 
-    sourceSets {
-        main.res.srcDirs += "src/country/${countryRes}/res"
-    }
     defaultConfig {
-        applicationId countryApp.applicationId
-        resValue "string", "app_name", countryApp.appName
-        manifestPlaceholders = [appIcon: "@mipmap/${countryApp.icon}", appRoundIcon: "@mipmap/${countryApp.icon}_round"]
+        applicationId "com.coachdigital.rdc"
+        resValue "string", "app_name", "Coach RDC"
+        manifestPlaceholders = [appIcon: "@mipmap/ic_launcher", appRoundIcon: "@mipmap/ic_launcher_round"]
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

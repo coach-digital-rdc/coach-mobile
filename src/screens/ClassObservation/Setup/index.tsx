@@ -8,13 +8,14 @@ import {TeacherService} from '../../../services/teacher.service';
 import {SessionService} from '../../../services/session.service';
 import {TeacherDetailsType} from '../../../types/teacher';
 import {SessionActivity} from '../../../types/session-activity';
+import {Session} from '../../../types/session';
 import SegmentedChoice from '../../../components/SegmentedChoice';
 import PhaseStepper from '../../../components/PhaseStepper';
 import FormField from '../../../components/FormField';
 import PathRoutes from '../../../routers/paths';
 import Button from '../../../components/Button';
 import Icon from '../../../components/Icon';
-import Page from '../../../components/Page';
+import Page, {GUTTER} from '../../../components/Page';
 
 // School year starting in September: "2026-2027" from September 2026 to August 2027
 const currentSchoolYear = () => {
@@ -48,6 +49,8 @@ const ClassObservationSetup: React.FC = () => {
   const teacherId: string = state?.session?.teacher_id;
   const [teacher, setTeacher] = useState<TeacherDetailsType>();
   const [isSaving, setIsSaving] = useState(false);
+  // Last closed observation of the teacher: date and appreciation for the header
+  const [lastSession, setLastSession] = useState<Session>();
   const [header, setHeader] = useState({
     subject: '',
     teacher_weekly_load: '',
@@ -60,6 +63,7 @@ const ClassObservationSetup: React.FC = () => {
 
   useEffect(() => {
     if (teacherId) {
+      SessionService.getLastClosedSession(teacherId).then(setLastSession);
       TeacherService.getTeacherDetails(teacherId).then(data => {
         setTeacher(data);
         setHeader(current => ({
@@ -92,7 +96,12 @@ const ClassObservationSetup: React.FC = () => {
         teacher_weekly_load: header.teacher_weekly_load
           ? parseInt(header.teacher_weekly_load, 10)
           : null,
-        last_observation_date: teacher?.last_session_date || null,
+        last_observation_date: lastSession
+          ? String(lastSession.completed_at || lastSession.created_at)
+          : null,
+        last_observation_rating: lastSession?.appreciation || null,
+        // Copy of the function of the observer at the time of the session (B21)
+        observer_function: currentCoach?.function || null,
       },
       activity,
     );
@@ -105,7 +114,7 @@ const ClassObservationSetup: React.FC = () => {
   return (
     <Page back title={t('classObservation.title')} noPadding>
       <PhaseStepper current="preparation" />
-      <ScrollView flex={1} px="16px" showsVerticalScrollIndicator={false}>
+      <ScrollView flex={1} px={GUTTER} showsVerticalScrollIndicator={false}>
         <Text mt="8px" fontSize="24px" fontWeight={600} color="gray.700">
           {t('classObservation.setup.title')}
         </Text>
@@ -139,6 +148,14 @@ const ClassObservationSetup: React.FC = () => {
             value={currentCoach?.name}
           />
           <InfoRow
+            label={t('login.createAccount.function')}
+            value={
+              currentCoach?.function
+                ? t(`observer.function.${currentCoach.function}`)
+                : ''
+            }
+          />
+          <InfoRow
             label={t('classObservation.setup.contact')}
             value={[currentCoach?.phone, currentCoach?.email]
               .filter(Boolean)
@@ -165,8 +182,17 @@ const ClassObservationSetup: React.FC = () => {
         <InfoRow
           label={t('classObservation.setup.last-observation')}
           value={
-            teacher?.last_session_date
-              ? moment(teacher.last_session_date).format('L')
+            lastSession
+              ? [
+                  moment(
+                    lastSession.completed_at || lastSession.created_at,
+                  ).format('L'),
+                  lastSession.appreciation
+                    ? t(`appreciation.${lastSession.appreciation}`)
+                    : '',
+                ]
+                  .filter(Boolean)
+                  .join(' · ')
               : t('classObservation.setup.none')
           }
         />
@@ -276,7 +302,7 @@ const ClassObservationSetup: React.FC = () => {
       </ScrollView>
 
       <VStack
-        px="16px"
+        px={GUTTER}
         pb="16px"
         pt="8px"
         borderTopWidth="1px"
