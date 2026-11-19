@@ -19,7 +19,6 @@ import ClassObservationAdvice from '../screens/ClassObservation/Advice';
 import ClassObservationSignatures from '../screens/ClassObservation/Signatures';
 import ClassObservationCompleted from '../screens/ClassObservation/Completed';
 import ClassObservationReport from '../screens/ClassObservation/Report';
-import CompetenceStats from '../screens/Teacher/TeacherDetails/Tabs/TeacherStats/CompetenceStats';
 import QuickStatsScreen from '../screens/Home/QuickActions/Stats';
 import CoachCreatedScreen from '../screens/CoachCreated';
 import PendingSessionsScreen from '../screens/Home/QuickActions/Pending';
@@ -97,10 +96,6 @@ const RouterProvider: React.FC = () => {
         <Route
           path={PathRoutes.teacher.details}
           Component={TeacherDetailsScreen}
-        />
-        <Route
-          path={PathRoutes.teacher.competenceStats}
-          Component={CompetenceStats}
         />
 
         <Route path={PathRoutes.teacher.form} Component={TeacherFormScreen} />

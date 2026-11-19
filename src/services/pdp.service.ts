@@ -49,6 +49,42 @@ export const PdpService = {
     return {pdp, objectives: objectives[0].rows.raw()};
   },
 
+  // Validated plans of a teacher, the latest first (tab "PDP")
+  listTeacherPdps: async (
+    teacherId: string,
+  ): Promise<
+    {pdp: Pdp; objectives: (PdpObjective & {code?: string | null})[]}[]
+  > => {
+    const db = await getDBConnection();
+    const pdps: Pdp[] = (
+      await db.executeSql(
+        `
+        SELECT p.* FROM pdp as p
+        INNER JOIN session as s ON s.id = p.session_id
+        WHERE s.teacher_id = ? AND p.status = 'VALIDATED'
+        ORDER BY p.validated_at DESC
+      `,
+        [teacherId],
+      )
+    )[0].rows.raw();
+    return Promise.all(
+      pdps.map(async pdp => ({
+        pdp,
+        objectives: (
+          await db.executeSql(
+            `
+            SELECT o.*, q.code as code FROM pdp_objective as o
+            LEFT JOIN question as q ON q.id = o.question_id
+            WHERE o.pdp_id = ? AND o.deleted_at IS NULL
+            ORDER BY o.rank
+          `,
+            [pdp.id],
+          )
+        )[0].rows.raw(),
+      })),
+    );
+  },
+
   // Creates the plan, or replaces the draft when the scoring has changed
   saveDraft: async (
     sessionId: string,

@@ -330,6 +330,17 @@ const enTranslation = {
     },
   },
   teacher: {
+    evolution: {
+      subtitle:
+        'Global scores of the sub-domains, from 1 to 5, by observation.',
+      empty: 'The evolution will appear after the first closed session.',
+    },
+    pdp: {
+      title: 'PDP of {{date}}',
+      detail: 'Indicator: {{indicator}} · due {{date}}',
+      hint: 'Progress is measured at the next observation: see the "Evolution" tab.',
+      empty: 'No validated PDP yet.',
+    },
     form: {
       name: 'First name',
       'name-placeholder': 'e.g. Daniel',
@@ -372,6 +383,7 @@ const enTranslation = {
       description: '{{subject}} teacher at {{school}}',
     },
     tabs: {
+      pdp: 'PDP',
       session: {
         title: 'Observations',
         'observation-of': 'Observation of {{date}}',

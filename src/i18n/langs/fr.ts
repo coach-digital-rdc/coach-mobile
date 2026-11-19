@@ -331,6 +331,16 @@ const frTranslation = {
     },
   },
   teacher: {
+    evolution: {
+      subtitle: 'Cotes globales des sous-domaines, de 1 à 5, par observation.',
+      empty: "L'évolution apparaîtra après la première séance clôturée.",
+    },
+    pdp: {
+      title: 'PDP du {{date}}',
+      detail: 'Indicateur : {{indicator}} · échéance {{date}}',
+      hint: "Les progrès se mesurent à l'observation suivante : voir l'onglet « Évolution ».",
+      empty: 'Aucun PDP validé pour le moment.',
+    },
     form: {
       name: 'Prénom',
       'name-placeholder': 'ex. Daniel',
@@ -373,6 +383,7 @@ const frTranslation = {
       description: 'Enseignant de {{subject}} à {{school}}',
     },
     tabs: {
+      pdp: 'PDP',
       session: {
         title: 'Observations',
         'observation-of': 'Observation du {{date}}',

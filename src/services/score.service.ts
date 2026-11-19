@@ -48,6 +48,46 @@ export const ScoreService = {
     }
   },
 
+  // Global scores of the closed sessions of a teacher, oldest first (tab "Évolution")
+  getTeacherHistory: async (
+    teacherId: string,
+  ): Promise<
+    {
+      session_id: string;
+      date: string;
+      scores: {[competenceId: string]: number};
+    }[]
+  > => {
+    const db = await getDBConnection();
+    const result = await db.executeSql(
+      `
+      SELECT s.id as session_id, COALESCE(s.completed_at, s.created_at) as date,
+        c.competence_id, COALESCE(c.value, c.suggested_value) as value
+      FROM session as s
+      INNER JOIN competence_score as c ON c.session_id = s.id
+      WHERE s.teacher_id = ? AND s.session_status = 'COMPLETED'
+      ORDER BY date
+    `,
+      [teacherId],
+    );
+    const history: {
+      session_id: string;
+      date: string;
+      scores: {[competenceId: string]: number};
+    }[] = [];
+    for (const row of result[0].rows.raw()) {
+      let item = history.find(entry => entry.session_id === row.session_id);
+      if (!item) {
+        item = {session_id: row.session_id, date: row.date, scores: {}};
+        history.push(item);
+      }
+      if (row.value !== null) {
+        item.scores[row.competence_id] = row.value;
+      }
+    }
+    return history;
+  },
+
   syncScores: async (scores: CompetenceScore[]): Promise<void> => {
     const db = await getDBConnection();
     await Promise.all(
