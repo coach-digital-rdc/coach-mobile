@@ -13,6 +13,12 @@ import {useTranslation} from 'react-i18next';
 import moment from 'moment';
 import {SessionService} from '../../../services/session.service';
 import {TeacherService} from '../../../services/teacher.service';
+import {ScoreService} from '../../../services/score.service';
+import {
+  APPRECIATIONS,
+  getSuggestedAppreciation,
+} from '../../../helpers/appreciation.helper';
+import RadioCard from '../../../components/RadioCard';
 import {Session} from '../../../types/session';
 import PhaseStepper from '../../../components/PhaseStepper';
 import SessionStrip from '../../../components/SessionStrip';
@@ -36,6 +42,8 @@ const ClassObservationAdvice: React.FC = () => {
     advice: '',
     signed_place: '',
   });
+  const [suggested, setSuggested] = useState<string>();
+  const [appreciation, setAppreciation] = useState<string>();
   const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
@@ -47,11 +55,25 @@ const ClassObservationAdvice: React.FC = () => {
         advice: current?.advice || '',
         signed_place: current?.signed_place || '',
       });
+      setAppreciation(current?.appreciation || undefined);
       if (current?.teacher_id) {
         TeacherService.getTeacherDetails(current.teacher_id).then(teacher =>
           setTeacherName(teacher?.name || ''),
         );
       }
+    });
+  }, [sessionId]);
+
+  // The appreciation is suggested from the global scores of the sub-domains
+  useEffect(() => {
+    ScoreService.getScores(sessionId).then(scores => {
+      const value = getSuggestedAppreciation(
+        Object.values(scores).map(
+          score => score.value ?? score.suggested_value,
+        ),
+      );
+      setSuggested(value);
+      setAppreciation(current => current || value);
     });
   }, [sessionId]);
 
@@ -64,6 +86,8 @@ const ClassObservationAdvice: React.FC = () => {
       end_time: form.end_time.trim(),
       advice: form.advice.trim(),
       signed_place: form.signed_place.trim(),
+      suggested_appreciation: suggested,
+      appreciation,
     });
 
   const handleContinue = async () => {
@@ -129,6 +153,39 @@ const ClassObservationAdvice: React.FC = () => {
             onChangeText={advice => change({advice})}
           />
         </VStack>
+        <HStack
+          mt="16px"
+          mb="6px"
+          alignItems="center"
+          justifyContent="space-between">
+          <Text fontSize="13px" fontWeight={500} color="gray.700">
+            {t('classObservation.advice.appreciation')}
+          </Text>
+          {!!suggested && (
+            <Text
+              px="8px"
+              borderRadius="999px"
+              overflow="hidden"
+              fontSize="11px"
+              fontWeight={600}
+              bg={appreciation !== suggested ? 'yellow.0' : 'gray.100'}
+              color={appreciation !== suggested ? 'yellow.300' : 'gray.600'}>
+              {appreciation !== suggested
+                ? t('classObservation.advice.appreciation-changed', {
+                    value: t(`appreciation.${suggested}`),
+                  })
+                : t('classObservation.form.suggested')}
+            </Text>
+          )}
+        </HStack>
+        {APPRECIATIONS.map(item => (
+          <RadioCard
+            key={item}
+            title={t(`appreciation.${item}`)}
+            selected={appreciation === item}
+            onPress={() => setAppreciation(item)}
+          />
+        ))}
         <HStack mb="16px" space={3}>
           <FormField
             label={t('classObservation.advice.place')}

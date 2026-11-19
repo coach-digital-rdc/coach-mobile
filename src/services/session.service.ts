@@ -41,8 +41,8 @@ export const SessionService = {
       sessions?.map(session => {
         return db.executeSql(
           `
-          INSERT OR REPLACE INTO session(id, students_count, subject, lesson_time, objective, school_id, coach_id, key_points, teacher_id, latitude, longitude, feedback_id, session_status, level, school_year, teacher_weekly_load, last_observation_date, last_observation_rating, observer_function, start_time, end_time, advice, signed_place, observation_started_at, observation_ended_at, completed_at, _status)
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'synced')
+          INSERT OR REPLACE INTO session(id, students_count, subject, lesson_time, objective, school_id, coach_id, key_points, teacher_id, latitude, longitude, feedback_id, session_status, level, school_year, teacher_weekly_load, last_observation_date, last_observation_rating, observer_function, start_time, end_time, advice, signed_place, observation_started_at, observation_ended_at, completed_at, suggested_appreciation, appreciation, _status)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'synced')
         `,
           [
             session.id,
@@ -71,6 +71,8 @@ export const SessionService = {
             session.observation_started_at,
             session.observation_ended_at,
             session.completed_at,
+            session.suggested_appreciation,
+            session.appreciation,
           ],
         );
       }),
@@ -105,8 +107,8 @@ export const SessionService = {
 
     await db.executeSql(
       `
-      INSERT INTO session(id, subject, school_id, coach_id, teacher_id, level, school_year, teacher_weekly_load, last_observation_date, observer_function, session_status, created_at, _status)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'PREPARATION', ?, 'pending')
+      INSERT INTO session(id, subject, school_id, coach_id, teacher_id, level, school_year, teacher_weekly_load, last_observation_date, last_observation_rating, observer_function, session_status, created_at, _status)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'PREPARATION', ?, 'pending')
     `,
       [
         sessionId,
@@ -118,6 +120,7 @@ export const SessionService = {
         session.school_year,
         session.teacher_weekly_load,
         session.last_observation_date,
+        session.last_observation_rating,
         session.observer_function,
         now,
       ],
@@ -201,18 +204,40 @@ export const SessionService = {
     );
   },
 
+  // Last closed observation of a teacher, for the header of the next one (B11)
+  getLastClosedSession: async (
+    teacherId: string,
+  ): Promise<Session | undefined> => {
+    const db = await getDBConnection();
+    const result = await db.executeSql(
+      `
+      SELECT * FROM session
+      WHERE teacher_id = ? AND session_status = 'COMPLETED'
+      ORDER BY COALESCE(completed_at, created_at) DESC LIMIT 1
+    `,
+      [teacherId],
+    );
+    return result[0].rows.raw()[0];
+  },
+
   // Times of the didactic sequence, advice and place of the signature (B16)
   saveAdvice: async (
     sessionId: string,
     advice: Pick<
       Session,
-      'start_time' | 'end_time' | 'advice' | 'signed_place'
+      | 'start_time'
+      | 'end_time'
+      | 'advice'
+      | 'signed_place'
+      | 'suggested_appreciation'
+      | 'appreciation'
     >,
   ): Promise<void> => {
     const db = await getDBConnection();
     await db.executeSql(
       `
-      UPDATE session SET start_time = ?, end_time = ?, advice = ?, signed_place = ?, _status = 'pending'
+      UPDATE session SET start_time = ?, end_time = ?, advice = ?, signed_place = ?,
+        suggested_appreciation = ?, appreciation = ?, _status = 'pending'
       WHERE id = ?
     `,
       [
@@ -220,6 +245,8 @@ export const SessionService = {
         advice.end_time || null,
         advice.advice || null,
         advice.signed_place || null,
+        advice.suggested_appreciation || null,
+        advice.appreciation || null,
         sessionId,
       ],
     );
@@ -486,8 +513,8 @@ export const SessionService = {
       sessions?.map(async session => {
         await db.executeSql(
           `
-          INSERT OR REPLACE INTO session(id, students_count, subject, lesson_time, objective, school_id, coach_id, key_points, teacher_id, latitude, longitude, feedback_id, session_status, level, school_year, teacher_weekly_load, last_observation_date, last_observation_rating, observer_function, start_time, end_time, advice, signed_place, observation_started_at, observation_ended_at, completed_at, _status)
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'synced')
+          INSERT OR REPLACE INTO session(id, students_count, subject, lesson_time, objective, school_id, coach_id, key_points, teacher_id, latitude, longitude, feedback_id, session_status, level, school_year, teacher_weekly_load, last_observation_date, last_observation_rating, observer_function, start_time, end_time, advice, signed_place, observation_started_at, observation_ended_at, completed_at, suggested_appreciation, appreciation, _status)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'synced')
         `,
           [
             session.id,
@@ -516,6 +543,8 @@ export const SessionService = {
             session.observation_started_at,
             session.observation_ended_at,
             session.completed_at,
+            session.suggested_appreciation,
+            session.appreciation,
           ],
         );
 

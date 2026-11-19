@@ -33,6 +33,9 @@ export type Session = {
   observation_started_at?: string | null;
   observation_ended_at?: string | null;
   completed_at?: string | null;
+  // Appreciation of the observation (B11): VERY_GOOD, GOOD, FAIRLY_GOOD, INSUFFICIENT or WEAK
+  suggested_appreciation?: string | null;
+  appreciation?: string | null;
 
   feedback?: Feedback;
   answers?: Answer[];

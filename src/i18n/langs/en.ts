@@ -9,6 +9,13 @@ const enTranslation = {
     na: 'N/A',
   },
   splash: {
+    'update-title': 'New version available',
+    'update-message':
+      'Version {{value}} of the application is available. Install it to get the latest fixes and the updated grid.',
+    'update-required':
+      'Version {{value}} of the application is required to continue. Install it to get the latest fixes and the updated grid.',
+    update: 'Update',
+    later: 'Later',
     tagline: 'Classroom practice observation',
     version: 'Version {{value}}',
   },
@@ -127,6 +134,13 @@ const enTranslation = {
       saved_interval:
         '(0-1)[Circle session saved · {{count}} participant];(2-inf)[Circle session saved · {{count}} participants];',
     },
+  },
+  appreciation: {
+    VERY_GOOD: 'Very good',
+    GOOD: 'Good',
+    FAIRLY_GOOD: 'Fairly good',
+    INSUFFICIENT: 'Insufficient',
+    WEAK: 'Weak',
   },
   language: {
     hint: 'The language can be changed at any time in the settings.',
@@ -347,6 +361,8 @@ const enTranslation = {
       sync: 'Synchronisation',
     },
     sync: {
+      outdated:
+        'No synchronisation for {{days}} days: synchronise to receive the latest PDP rules',
       done: 'Synced {{date}}',
       never: 'Not synced yet',
       pending_interval:
@@ -645,6 +661,8 @@ const enTranslation = {
       'close-confirm': 'Close',
     },
     advice: {
+      appreciation: 'Appreciation of the session',
+      'appreciation-changed': 'Changed · suggested {{value}}',
       title: 'Advice and times',
       subtitle:
         'The times are taken from the observation; correct them if needed.',

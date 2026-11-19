@@ -9,6 +9,13 @@ const frTranslation = {
     na: 'N/A',
   },
   splash: {
+    'update-title': 'Nouvelle version disponible',
+    'update-message':
+      "La version {{value}} de l'application est disponible. Installez-la pour bénéficier des dernières corrections et de la grille à jour.",
+    'update-required':
+      "La version {{value}} de l'application est nécessaire pour continuer. Installez-la pour bénéficier des dernières corrections et de la grille à jour.",
+    update: 'Mettre à jour',
+    later: 'Plus tard',
     tagline: 'Observation des pratiques de classe',
     version: 'Version {{value}}',
   },
@@ -127,6 +134,13 @@ const frTranslation = {
       saved_interval:
         '(0-1)[Séance de cercle enregistrée · {{count}} participant.e];(2-inf)[Séance de cercle enregistrée · {{count}} participant.e.s];',
     },
+  },
+  appreciation: {
+    VERY_GOOD: 'Très bien',
+    GOOD: 'Bien',
+    FAIRLY_GOOD: 'Assez bien',
+    INSUFFICIENT: 'Insuffisant',
+    WEAK: 'Faible',
   },
   language: {
     hint: 'La langue peut être changée à tout moment dans les paramètres.',
@@ -348,6 +362,8 @@ const frTranslation = {
       sync: 'Synchronisation',
     },
     sync: {
+      outdated:
+        'Pas de synchronisation depuis {{days}} jours : synchronisez pour recevoir les dernières règles du PDP',
       done: 'Synchronisé {{date}}',
       never: 'Pas encore synchronisé',
       pending_interval:
@@ -647,6 +663,8 @@ const frTranslation = {
       'close-confirm': 'Clôturer',
     },
     advice: {
+      appreciation: 'Appréciation de la séance',
+      'appreciation-changed': 'Modifiée · proposée {{value}}',
       title: 'Conseils et horaires',
       subtitle:
         "Les heures sont reprises de l'observation ; corrigez-les si besoin.",

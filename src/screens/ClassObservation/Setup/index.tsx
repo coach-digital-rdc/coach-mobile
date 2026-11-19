@@ -8,6 +8,7 @@ import {TeacherService} from '../../../services/teacher.service';
 import {SessionService} from '../../../services/session.service';
 import {TeacherDetailsType} from '../../../types/teacher';
 import {SessionActivity} from '../../../types/session-activity';
+import {Session} from '../../../types/session';
 import SegmentedChoice from '../../../components/SegmentedChoice';
 import PhaseStepper from '../../../components/PhaseStepper';
 import FormField from '../../../components/FormField';
@@ -48,6 +49,8 @@ const ClassObservationSetup: React.FC = () => {
   const teacherId: string = state?.session?.teacher_id;
   const [teacher, setTeacher] = useState<TeacherDetailsType>();
   const [isSaving, setIsSaving] = useState(false);
+  // Last closed observation of the teacher: date and appreciation for the header
+  const [lastSession, setLastSession] = useState<Session>();
   const [header, setHeader] = useState({
     subject: '',
     teacher_weekly_load: '',
@@ -60,6 +63,7 @@ const ClassObservationSetup: React.FC = () => {
 
   useEffect(() => {
     if (teacherId) {
+      SessionService.getLastClosedSession(teacherId).then(setLastSession);
       TeacherService.getTeacherDetails(teacherId).then(data => {
         setTeacher(data);
         setHeader(current => ({
@@ -92,7 +96,10 @@ const ClassObservationSetup: React.FC = () => {
         teacher_weekly_load: header.teacher_weekly_load
           ? parseInt(header.teacher_weekly_load, 10)
           : null,
-        last_observation_date: teacher?.last_session_date || null,
+        last_observation_date: lastSession
+          ? String(lastSession.completed_at || lastSession.created_at)
+          : null,
+        last_observation_rating: lastSession?.appreciation || null,
         // Copy of the function of the observer at the time of the session (B21)
         observer_function: currentCoach?.function || null,
       },
@@ -175,8 +182,17 @@ const ClassObservationSetup: React.FC = () => {
         <InfoRow
           label={t('classObservation.setup.last-observation')}
           value={
-            teacher?.last_session_date
-              ? moment(teacher.last_session_date).format('L')
+            lastSession
+              ? [
+                  moment(
+                    lastSession.completed_at || lastSession.created_at,
+                  ).format('L'),
+                  lastSession.appreciation
+                    ? t(`appreciation.${lastSession.appreciation}`)
+                    : '',
+                ]
+                  .filter(Boolean)
+                  .join(' · ')
               : t('classObservation.setup.none')
           }
         />

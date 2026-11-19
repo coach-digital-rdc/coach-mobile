@@ -61,6 +61,15 @@ const date = (value?: string | Date | null) =>
 const time = (value?: string | Date | null) =>
   value ? moment(value).format('HH:mm') : '';
 
+// Appreciation of an observation, in the words of the paper tool (B11)
+const APPRECIATION_LABELS: {[code: string]: string} = {
+  VERY_GOOD: 'très bien',
+  GOOD: 'bien',
+  FAIRLY_GOOD: 'assez bien',
+  INSUFFICIENT: 'insuffisant',
+  WEAK: 'faible',
+};
+
 const STYLE = `
   @page { size: A4; margin: 12mm 12mm 14mm; }
   * { box-sizing: border-box; }
@@ -251,7 +260,9 @@ export const observationReportHtml = (data: ReportData) => {
         )}</td></tr>
         <tr><td colspan="2">08. Dernière observation : date : ${
           date(session.last_observation_date) || '—'
-        } · appr. : ${escape(session.last_observation_rating) || '—'}</td></tr>
+        } · appr. : ${
+    escape(APPRECIATION_LABELS[session.last_observation_rating || '']) || '—'
+  }</td></tr>
         <tr><td>09. Charge hebdomadaire : ${escape(
           session.teacher_weekly_load,
         )} h</td><td>10. Année scolaire : ${escape(
