@@ -63,6 +63,9 @@ const SyncService = {
         pdpObjectives: firstSync
           ? []
           : await SyncService.getPending(db, 'pdp_objective'),
+        tlcEvaluations: firstSync
+          ? []
+          : await SyncService.getPending(db, 'TLC_evaluation'),
       };
       console.log('2');
 
@@ -169,6 +172,7 @@ const SyncService = {
       SyncService.updateToSynced(db, 'pdp'),
       SyncService.updateToSynced(db, 'session_signature'),
       SyncService.updateToSynced(db, 'pdp_objective'),
+      SyncService.updateToSynced(db, 'TLC_evaluation'),
       SyncService.updateToSyncedFeedbacks(db),
     ]);
   },

@@ -47,14 +47,8 @@ const PathRoutes = {
   },
 
   teacherLearningCircles: {
-    onboarding: '/teacherlearningcircles/onboarding',
-    checkingStats: '/teacherlearningcircles/checkingStats',
-    unitSelect: '/teacherlearningcircles/unitSelect',
-    introduction: '/teacherlearningcircles/introduction/:unitId',
-    situations: '/teacherlearningcircles/situations/:unitId',
-    explanation: '/teacherlearningcircles/explanation/:unitId',
-    activities: '/teacherlearningcircles/activities/:unitId',
-    finish: '/teacherlearningcircles/finish/:unitId',
+    main: '/tlc',
+    unit: '/tlc/unit/:unitId',
   },
 
   communityOfPractice: {

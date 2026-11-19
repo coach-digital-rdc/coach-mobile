@@ -22,16 +22,12 @@ import ClassObservationReport from '../screens/ClassObservation/Report';
 import QuickStatsScreen from '../screens/Home/QuickActions/Stats';
 import CoachCreatedScreen from '../screens/CoachCreated';
 import PendingSessionsScreen from '../screens/Home/QuickActions/Pending';
-import TLCOnboarding from '../screens/TeacherLearningCircles/Onboarding';
-import TLCCheckingStats from '../screens/TeacherLearningCircles/CheckingStats';
-import TLCUnitSelect from '../screens/TeacherLearningCircles/UnitSelect';
-import TLCIntroduction from '../screens/TeacherLearningCircles/Introduction';
-import TLCFinish from '../screens/TeacherLearningCircles/Finish';
 import CoachSelectScreen from '../screens/CoachSelect';
 import SyncDetails from '../screens/SyncDetails';
 import QrScanScreen from '../screens/QrScan';
 import SyncScreen from '../screens/Sync';
-import TLCDynamicStep from '../screens/TeacherLearningCircles/DynamicStep';
+import TlcScreen from '../screens/Tlc';
+import TlcUnitScreen from '../screens/Tlc/Unit';
 import SplashScreen from '../screens/SplashScreen';
 import LanguageScreen from '../screens/Language';
 import CoachScriptsScreen from '../screens/CoachScripts';
@@ -71,6 +67,14 @@ const RouterProvider: React.FC = () => {
         <Route path={PathRoutes.syncDetails} Component={SyncDetails} />
         <Route path={PathRoutes.qrScan} Component={QrScanScreen} />
         <Route path={PathRoutes.sync} Component={SyncScreen} />
+        <Route
+          path={PathRoutes.teacherLearningCircles.main}
+          Component={TlcScreen}
+        />
+        <Route
+          path={PathRoutes.teacherLearningCircles.unit}
+          Component={TlcUnitScreen}
+        />
 
         <Route path={PathRoutes.selectAccount} Component={CoachSelectScreen} />
 
@@ -139,38 +143,6 @@ const RouterProvider: React.FC = () => {
         <Route
           path={PathRoutes.classObservation.report}
           Component={ClassObservationReport}
-        />
-        <Route
-          path={PathRoutes.teacherLearningCircles.onboarding}
-          Component={TLCOnboarding}
-        />
-        <Route
-          path={PathRoutes.teacherLearningCircles.checkingStats}
-          Component={TLCCheckingStats}
-        />
-        <Route
-          path={PathRoutes.teacherLearningCircles.unitSelect}
-          Component={TLCUnitSelect}
-        />
-        <Route
-          path={PathRoutes.teacherLearningCircles.introduction}
-          Component={TLCIntroduction}
-        />
-        <Route
-          path={PathRoutes.teacherLearningCircles.situations}
-          Component={TLCDynamicStep}
-        />
-        <Route
-          path={PathRoutes.teacherLearningCircles.explanation}
-          Component={TLCDynamicStep}
-        />
-        <Route
-          path={PathRoutes.teacherLearningCircles.activities}
-          Component={TLCDynamicStep}
-        />
-        <Route
-          path={PathRoutes.teacherLearningCircles.finish}
-          Component={TLCFinish}
         />
         <Route
           path={PathRoutes.communityOfPractice.onboarding}

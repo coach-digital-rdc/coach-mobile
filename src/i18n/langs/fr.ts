@@ -26,6 +26,108 @@ const frTranslation = {
       PEER: 'Établissement auquel vous êtes rattaché.e',
     },
   },
+  tlc: {
+    // Empty state of the community of practice (kept in the code, not offered)
+    checkingStats: {
+      empty: {
+        title: 'Données insuffisantes pour cet établissement',
+        description:
+          "Réalisez des observations de classe et des entretiens pour obtenir les statistiques de l'établissement la prochaine fois",
+      },
+    },
+    title: "Cercles d'apprentissage",
+    heading: "Cercles d'apprentissage des enseignant.e.s",
+    subtitle:
+      "Animez une séance collective autour d'une pratique de classe. Chaque unité dure environ une heure.",
+    results: "Résultats de l'établissement",
+    'results-detail':
+      '{{school}} · {{observations}} observations de {{teachers}} enseignant.e.s. Les unités sont classées selon les comportements le plus souvent cotés Faible.',
+    weak: '{{code}} coté Faible dans {{count}} observation(s) sur {{total}}',
+    recommended: 'Recommandée',
+    unit: {
+      start: "Commencer l'unité",
+      steps: {
+        attendance: {
+          title: 'Liste de présence',
+          time: '5 min',
+          text: "Cochez les enseignant.e.s de l'établissement qui participent au cercle.",
+        },
+        introduction: {
+          title: "Introduction de l'unité",
+          time: '15 min',
+          text: "Présentez aux enseignant.e.s le thème de l'unité et ce qu'il apporte en classe.",
+        },
+        situations: {
+          title: 'Situations de classe',
+          time: '10 min',
+          text: 'Lisez les exemples à voix haute et discutez-en en groupe.',
+        },
+        explanation: {
+          title: 'Explication des situations',
+          time: '10 min',
+          text: "Expliquez ce qui était bien et ce qui ne l'était pas.",
+        },
+        activities: {
+          title: 'Activités',
+          time: '15 min',
+          text: 'Analysez deux échanges en classe, puis présentez la tâche à réaliser.',
+        },
+      },
+      sections: {
+        attendance: 'Présence',
+        intro: 'Intro',
+        situations: 'Situations',
+        explanation: 'Explication',
+        activities: 'Activités',
+        end: 'Fin',
+      },
+      buttons: {
+        'start-intro': "Commencer l'introduction",
+        next: 'Suivant',
+        'see-examples': 'Voir les exemples',
+        'see-explanation': "Voir l'explication",
+        'go-activities': 'Passer aux activités',
+        'see-responses': 'Voir les réponses',
+        'see-task': 'Voir la tâche',
+        rate: 'Évaluer la séance',
+        finish: 'Terminer la séance',
+      },
+      attendance: 'Liste de présence',
+      'attendance-hint':
+        'Cochez les enseignant.e.s de {{school}} qui participent au cercle.',
+      'absent-from-list': 'Enseignant.e absent.e de la liste',
+      'name-placeholder': 'Nom et prénom',
+      add: 'Ajouter',
+      added: 'Ajouté.e pendant la séance',
+      introduction: 'Introduction',
+      learn: 'Dans cette unité, vous allez apprendre :',
+      situations: 'Situations de classe',
+      'situations-hint':
+        'Lisez les exemples à voix haute et posez les questions aux enseignant.e.s.',
+      discuss: 'À discuter en groupe',
+      explanation: 'Explication',
+      'explanation-hint':
+        "Expliquez aux enseignant.e.s ce qui était bien et ce qui ne l'était pas dans les exemples.",
+      bad: 'Exemple à éviter',
+      good: 'Bon exemple',
+      activities: 'Activités',
+      responses: 'Réponses',
+      'what-next': 'Et ensuite ?',
+      task: 'Tâche',
+      'task-1': 'Tâche 1',
+      end: 'Fin de la séance',
+      'end-text':
+        "Merci d'avoir animé ce cercle d'apprentissage. Les enseignant.e.s présenteront leur tâche au prochain cercle.",
+      participants_interval:
+        '(0-1)[{{count}} enseignant.e a participé];(2-inf)[{{count}} enseignant.e.s ont participé];',
+      rating: 'Comment évaluez-vous la participation des enseignant.e.s ?',
+      teacher: 'Enseignant.e',
+      class: 'La classe',
+      learner: 'Apprenant.e',
+      saved_interval:
+        '(0-1)[Séance de cercle enregistrée · {{count}} participant.e];(2-inf)[Séance de cercle enregistrée · {{count}} participant.e.s];',
+    },
+  },
   language: {
     hint: 'La langue peut être changée à tout moment dans les paramètres.',
     continue: 'Continuer',
@@ -948,169 +1050,6 @@ const frTranslation = {
       title: 'Communauté de pratique terminée',
       description:
         'Félicitations, vous avez terminé la Communauté de pratique !',
-      button: 'Terminer',
-    },
-  },
-  tlc: {
-    page_title: "Cercles d'apprentissage",
-
-    loadingBar: {
-      checkingStats: 'Statistiques',
-      unitSelect: 'Unité',
-      introduction: 'Introduction',
-      situations: 'Situations',
-      explanation: 'Explication',
-      activities: 'Activités',
-      finish: 'Fin',
-    },
-
-    onboarding: {
-      title: 'Pour commencer',
-      subtitle:
-        "Découvrez les étapes du Cercle d'apprentissage et commencez une séance",
-      button: 'Commencer',
-
-      process: {
-        step1: {
-          title: "Consulter les statistiques de l'établissement",
-          subtitle: '5 min',
-          description:
-            "Consultez les statistiques de l'établissement pour choisir l'unité",
-        },
-        step2: {
-          title: "Choisir l'unité",
-          subtitle: '5 min',
-          description:
-            "Choisissez une unité dans la liste pour ce Cercle d'apprentissage",
-        },
-        step3: {
-          title: "Introduction de l'unité",
-          subtitle: '15 min',
-          description:
-            "Expliquez aux enseignants l'objet de l'unité et ce qu'elle peut leur apporter",
-        },
-        step4: {
-          title: 'Situations',
-          subtitle: '10 min',
-          description:
-            'Présentez aux enseignants des situations de classe et faites-les réagir',
-        },
-        step5: {
-          title: 'Explication des situations',
-          subtitle: '10 min',
-          description:
-            'Expliquez pourquoi ces situations étaient bonnes ou mauvaises',
-        },
-        step6: {
-          title: 'Activités',
-          subtitle: '15 min',
-          description:
-            'Faites des activités avec les enseignants pour mettre en pratique ce qu’ils ont appris',
-        },
-      },
-    },
-    checkingStats: {
-      title: 'Appréciation générale',
-      graphDesc:
-        "Cette appréciation est la moyenne de l'établissement dans tous les sous-domaines",
-      ratingTitle: 'Appréciation par sous-domaine',
-      ratingDesc: "Moyenne de l'établissement dans chaque sous-domaine",
-      empty: {
-        title: 'Données insuffisantes pour cet établissement',
-        description:
-          "Réalisez des observations de classe et des entretiens pour obtenir les statistiques de l'établissement la prochaine fois",
-      },
-      button: 'Suivant',
-    },
-    unitSelect: {
-      title: "Choisir l'unité",
-      description:
-        'Chaque unité porte sur une pratique clé, que les enseignants travaillent ensemble',
-      button: "Commencer l'unité",
-    },
-    introduction: {
-      $1: {
-        title: 'Introduction',
-        description:
-          "Ce Cercle d'apprentissage porte sur l'usage d'un langage positif en classe pour créer un environnement d'apprentissage encourageant pour les élèves.",
-
-        learn: {
-          title: 'Dans cette unité, vous verrez :',
-
-          $1: {
-            title: 'Pourquoi un langage positif est important en classe',
-          },
-          $2: {
-            title:
-              'Comment utiliser un langage positif en classe pour encourager les élèves',
-          },
-        },
-
-        button: 'Suivant',
-      },
-      $2: {
-        title: 'Pourquoi utiliser un langage positif en classe ?',
-        description:
-          "Il est important de créer en classe un environnement où les élèves se sentent en sécurité et soutenus sur le plan affectif. Tous les élèves se sentent les bienvenus si l'enseignant les traite tous avec respect.",
-        button: 'Voir les exemples',
-      },
-    },
-    situations: {
-      title: 'Situations',
-      description:
-        'Lisez à voix haute les exemples ci-dessous et posez les questions aux enseignants',
-
-      steps: {
-        $1: {
-          title: 'Exemple 1',
-          description:
-            "L'enseignant explique une notion à la classe puis donne un exercice. Il remarque qu'un élève n'arrive pas à faire le travail demandé. Il va vers lui et lui dit : « tu n'es pas un bon élève », « tu ne fais jamais ton travail » ou « tu n'y arriveras pas ».",
-          box: {
-            title: 'Discutez de la question suivante',
-            description:
-              "Comment pensez-vous que l'élève va se sentir ? Comment va-t-il se comporter ?",
-          },
-        },
-
-        $2: {
-          title: 'Exemple 2',
-          description:
-            "L'enseignant explique une notion à la classe puis donne un exercice. Il remarque qu'un élève n'arrive pas à faire le travail demandé. Il va vers lui et lui dit : « tu es un bon élève, et si tu fais un effort tu peux y arriver ».",
-          box: {
-            title: 'Discutez de la question suivante',
-            description:
-              "Comment pensez-vous que l'élève va se sentir ? Comment va-t-il se comporter ?",
-          },
-        },
-      },
-
-      button: "Voir l'explication",
-    },
-    explanation: {
-      title: 'Explication',
-      description:
-        'Expliquez aux enseignants ce qui était mauvais et ce qui était bon dans les exemples',
-
-      steps: {
-        $1: {
-          title: 'Exemple 1',
-          description:
-            "Dans le premier échange, les mots de l'enseignant ne soutiennent ni n'encouragent l'élève. Celui-ci ne se sentira pas bien et ne sera pas motivé pour travailler. L'enseignant doit soutenir les élèves pour qu'ils travaillent davantage.",
-        },
-        $2: {
-          title: 'Exemple 2',
-          description:
-            "Dans le second exemple, l'enseignant voit que l'élève a des difficultés et essaie de le soutenir par des mots positifs et encourageants.",
-        },
-      },
-      button: 'Suivant',
-    },
-    activities: {button: 'Suivant'},
-    finish: {
-      title: "Évaluer l'activité",
-      description: "Comment s'est-elle déroulée ?",
-      question:
-        "Les enseignants ont-ils bien répondu ? Ont-ils compris l'usage d'un langage positif ?",
       button: 'Terminer',
     },
   },

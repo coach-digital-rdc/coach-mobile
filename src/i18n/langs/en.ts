@@ -26,6 +26,108 @@ const enTranslation = {
       PEER: 'School you are attached to',
     },
   },
+  tlc: {
+    // Empty state of the community of practice (kept in the code, not offered)
+    checkingStats: {
+      empty: {
+        title: 'No sufficient data for this school',
+        description:
+          'Complete class observations and feedback sessions to unlock the statistics of the school next time',
+      },
+    },
+    title: 'Learning circles',
+    heading: 'Teacher learning circles',
+    subtitle:
+      'Lead a group session on a classroom practice. Each unit takes about one hour.',
+    results: 'Results of the school',
+    'results-detail':
+      '{{school}} · {{observations}} observations of {{teachers}} teachers. Units are ranked by the behaviours most often scored Low.',
+    weak: '{{code}} scored Low in {{count}} of {{total}} observation(s)',
+    recommended: 'Recommended',
+    unit: {
+      start: 'Start the unit',
+      steps: {
+        attendance: {
+          title: 'Attendance list',
+          time: '5 min',
+          text: 'Tick the teachers of the school who take part in the circle.',
+        },
+        introduction: {
+          title: 'Introduction of the unit',
+          time: '15 min',
+          text: 'Present the topic of the unit to the teachers and what it brings to the classroom.',
+        },
+        situations: {
+          title: 'Classroom situations',
+          time: '10 min',
+          text: 'Read the examples aloud and discuss them as a group.',
+        },
+        explanation: {
+          title: 'Explanation of the situations',
+          time: '10 min',
+          text: 'Explain what was good and what was not.',
+        },
+        activities: {
+          title: 'Activities',
+          time: '15 min',
+          text: 'Analyse two classroom exchanges, then present the task to carry out.',
+        },
+      },
+      sections: {
+        attendance: 'Attendance',
+        intro: 'Intro',
+        situations: 'Situations',
+        explanation: 'Explanation',
+        activities: 'Activities',
+        end: 'End',
+      },
+      buttons: {
+        'start-intro': 'Start the introduction',
+        next: 'Next',
+        'see-examples': 'See the examples',
+        'see-explanation': 'See the explanation',
+        'go-activities': 'Go to the activities',
+        'see-responses': 'See the responses',
+        'see-task': 'See the task',
+        rate: 'Rate the session',
+        finish: 'End the session',
+      },
+      attendance: 'Attendance list',
+      'attendance-hint':
+        'Tick the teachers of {{school}} who take part in the circle.',
+      'absent-from-list': 'Teacher missing from the list',
+      'name-placeholder': 'Full name',
+      add: 'Add',
+      added: 'Added during the session',
+      introduction: 'Introduction',
+      learn: 'In this unit, you will learn:',
+      situations: 'Classroom situations',
+      'situations-hint':
+        'Read the examples aloud and ask the questions to the teachers.',
+      discuss: 'To discuss as a group',
+      explanation: 'Explanation',
+      'explanation-hint':
+        'Explain to the teachers what was good and what was not in the examples.',
+      bad: 'Example to avoid',
+      good: 'Good example',
+      activities: 'Activities',
+      responses: 'Responses',
+      'what-next': 'What next?',
+      task: 'Task',
+      'task-1': 'Task 1',
+      end: 'End of the session',
+      'end-text':
+        'Thank you for leading this learning circle. The teachers will present their task at the next circle.',
+      participants_interval:
+        '(0-1)[{{count}} teacher took part];(2-inf)[{{count}} teachers took part];',
+      rating: 'How do you rate the participation of the teachers?',
+      teacher: 'Teacher',
+      class: 'The class',
+      learner: 'Learner',
+      saved_interval:
+        '(0-1)[Circle session saved · {{count}} participant];(2-inf)[Circle session saved · {{count}} participants];',
+    },
+  },
   language: {
     hint: 'The language can be changed at any time in the settings.',
     continue: 'Continue',
@@ -941,168 +1043,6 @@ const enTranslation = {
       title: 'Community of Practice complete',
       description:
         'Congratulations, you just completed the Community of Practice!',
-      button: 'Finish',
-    },
-  },
-  tlc: {
-    page_title: 'Teacher Learning Circles',
-
-    loadingBar: {
-      checkingStats: 'Check stats',
-      unitSelect: 'Unit select',
-      introduction: 'Introduction',
-      situations: 'Situations',
-      explanation: 'Explanation',
-      activities: 'Activities',
-      finish: 'Finish',
-    },
-
-    onboarding: {
-      title: 'Getting started',
-      subtitle:
-        'Check out the Teaching Learning Circle steps and start a new session',
-      button: 'Get started',
-
-      process: {
-        step1: {
-          title: 'Check school stats',
-          subtitle: '5 min',
-          description:
-            'View the school statistics to help you decide which unit to choose',
-        },
-        step2: {
-          title: 'Select unit',
-          subtitle: '5 min',
-          description:
-            'Select a unit from the list to work in this Teaching Learning Circle',
-        },
-        step3: {
-          title: 'Unit introduction',
-          subtitle: '15 min',
-          description:
-            'Explain to the teachers what this unit is about and how it can help them be a better teacher',
-        },
-        step4: {
-          title: 'Situational examples',
-          subtitle: '10 min',
-          description:
-            'Explain to the teachers what this unit is about and how it can help them be a better teacher',
-        },
-        step5: {
-          title: 'Situation explanation',
-          subtitle: '10 min',
-          description: 'Explain why those situations were good or bad',
-        },
-        step6: {
-          title: 'Activities',
-          subtitle: '15 min',
-          description:
-            'Do some activities with the teachers to exercise what they learned',
-        },
-      },
-    },
-    checkingStats: {
-      title: 'Overall rating',
-      graphDesc:
-        'This rating is the average of the school in all Teaching Practices',
-      ratingTitle: 'Rating per Teaching Practice',
-      ratingDesc: 'How is the average of the school in each Teaching Practice',
-      empty: {
-        title: 'No sufficient data for this school',
-        description:
-          'Complete class observations and feedback sessions to unlock the statistics of the school next time',
-      },
-      button: 'Next',
-    },
-    unitSelect: {
-      title: 'Choose unit',
-      description:
-        'Each unit focus on one key teaching practice for teachers to learn from ans with each other',
-      button: 'Start unit',
-    },
-    introduction: {
-      $1: {
-        title: 'Introduction',
-        description:
-          'This Teacher Learning Circle is about using positive language in the classroom to create an encouraging learning environment for students.',
-
-        learn: {
-          title: "In this unit you'll learn:",
-
-          $1: {
-            title: 'Why using positive language is important in a classroom',
-          },
-          $2: {
-            title:
-              'How positive language can be used in the classroom to encourage students',
-          },
-        },
-
-        button: 'Next',
-      },
-      $2: {
-        title: 'Why is it useful to use positive language in the classroom?',
-        description:
-          'It is important to create a classroom environment where students can feel emotionally safe and supported. All students feel welcome if the teacher treats them all respectfully.',
-        button: 'Start examples',
-      },
-    },
-    situations: {
-      title: 'Situational examples',
-      description:
-        'Read out loud the examples below and ask the questions for the teachers',
-
-      steps: {
-        $1: {
-          title: 'Example 1',
-          description:
-            'The teacher teaches a concept to the class and gives them classwork. The teacher notices that one student is not able to do the work assigned to him. The teacher goes to the student and starts telling him that ‘you are not a good student’, ‘you never do your work’ or ‘you cannot do this work’.',
-          box: {
-            title: 'Discuss the following question',
-            description:
-              'How do you think the student will feel? How do you think they will behave?',
-          },
-        },
-
-        $2: {
-          title: 'Example 2',
-          description:
-            'The teacher teaches a concept to the class and gives them classwork. The teacher notices that one student is not able to do the work assigned to him. The teacher goes to the student and tells him ‘you are a great student and if you try harder you can do this’',
-          box: {
-            title: 'Discuss the following question',
-            description:
-              'How do you think the student will feel? How do you think they will behave?',
-          },
-        },
-      },
-
-      button: 'Check explanation',
-    },
-    explanation: {
-      title: 'Explanation',
-      description:
-        'Let the teachers know what was bad and what was good in the examples',
-
-      steps: {
-        $1: {
-          title: 'Example 1',
-          description:
-            'In the first exchange, the words that the teacher uses are not supporting and encouraging for the student. The student will not feel good after hearing the words and will not be motivated to work hard. A teacher should try to be supportive to the students so students can work harder.',
-        },
-        $2: {
-          title: 'Example 2',
-          description:
-            'In the second example the teacher sees that the student is finding it difficult to work and then tries to support him by saying positive words and encouraging them.',
-        },
-      },
-      button: 'Next',
-    },
-    activities: {button: 'Next'},
-    finish: {
-      title: 'Rate the activity',
-      description: 'How did it go?',
-      question:
-        'Did they manage to answer correctly? Did they understood the correct use of positive language?',
       button: 'Finish',
     },
   },

@@ -33,7 +33,7 @@ const BottomNavigator: React.FC<Props> = ({active}) => {
       id: 'circles',
       label: t('bottom_navigator.tlc'),
       icon: 'users-alt',
-      route: PathRoutes.teacherLearningCircles.onboarding,
+      route: PathRoutes.teacherLearningCircles.main,
     },
     {
       id: 'settings',

@@ -142,7 +142,7 @@ const HomeScreen: React.FC = () => {
     {
       icon: 'users-alt',
       label: t('home.tiles.tlc'),
-      onPress: () => navigate(PathRoutes.teacherLearningCircles.onboarding),
+      onPress: () => navigate(PathRoutes.teacherLearningCircles.main),
     },
     {
       icon: 'sync',
