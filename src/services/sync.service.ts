@@ -104,6 +104,7 @@ const SyncService = {
 
       if (currentSchool && response.data.total > 0) {
         await CompetenceService.sync(response.data.competencies);
+        await SyncService.syncCoaches(response.data.coaches);
         await QuestionService.sync(response.data.questions);
         await TeacherService.sync(response.data.teachers);
         await SessionService.sync(response.data.sessions);
@@ -129,6 +130,17 @@ const SyncService = {
       await SyncService.updateAllToSynced(db);
     } catch (err) {
       console.log(JSON.stringify(err));
+    }
+  },
+
+  // Coaches of the school; the profile of the connected observer is refreshed
+  syncCoaches: async (coaches: Coach[]): Promise<void> => {
+    const currentCoach = await StorageService.getCurrentCoach();
+    for (const coach of coaches || []) {
+      await CoachService.insertOrUpdateCoach(coach);
+      if (coach.id === currentCoach?.id) {
+        await StorageService.setCurrentCoach({...currentCoach, ...coach});
+      }
     }
   },
 

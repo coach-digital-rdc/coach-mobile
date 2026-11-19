@@ -13,6 +13,8 @@ import {useCoachContext} from '../../providers/coach.provider';
 import {LOGIN_MODE} from '@env';
 import {useCameraPermission} from 'react-native-vision-camera';
 import {runSeeds} from '../../database/seeds';
+import moment from 'moment';
+import i18n from '../../i18n';
 
 const SplashScreen: React.FC = () => {
   const navigate = useNavigate();
@@ -33,6 +35,11 @@ const SplashScreen: React.FC = () => {
 
         const currentCoach = await StorageService.getCurrentCoach();
         const currentSchool = await StorageService.getCurrentSchool();
+        const language = await StorageService.getLanguage();
+        if (language) {
+          await i18n.changeLanguage(language);
+          moment.locale(language);
+        }
 
         if (isConnected && currentSchool) {
           await SyncService.trySyncData();
@@ -43,7 +50,10 @@ const SplashScreen: React.FC = () => {
         await selectCoach(currentCoach);
         await selectSchool(currentSchool);
 
-        if (LOGIN_MODE === 'OTP') {
+        if (!language) {
+          // First start: the user chooses the language
+          navigate(PathRoutes.language, {replace: true});
+        } else if (LOGIN_MODE === 'OTP') {
           if (!currentCoach) {
             navigate(PathRoutes.login.main, {replace: true});
           } else if (!currentSchool) {

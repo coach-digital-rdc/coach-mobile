@@ -8,6 +8,7 @@ import {runMigrationV5} from './05';
 import {runMigrationV6} from './06';
 import {runMigrationV7} from './07';
 import {runMigrationV8} from './08';
+import {runMigrationV9} from './09';
 
 const NP_MIGRATION_LIST = [
   runMigrationV0,
@@ -19,6 +20,7 @@ const NP_MIGRATION_LIST = [
   runMigrationV6,
   runMigrationV7,
   runMigrationV8,
+  runMigrationV9,
 ];
 
 export const runMigrations = async () => {

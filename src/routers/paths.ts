@@ -1,6 +1,8 @@
 const PathRoutes = {
   splash: '/',
 
+  language: '/language',
+
   selectSchool: '/selectSchool',
 
   selectAccount: '/selectAccount',

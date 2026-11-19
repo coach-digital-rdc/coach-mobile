@@ -10,9 +10,15 @@ const KEYS = {
   lastSync: 'LAST_SYNC',
   currentCoach: 'CURRENT_COACH',
   currentSchool: 'CURRENT_SCHOOL',
+  language: 'LANGUAGE',
 };
 
 export const StorageService = {
+  // Language chosen on the first start or in the settings
+  getLanguage: () => AsyncStorage.getItem(KEYS.language),
+  setLanguage: async (language: string) => {
+    await AsyncStorage.setItem(KEYS.language, language);
+  },
   getDatabaseVersion: () => {
     return AsyncStorage.getItem(KEYS.databaseVersion);
   },

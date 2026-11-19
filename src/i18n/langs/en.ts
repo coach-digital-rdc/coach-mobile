@@ -12,6 +12,24 @@ const enTranslation = {
     tagline: 'Classroom practice observation',
     version: 'Version {{value}}',
   },
+  observer: {
+    function: {
+      INSPECTOR: 'Inspector',
+      ADVISOR: 'Pedagogical advisor',
+      SCHOOL_HEAD: 'School head',
+      PEER: 'Peer (teacher)',
+    },
+    scope: {
+      INSPECTOR: 'Schools of your area of intervention',
+      ADVISOR: 'Schools of your area of intervention',
+      SCHOOL_HEAD: 'School you are in charge of',
+      PEER: 'School you are attached to',
+    },
+  },
+  language: {
+    hint: 'The language can be changed at any time in the settings.',
+    continue: 'Continue',
+  },
   common: {
     cancel: 'Cancel',
     save: 'Save',
@@ -84,6 +102,18 @@ const enTranslation = {
       change_coach_button: 'Change coach',
     },
     createAccount: {
+      heading: 'Observer account',
+      subtitle:
+        'This information is shown in the header of each observation sheet.',
+      sex: 'Sex',
+      function: 'Function',
+      zone: 'Area of intervention',
+      'zone-placeholder': 'e.g. Kinshasa-Lukunga education province',
+      'duty-station': 'Duty station',
+      'duty-station-placeholder': 'e.g. Bon Espoir secondary school',
+      'postal-box': 'Postal box',
+      error:
+        'The account could not be created. Check the connection and the e-mail address.',
       title: 'New account',
       takePhoto: 'Take/Choose photo',
       name: 'First name',

@@ -1,196 +1,180 @@
 import React, {useState} from 'react';
 import {HStack, ScrollView, Text, VStack, useToast} from 'native-base';
-import {createAccountFormValidate} from '../../../helpers/validate.helper';
-import {CoachService} from '../../../services/coach.service';
-import {ImageService} from '../../../services/image.service';
-import ImagePicker from '../../../components/ImagePicker';
-import InputText from '../../../components/InputText';
 import {useNavigate} from 'react-router-native';
 import {useTranslation} from 'react-i18next';
-import Button from '../../../components/Button';
-import Page from '../../../components/Page';
-import {Formik} from 'formik';
+import {CoachService} from '../../../services/coach.service';
+import {Coach} from '../../../types/coach';
+import SegmentedChoice from '../../../components/SegmentedChoice';
+import FormField from '../../../components/FormField';
+import RadioCard from '../../../components/RadioCard';
 import Toast from '../../../components/Toast';
 import PathRoutes from '../../../routers/paths';
-import {useCoachContext} from '../../../providers/coach.provider';
-import DatePicker from 'react-native-date-picker';
+import Button from '../../../components/Button';
+import Page from '../../../components/Page';
 
-import {TouchableOpacity} from 'react-native';
-import moment from 'moment';
-import i18n from '../../../i18n';
+export const OBSERVER_FUNCTIONS = [
+  'INSPECTOR',
+  'ADVISOR',
+  'SCHOOL_HEAD',
+  'PEER',
+] as const;
 
-export type FormValuesType = {
-  name?: string;
-  surname?: string;
-  email?: string;
-  phone?: string;
-  birthdate?: Date;
-};
+// Inspectors and advisors work on an area; school heads and peers on a school
+const isZoneBased = (observerFunction?: string | null) =>
+  observerFunction === 'INSPECTOR' || observerFunction === 'ADVISOR';
 
-const initialValues: FormValuesType = {
-  name: '',
-  surname: '',
-  email: '',
-  phone: '',
-  birthdate: undefined,
-};
+const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+// "Compte observateur" of the mockups (B21): the profile is shown in the header of each
+// observation sheet. The account is then confirmed with the code sent by e-mail.
 const SignupScreen: React.FC = () => {
   const {t} = useTranslation();
   const navigate = useNavigate();
-  const [openDatePicker, setOpenDatePicker] = useState(false);
-  const currentLanguage = i18n.languages[0];
-  const [profileImage, setProfileImage] = useState<{
-    name: string;
-    value: string;
-  }>();
+  const toast = useToast();
+  const [isSaving, setIsSaving] = useState(false);
+  const [coach, setCoach] = useState<Partial<Coach>>({
+    name: '',
+    surname: '',
+    sex: '',
+    function: 'INSPECTOR',
+    duty_station: '',
+    postal_box: '',
+    phone: '',
+    email: '',
+  });
 
-  const onSubmit = async (values: FormValuesType) => {
-    let image_id = '';
-    if (profileImage?.name && profileImage.value) {
-      image_id = await ImageService.saveNewImage(
-        profileImage.name,
-        profileImage.value,
-      );
-    }
+  const change = (value: Partial<Coach>) =>
+    setCoach(current => ({...current, ...value}));
 
-    if (values && values.email) {
+  const ready =
+    !!coach.name?.trim() &&
+    !!coach.surname?.trim() &&
+    EMAIL.test(coach.email?.trim() || '');
+
+  const handleCreate = async () => {
+    setIsSaving(true);
+    try {
+      const email = coach.email!.trim();
       await CoachService.signup({
-        ...values,
-        image_id,
+        ...coach,
+        name: coach.name?.trim(),
+        surname: coach.surname?.trim(),
+        email,
       });
-
-      navigate(PathRoutes.login.otp.replace(':id', values.email));
+      navigate(PathRoutes.login.otp.replace(':id', email));
+    } catch (err) {
+      toast.show({
+        placement: 'top',
+        render: () => (
+          <Toast
+            type="error"
+            icon="exclamation-circle"
+            title={t('login.createAccount.error')}
+          />
+        ),
+      });
+    } finally {
+      setIsSaving(false);
     }
   };
 
   return (
-    <Page back title={t('login.createAccount.title')}>
-      <Formik
-        onSubmit={onSubmit}
-        validateOnChange={false}
-        enableReinitialize={true}
-        initialValues={initialValues}
-        validate={createAccountFormValidate}>
-        {({values, errors, isSubmitting, handleSubmit, setFieldValue}) => (
-          <>
-            <ScrollView w={'100%'}>
-              <ImagePicker
-                image={profileImage}
-                handleSelectImage={setProfileImage}
-              />
+    <Page back title={t('login.createAccount.title')} noPadding>
+      <ScrollView flex={1} px="16px" keyboardShouldPersistTaps="handled">
+        <Text mt="8px" fontSize="24px" fontWeight={600} color="gray.700">
+          {t('login.createAccount.heading')}
+        </Text>
+        <Text mt="8px" fontSize="14px" color="gray.600">
+          {t('login.createAccount.subtitle')}
+        </Text>
 
-              <VStack flex={1} mb={4}>
-                <Text
-                  mb={2}
-                  fontSize={'LMD'}
-                  fontWeight={500}
-                  color={'gray.700'}>
-                  {t('login.createAccount.name')}
-                </Text>
+        <HStack space={3}>
+          <FormField
+            label={t('login.createAccount.name')}
+            value={coach.name || ''}
+            onChangeText={name => change({name})}
+          />
+          <FormField
+            label={t('login.createAccount.surname')}
+            value={coach.surname || ''}
+            autoCapitalize="characters"
+            onChangeText={surname => change({surname})}
+          />
+        </HStack>
+        <SegmentedChoice
+          label={t('login.createAccount.sex')}
+          value={coach.sex}
+          options={[
+            {value: 'F', label: t('teacher.form.female')},
+            {value: 'M', label: t('teacher.form.male')},
+          ]}
+          onChange={sex => change({sex})}
+        />
 
-                <InputText
-                  value={values.name}
-                  errorMessage={errors.name}
-                  onChangeText={value => setFieldValue('name', value)}
-                />
+        <Text
+          mt="16px"
+          mb="6px"
+          fontSize="13px"
+          fontWeight={500}
+          color="gray.700">
+          {t('login.createAccount.function')}
+        </Text>
+        {OBSERVER_FUNCTIONS.map(item => (
+          <RadioCard
+            key={item}
+            title={t(`observer.function.${item}`)}
+            description={t(`observer.scope.${item}`)}
+            selected={coach.function === item}
+            onPress={() => change({function: item})}
+          />
+        ))}
 
-                <Text
-                  mb={2}
-                  mt={4}
-                  fontSize={'LMD'}
-                  fontWeight={500}
-                  color={'gray.700'}>
-                  {t('login.createAccount.surname')}
-                </Text>
-
-                <InputText
-                  value={values.surname}
-                  errorMessage={errors.surname}
-                  onChangeText={value => setFieldValue('surname', value)}
-                />
-
-                <Text
-                  mb={2}
-                  mt={4}
-                  fontSize={'LMD'}
-                  fontWeight={500}
-                  color={'gray.700'}>
-                  {t('login.createAccount.email')}
-                </Text>
-
-                <InputText
-                  value={values.email}
-                  errorMessage={errors.email}
-                  onChangeText={value =>
-                    setFieldValue('email', value.toLowerCase().trim())
-                  }
-                />
-
-                <Text
-                  mb={2}
-                  mt={4}
-                  fontSize={'LMD'}
-                  fontWeight={500}
-                  color={'gray.700'}>
-                  {t('login.createAccount.phone')}
-                </Text>
-
-                <InputText
-                  value={values.phone}
-                  keyboardType="phone-pad"
-                  errorMessage={errors.phone}
-                  onChangeText={value => setFieldValue('phone', value)}
-                />
-
-                <Text
-                  mb={2}
-                  mt={4}
-                  fontSize={'LMD'}
-                  fontWeight={500}
-                  color={'gray.700'}>
-                  {t('login.createAccount.birthdate')}
-                </Text>
-
-                <TouchableOpacity
-                  onPress={() => {
-                    setOpenDatePicker(true);
-                  }}>
-                  <InputText
-                    isReadOnly
-                    value={
-                      values?.birthdate
-                        ? moment(values?.birthdate).format('ll')
-                        : undefined
-                    }
-                  />
-                </TouchableOpacity>
-
-                <DatePicker
-                  modal
-                  locale={currentLanguage}
-                  open={openDatePicker}
-                  mode="date"
-                  date={values.birthdate || new Date()}
-                  onConfirm={date => {
-                    setFieldValue('birthdate', date);
-                    setOpenDatePicker(false);
-                  }}
-                  onCancel={() => {
-                    setOpenDatePicker(false);
-                  }}
-                />
-              </VStack>
-            </ScrollView>
-            <Button
-              mb={6}
-              isLoading={isSubmitting}
-              onPress={() => handleSubmit()}>
-              {t('login.createAccount.create-account-button')}
-            </Button>
-          </>
-        )}
-      </Formik>
+        <FormField
+          label={
+            isZoneBased(coach.function)
+              ? t('login.createAccount.zone')
+              : t('login.createAccount.duty-station')
+          }
+          placeholder={
+            (isZoneBased(coach.function)
+              ? t('login.createAccount.zone-placeholder')
+              : t('login.createAccount.duty-station-placeholder')) || ''
+          }
+          value={coach.duty_station || ''}
+          onChangeText={duty_station => change({duty_station})}
+        />
+        <FormField
+          optional
+          label={t('login.createAccount.postal-box')}
+          value={coach.postal_box || ''}
+          onChangeText={postal_box => change({postal_box})}
+        />
+        <HStack mb="16px" space={3}>
+          <FormField
+            label={t('login.createAccount.phone')}
+            keyboardType="phone-pad"
+            value={coach.phone || ''}
+            onChangeText={phone => change({phone})}
+          />
+          <FormField
+            label={t('login.createAccount.email')}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            value={coach.email || ''}
+            onChangeText={email => change({email})}
+          />
+        </HStack>
+      </ScrollView>
+      <VStack px="16px" pb="16px" pt="8px">
+        <Button
+          w="full"
+          mb={0}
+          disabled={!ready}
+          isLoading={isSaving}
+          onPress={handleCreate}>
+          {t('login.createAccount.create-account-button')}
+        </Button>
+      </VStack>
     </Page>
   );
 };

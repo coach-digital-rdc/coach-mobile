@@ -33,6 +33,7 @@ import CoachSelectScreen from '../screens/CoachSelect';
 import SyncDetails from '../screens/SyncDetails';
 import TLCDynamicStep from '../screens/TeacherLearningCircles/DynamicStep';
 import SplashScreen from '../screens/SplashScreen';
+import LanguageScreen from '../screens/Language';
 import CoachScriptsScreen from '../screens/CoachScripts';
 import COPOnboarding from '../screens/CommunityOfPractice/Onboarding';
 import COPCheckingStats from '../screens/CommunityOfPractice/CheckingStats';
@@ -48,6 +49,7 @@ const RouterProvider: React.FC = () => {
     <VStack bg="white" flex={1} w="full">
       <Routes>
         <Route path={PathRoutes.splash} Component={SplashScreen} />
+        <Route path={PathRoutes.language} Component={LanguageScreen} />
 
         <Route path={PathRoutes.settings.main} Component={SettingsScreen} />
 

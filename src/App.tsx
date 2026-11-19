@@ -4,7 +4,6 @@ import {NativeBaseProvider, VStack} from 'native-base';
 import {NativeRouter, Routes} from 'react-router-native';
 import RouterProvider from './routers';
 import theme from './theme';
-import 'moment/locale/ne';
 import 'moment/locale/fr';
 import './i18n';
 import i18n from './i18n';

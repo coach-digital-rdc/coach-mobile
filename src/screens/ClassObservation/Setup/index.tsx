@@ -93,6 +93,8 @@ const ClassObservationSetup: React.FC = () => {
           ? parseInt(header.teacher_weekly_load, 10)
           : null,
         last_observation_date: teacher?.last_session_date || null,
+        // Copy of the function of the observer at the time of the session (B21)
+        observer_function: currentCoach?.function || null,
       },
       activity,
     );
@@ -137,6 +139,14 @@ const ClassObservationSetup: React.FC = () => {
           <InfoRow
             label={t('classObservation.setup.name')}
             value={currentCoach?.name}
+          />
+          <InfoRow
+            label={t('login.createAccount.function')}
+            value={
+              currentCoach?.function
+                ? t(`observer.function.${currentCoach.function}`)
+                : ''
+            }
           />
           <InfoRow
             label={t('classObservation.setup.contact')}

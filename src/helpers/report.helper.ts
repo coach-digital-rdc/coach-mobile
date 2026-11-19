@@ -21,7 +21,16 @@ export type ReportData = {
   session: Session;
   teacher: {name: string; subject?: string | null};
   school: {name: string};
-  observer: {name: string; phone?: string | null; email?: string | null};
+  observer: {
+    name: string;
+    phone?: string | null;
+    email?: string | null;
+    sex?: string | null;
+    // Label of the function, e.g. Inspecteur.trice
+    function?: string | null;
+    duty_station?: string | null;
+    postal_box?: string | null;
+  };
   activities: SessionActivity[];
   competencies: Competence[];
   answers: {[questionId: string]: number};
@@ -219,12 +228,18 @@ export const observationReportHtml = (data: ReportData) => {
         <strong>INSPECTION GÉNÉRALE</strong>
       </div>
       <table class="fields"><tbody>
-        <tr><td colspan="2">01. Observateur : ${escape(observer.name)}</td></tr>
+        <tr><td>01. Observateur : ${escape(
+          observer.name,
+        )}</td><td>Sexe : ${escape(observer.sex)}</td></tr>
         <tr><td colspan="2">02. Niveau / Discipline(s) : Secondaire · ${escape(
           session.subject,
         )}</td></tr>
-        <tr><td colspan="2">03. Poste d'attache : </td></tr>
-        <tr><td colspan="2">04. B.P. : </td></tr>
+        <tr><td colspan="2">03. Poste d'attache : ${escape(
+          [observer.function, observer.duty_station]
+            .filter(Boolean)
+            .join(' · '),
+        )}</td></tr>
+        <tr><td colspan="2">04. B.P. : ${escape(observer.postal_box)}</td></tr>
         <tr><td colspan="2">05. Téléphone : ${escape(
           observer.phone,
         )} · e-mail : ${escape(observer.email)}</td></tr>
@@ -370,7 +385,9 @@ export const pdpReportHtml = (data: ReportData) => {
     session.observation_started_at || session.created_at,
   )}</td></tr>
       <tr><th>Observateur.trice</th><td colspan="3">${escape(
-        data.observer.name,
+        [data.observer.name, data.observer.function]
+          .filter(Boolean)
+          .join(' · '),
       )}</td></tr>
     </tbody></table>
 

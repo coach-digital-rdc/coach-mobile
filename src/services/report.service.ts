@@ -12,6 +12,7 @@ import {NoteService} from './note.service';
 import {SignatureService} from './signature.service';
 import {PdpService} from './pdp.service';
 import {getDBConnection} from './database.service';
+import i18n from '../i18n';
 import {getSuggestedScore} from '../helpers/answer.helper';
 import {
   ReportData,
@@ -91,6 +92,20 @@ export const ReportService = {
         name: [coach?.name, coach?.surname].filter(Boolean).join(' '),
         phone: coach?.phone,
         email: coach?.email,
+        sex: coach?.sex,
+        // The function kept in the session, the current one otherwise
+        function:
+          session.observer_function || coach?.function
+            ? // The documents follow the paper tool, in French
+              i18n.t(
+                `observer.function.${
+                  session.observer_function || coach?.function
+                }`,
+                {lng: 'fr'},
+              )
+            : null,
+        duty_station: coach?.duty_station,
+        postal_box: coach?.postal_box,
       },
       activities: activities[0].rows.raw(),
       competencies,

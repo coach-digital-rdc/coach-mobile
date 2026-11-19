@@ -12,6 +12,24 @@ const frTranslation = {
     tagline: 'Observation des pratiques de classe',
     version: 'Version {{value}}',
   },
+  observer: {
+    function: {
+      INSPECTOR: 'Inspecteur.trice',
+      ADVISOR: 'Conseiller.ère pédagogique',
+      SCHOOL_HEAD: "Chef d'établissement",
+      PEER: 'Pair (enseignant.e)',
+    },
+    scope: {
+      INSPECTOR: "Établissements de votre zone d'intervention",
+      ADVISOR: "Établissements de votre zone d'intervention",
+      SCHOOL_HEAD: 'Établissement dont vous êtes responsable',
+      PEER: 'Établissement auquel vous êtes rattaché.e',
+    },
+  },
+  language: {
+    hint: 'La langue peut être changée à tout moment dans les paramètres.',
+    continue: 'Continuer',
+  },
   common: {
     cancel: 'Annuler',
     save: 'Enregistrer',
@@ -83,6 +101,18 @@ const frTranslation = {
       change_coach_button: "Changer d'observateur",
     },
     createAccount: {
+      heading: 'Compte observateur',
+      subtitle:
+        "Ces informations sont reprises dans l'en-tête de chaque fiche d'observation.",
+      sex: 'Sexe',
+      function: 'Fonction',
+      zone: "Zone d'intervention",
+      'zone-placeholder': 'ex. Province éducationnelle Kinshasa-Lukunga',
+      'duty-station': "Poste d'attache",
+      'duty-station-placeholder': 'ex. École secondaire Bon Espoir',
+      'postal-box': 'Boîte postale',
+      error:
+        "Le compte n'a pas pu être créé. Vérifiez la connexion et l'adresse e-mail.",
       title: 'Nouveau compte',
       takePhoto: 'Prendre/choisir une photo',
       name: 'Prénom',
