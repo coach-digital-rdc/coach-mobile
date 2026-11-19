@@ -21,7 +21,7 @@ import PathRoutes from '../../../routers/paths';
 import Button from '../../../components/Button';
 import Toast from '../../../components/Toast';
 import Icon from '../../../components/Icon';
-import Page from '../../../components/Page';
+import Page, {GUTTER} from '../../../components/Page';
 
 const SECTIONS = [
   'attendance',
@@ -514,7 +514,7 @@ const TlcUnitScreen: React.FC = () => {
   return (
     <Page back title={t('tlc.title')} onBack={back} noPadding>
       {page >= 0 && (
-        <HStack px="16px" py="8px" space={1}>
+        <HStack px={GUTTER} py="8px" space={1}>
           {SECTIONS.map((label, index) => (
             <VStack key={label} flex={1} alignItems="center" space="4px">
               <Box
@@ -536,11 +536,11 @@ const TlcUnitScreen: React.FC = () => {
       <ScrollView
         key={page}
         flex={1}
-        px="16px"
+        px={GUTTER}
         keyboardShouldPersistTaps="handled">
         {body()}
       </ScrollView>
-      <VStack px="16px" pb="16px" pt="8px">
+      <VStack px={GUTTER} pb="16px" pt="8px">
         <Button
           w="full"
           mb={0}

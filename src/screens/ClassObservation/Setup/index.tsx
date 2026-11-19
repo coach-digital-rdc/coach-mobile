@@ -14,7 +14,7 @@ import FormField from '../../../components/FormField';
 import PathRoutes from '../../../routers/paths';
 import Button from '../../../components/Button';
 import Icon from '../../../components/Icon';
-import Page from '../../../components/Page';
+import Page, {GUTTER} from '../../../components/Page';
 
 // School year starting in September: "2026-2027" from September 2026 to August 2027
 const currentSchoolYear = () => {
@@ -107,7 +107,7 @@ const ClassObservationSetup: React.FC = () => {
   return (
     <Page back title={t('classObservation.title')} noPadding>
       <PhaseStepper current="preparation" />
-      <ScrollView flex={1} px="16px" showsVerticalScrollIndicator={false}>
+      <ScrollView flex={1} px={GUTTER} showsVerticalScrollIndicator={false}>
         <Text mt="8px" fontSize="24px" fontWeight={600} color="gray.700">
           {t('classObservation.setup.title')}
         </Text>
@@ -286,7 +286,7 @@ const ClassObservationSetup: React.FC = () => {
       </ScrollView>
 
       <VStack
-        px="16px"
+        px={GUTTER}
         pb="16px"
         pt="8px"
         borderTopWidth="1px"

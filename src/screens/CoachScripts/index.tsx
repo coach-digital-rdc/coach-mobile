@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import Page from '../../components/Page';
+import Page, {GUTTER} from '../../components/Page';
 import Pdf from 'react-native-pdf';
 import {HStack, Spinner, Text, View, useTheme} from 'native-base';
 import Icon from '../../components/Icon';
@@ -19,7 +19,7 @@ const CoachScriptsScreen: React.FC = () => {
 
   return (
     <Page title={t('settings.manual')} back noPadding>
-      <HStack px="16px" py="8px">
+      <HStack px={GUTTER} py="8px">
         <HStack
           px="8px"
           py="2px"

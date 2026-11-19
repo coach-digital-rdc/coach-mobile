@@ -14,7 +14,7 @@ import PhaseStepper from '../../../components/PhaseStepper';
 import PathRoutes from '../../../routers/paths';
 import Button from '../../../components/Button';
 import Icon from '../../../components/Icon';
-import Page from '../../../components/Page';
+import Page, {GUTTER} from '../../../components/Page';
 
 const InfoRow: React.FC<{label: string; children: React.ReactNode}> = ({
   label,
@@ -98,7 +98,7 @@ const ClassObservationCompleted: React.FC = () => {
       }
       noPadding>
       <PhaseStepper current="closing" />
-      <VStack flex={1} px="16px" justifyContent="center">
+      <VStack flex={1} px={GUTTER} justifyContent="center">
         <Center>
           <Icon
             name="check-circle-solid"
@@ -167,7 +167,7 @@ const ClassObservationCompleted: React.FC = () => {
         </VStack>
       </VStack>
 
-      <VStack px="16px" pb="16px" pt="8px" space={3}>
+      <VStack px={GUTTER} pb="16px" pt="8px" space={3}>
         <Button
           w="full"
           mb={0}

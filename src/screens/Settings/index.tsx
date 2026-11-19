@@ -12,7 +12,7 @@ import {Coach} from '../../types/coach';
 import BottomNavigator from '../Home/BottomNavigator';
 import PathRoutes from '../../routers/paths';
 import Icon from '../../components/Icon';
-import Page from '../../components/Page';
+import Page, {GUTTER} from '../../components/Page';
 
 const LANGUAGES = [
   {value: 'fr', label: 'Français'},
@@ -104,7 +104,7 @@ const SettingsScreen: React.FC = () => {
 
   return (
     <Page title={t('settings.title')} noPadding>
-      <ScrollView flex={1} px="16px">
+      <ScrollView flex={1} px={GUTTER}>
         <HStack mt="16px" mb="8px" space={3} alignItems="center">
           <Center w="56px" h="56px" borderRadius="28px" bg="primary.0">
             <Icon name="user" size={28} color={theme.colors.primary['200']} />

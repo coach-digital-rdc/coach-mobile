@@ -9,7 +9,7 @@ import {TLC_UNITS} from '../../data/tlc';
 import PathRoutes from '../../routers/paths';
 import ListRow from '../../components/ListRow';
 import Icon from '../../components/Icon';
-import Page from '../../components/Page';
+import Page, {GUTTER} from '../../components/Page';
 
 // "Cercles d'apprentissage" of the mockups (B22): units of about one hour led with the teachers
 // of the school, ranked by the behaviours most often scored Faible in the school.
@@ -34,7 +34,7 @@ const TlcScreen: React.FC = () => {
 
   return (
     <Page title={t('tlc.title')} noPadding>
-      <ScrollView flex={1} px="16px">
+      <ScrollView flex={1} px={GUTTER}>
         <Text mt="8px" fontSize="24px" fontWeight={600} color="gray.700">
           {t('tlc.heading')}
         </Text>

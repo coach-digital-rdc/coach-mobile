@@ -14,7 +14,7 @@ import {School} from '../../types/school';
 import PathRoutes from '../../routers/paths';
 import Button from '../../components/Button';
 import Icon from '../../components/Icon';
-import Page from '../../components/Page';
+import Page, {GUTTER} from '../../components/Page';
 
 const FRAME = 240;
 
@@ -105,7 +105,7 @@ const QrScanScreen: React.FC = () => {
         </Center>
       </Box>
 
-      <VStack px="16px" pb="16px" pt="12px" bg="white">
+      <VStack px={GUTTER} pb="16px" pt="12px" bg="white">
         {school ? (
           <>
             <HStack

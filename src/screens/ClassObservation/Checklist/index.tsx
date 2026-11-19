@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {
+  Box,
   Center,
   HStack,
   ScrollView,
@@ -10,6 +11,7 @@ import {
   useTheme,
 } from 'native-base';
 import {TouchableOpacity} from 'react-native';
+import {isTablet} from 'react-native-device-info';
 import {useLocation, useNavigate} from 'react-router-native';
 import {useTranslation} from 'react-i18next';
 import {ChecklistService} from '../../../services/checklist.service';
@@ -22,7 +24,7 @@ import SessionStrip from '../../../components/SessionStrip';
 import PathRoutes from '../../../routers/paths';
 import Button from '../../../components/Button';
 import Icon from '../../../components/Icon';
-import Page from '../../../components/Page';
+import Page, {GUTTER} from '../../../components/Page';
 
 type Entry = Partial<Documentation> & {changed?: boolean};
 
@@ -276,7 +278,7 @@ const ClassObservationChecklist: React.FC = () => {
           observing ? 'observation' : preparing ? 'preparation' : 'evaluation'
         }
       />
-      <ScrollView flex={1} px="16px" showsVerticalScrollIndicator={false}>
+      <ScrollView flex={1} px={GUTTER} showsVerticalScrollIndicator={false}>
         <SessionStrip teacher={teacherName} detail={session.subject} />
         <Text fontSize="24px" fontWeight={600} color="gray.700">
           {t('classObservation.checklist.title')}
@@ -299,13 +301,22 @@ const ClassObservationChecklist: React.FC = () => {
               color="gray.700">
               {group.title}
             </Text>
-            {items.filter(item => item.owner === group.owner).map(renderItem)}
+            {/* Two columns on a tablet, as in the mockups */}
+            <HStack flexWrap="wrap" justifyContent="space-between">
+              {items
+                .filter(item => item.owner === group.owner)
+                .map(item => (
+                  <Box key={item.id} w={isTablet() ? '49%' : '100%'}>
+                    {renderItem(item)}
+                  </Box>
+                ))}
+            </HStack>
           </VStack>
         ))}
       </ScrollView>
 
       <VStack
-        px="16px"
+        px={GUTTER}
         pb="16px"
         pt="8px"
         borderTopWidth="1px"

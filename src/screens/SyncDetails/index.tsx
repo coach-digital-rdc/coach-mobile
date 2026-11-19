@@ -18,7 +18,7 @@ import SyncService from '../../services/sync.service';
 import PathRoutes from '../../routers/paths';
 import Button from '../../components/Button';
 import Icon from '../../components/Icon';
-import Page from '../../components/Page';
+import Page, {GUTTER} from '../../components/Page';
 
 // Data available on the device once it is configured
 const countOnDevice = async (schoolId?: string) => {
@@ -89,7 +89,7 @@ const SyncDetails: React.FC = () => {
 
   return (
     <Page noPadding>
-      <ScrollView flex={1} px="16px" contentContainerStyle={{flexGrow: 1}}>
+      <ScrollView flex={1} px={GUTTER} contentContainerStyle={{flexGrow: 1}}>
         <Center flex={1} py="32px">
           {isLoading ? (
             <>
@@ -149,7 +149,7 @@ const SyncDetails: React.FC = () => {
           )}
         </Center>
       </ScrollView>
-      <VStack px="16px" pb="16px" pt="8px">
+      <VStack px={GUTTER} pb="16px" pt="8px">
         <Button w="full" mb={0} disabled={isLoading} onPress={goToNextPage}>
           {t('syncDetails.start')}
         </Button>

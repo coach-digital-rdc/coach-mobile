@@ -19,7 +19,7 @@ import ListRow from '../../components/ListRow';
 import Toast from '../../components/Toast';
 import Button from '../../components/Button';
 import Icon from '../../components/Icon';
-import Page from '../../components/Page';
+import Page, {GUTTER} from '../../components/Page';
 
 const InfoRow: React.FC<{label: string; value: string}> = ({label, value}) => (
   <HStack
@@ -90,7 +90,7 @@ const SyncScreen: React.FC = () => {
 
   return (
     <Page back title={t('sync.title')} noPadding>
-      <ScrollView flex={1} px="16px">
+      <ScrollView flex={1} px={GUTTER}>
         <Text mt="8px" fontSize="24px" fontWeight={600} color="gray.700">
           {t('sync.title')}
         </Text>
@@ -170,7 +170,7 @@ const SyncScreen: React.FC = () => {
           ))
         )}
       </ScrollView>
-      <VStack px="16px" pb="16px" pt="8px">
+      <VStack px={GUTTER} pb="16px" pt="8px">
         {!isConnected && (
           <Text mb="8px" textAlign="center" fontSize="13px" color="gray.500">
             {t('sync.offline')}

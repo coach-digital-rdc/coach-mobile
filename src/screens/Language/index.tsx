@@ -10,7 +10,7 @@ import {LoginLogo} from '../../assets/images/logos';
 import RadioCard from '../../components/RadioCard';
 import PathRoutes from '../../routers/paths';
 import Button from '../../components/Button';
-import Page from '../../components/Page';
+import Page, {GUTTER} from '../../components/Page';
 
 const LANGUAGES = [
   {value: 'fr', title: 'Français', description: 'Langue par défaut en RDC'},
@@ -50,7 +50,7 @@ const LanguageScreen: React.FC = () => {
 
   return (
     <Page noPadding>
-      <ScrollView flex={1} px="16px">
+      <ScrollView flex={1} px={GUTTER}>
         <Center pt="48px">
           <Image source={LoginLogo} alt="Coach Digital" w="72px" h="72px" />
           <Text mt="16px" fontSize="24px" fontWeight={600} color="gray.700">
@@ -73,7 +73,7 @@ const LanguageScreen: React.FC = () => {
           {t('language.hint')}
         </Text>
       </ScrollView>
-      <VStack px="16px" pb="16px" pt="8px">
+      <VStack px={GUTTER} pb="16px" pt="8px">
         <Button w="full" mb={0} onPress={handleContinue}>
           {t('language.continue')}
         </Button>

@@ -1,15 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import {
+  Box,
   Center,
   HStack,
   ScrollView,
   Spinner,
+  Stack,
   Text,
   TextArea,
   VStack,
   useTheme,
 } from 'native-base';
 import {TouchableOpacity} from 'react-native';
+import {isTablet} from 'react-native-device-info';
 import {useLocation, useNavigate} from 'react-router-native';
 import {useTranslation} from 'react-i18next';
 import moment from 'moment';
@@ -45,7 +48,7 @@ import FormField from '../../../components/FormField';
 import PathRoutes from '../../../routers/paths';
 import Button from '../../../components/Button';
 import Icon from '../../../components/Icon';
-import Page from '../../../components/Page';
+import Page, {GUTTER} from '../../../components/Page';
 
 // Colours of an answer: strong in green, medium in yellow, weak in red, N/A in grey
 const ANSWER_TONES: {[code: string]: [string, string]} = {
@@ -557,7 +560,7 @@ const ClassObservationPdp: React.FC = () => {
       onBack={goBack}
       noPadding>
       <PhaseStepper current="evaluation" />
-      <ScrollView flex={1} px="16px" showsVerticalScrollIndicator={false}>
+      <ScrollView flex={1} px={GUTTER} showsVerticalScrollIndicator={false}>
         <SessionStrip teacher={teacherName} detail={session.subject} />
         <Text fontSize="24px" fontWeight={600} color="gray.700">
           {t('classObservation.pdp.heading')}
@@ -571,173 +574,190 @@ const ClassObservationPdp: React.FC = () => {
           })}
         </Text>
 
-        <Card
-          title={t('classObservation.pdp.summary')}
-          extra={
-            <HStack
-              px="8px"
-              space={1}
-              alignItems="center"
-              borderRadius="999px"
-              bg="gray.100">
-              <Icon name="lock" size={12} color={theme.colors.gray['600']} />
-              <Text fontSize="11px" fontWeight={600} color="gray.600">
-                {t('classObservation.pdp.read-only')}
-              </Text>
-            </HStack>
-          }>
-          {competencies.map(competence => {
-            const score = scores[competence.id];
-            const open = openCompetence === competence.id;
-            const tone: [string, string] =
-              score === undefined
-                ? ['gray.100', 'gray.600']
-                : config && score <= config.priority_threshold
-                ? ['red.0', 'red.300']
-                : score >= 4
-                ? ['green.0', 'green.300']
-                : ['yellow.0', 'yellow.300'];
-            return (
-              <VStack
-                key={competence.id}
-                py="8px"
-                borderTopWidth="1px"
-                borderTopColor="gray.100">
-                <TouchableOpacity
-                  accessibilityState={{expanded: open}}
-                  onPress={() =>
-                    setOpenCompetence(open ? undefined : competence.id)
-                  }>
-                  <HStack space={2} alignItems="center">
-                    <Text
-                      w="36px"
-                      fontSize="13px"
-                      fontWeight={700}
-                      color="gray.600">
-                      {competence.code}
-                    </Text>
-                    <Text flex={1} fontSize="14px" color="gray.700">
-                      {competence.title}
-                    </Text>
-                    <Chip
-                      label={competence.has_global_score ? `${score}/5` : '—'}
-                      tone={tone}
-                    />
-                    <Icon
-                      name={open ? 'angle-down' : 'angle-right'}
-                      size={18}
-                      color={theme.colors.gray['500']}
-                    />
-                  </HStack>
-                </TouchableOpacity>
-                <HStack mt="6px" pl="44px" flexWrap="wrap">
-                  {competence.questions.map(question => {
-                    const code =
-                      getAnswerCode(question, answers[question.id]) || 'NA';
-                    const [bg, color] = ANSWER_TONES[code];
-                    return (
-                      <Center
-                        key={question.id}
-                        mr="4px"
-                        mb="4px"
-                        w="22px"
-                        h="22px"
-                        borderRadius="11px"
-                        bg={bg}>
-                        <Text fontSize="10px" fontWeight={700} color={color}>
-                          {t(`classObservation.pdp.short.${code}`)}
-                        </Text>
-                      </Center>
-                    );
-                  })}
-                  {competence.has_global_score &&
-                    suggested[competence.id] !== undefined &&
-                    suggested[competence.id] !== score && (
-                      <Text fontSize="11px" color="gray.500">
-                        {t('classObservation.pdp.score-note', {
-                          suggested: suggested[competence.id],
-                          score,
-                        })}
-                      </Text>
-                    )}
+        {/* Summary and diagnostic side by side on a tablet, as in the mockups */}
+        <Stack
+          direction={isTablet() ? 'row' : 'column'}
+          space={isTablet() ? 4 : 0}>
+          <Box flex={isTablet() ? 3 : undefined}>
+            <Card
+              title={t('classObservation.pdp.summary')}
+              extra={
+                <HStack
+                  px="8px"
+                  space={1}
+                  alignItems="center"
+                  borderRadius="999px"
+                  bg="gray.100">
+                  <Icon
+                    name="lock"
+                    size={12}
+                    color={theme.colors.gray['600']}
+                  />
+                  <Text fontSize="11px" fontWeight={600} color="gray.600">
+                    {t('classObservation.pdp.read-only')}
+                  </Text>
                 </HStack>
-                {open &&
-                  competence.questions.map(question => {
-                    const code =
-                      getAnswerCode(question, answers[question.id]) || 'NA';
-                    return (
-                      <HStack
-                        key={question.id}
-                        mt="6px"
-                        pl="44px"
-                        space={2}
-                        alignItems="flex-start">
+              }>
+              {competencies.map(competence => {
+                const score = scores[competence.id];
+                const open = openCompetence === competence.id;
+                const tone: [string, string] =
+                  score === undefined
+                    ? ['gray.100', 'gray.600']
+                    : config && score <= config.priority_threshold
+                    ? ['red.0', 'red.300']
+                    : score >= 4
+                    ? ['green.0', 'green.300']
+                    : ['yellow.0', 'yellow.300'];
+                return (
+                  <VStack
+                    key={competence.id}
+                    py="8px"
+                    borderTopWidth="1px"
+                    borderTopColor="gray.100">
+                    <TouchableOpacity
+                      accessibilityState={{expanded: open}}
+                      onPress={() =>
+                        setOpenCompetence(open ? undefined : competence.id)
+                      }>
+                      <HStack space={2} alignItems="center">
                         <Text
                           w="36px"
-                          fontSize="12px"
-                          fontWeight={600}
+                          fontSize="13px"
+                          fontWeight={700}
                           color="gray.600">
-                          {question.code}
+                          {competence.code}
                         </Text>
-                        <Text flex={1} fontSize="12px" color="gray.700">
-                          {t(question.title)}
+                        <Text flex={1} fontSize="14px" color="gray.700">
+                          {competence.title}
                         </Text>
                         <Chip
-                          label={t(`classObservation.pdp.answer.${code}`)}
-                          tone={ANSWER_TONES[code]}
+                          label={
+                            competence.has_global_score ? `${score}/5` : '—'
+                          }
+                          tone={tone}
+                        />
+                        <Icon
+                          name={open ? 'angle-down' : 'angle-right'}
+                          size={18}
+                          color={theme.colors.gray['500']}
                         />
                       </HStack>
-                    );
-                  })}
-              </VStack>
-            );
-          })}
-        </Card>
-
-        <Card title={t('classObservation.pdp.diagnostic')}>
-          {(['STRENGTH', 'CONSOLIDATE', 'PRIORITY'] as Category[]).map(
-            category => {
-              const entries = diagnostic
-                .filter(entry => entry.category === category)
-                .sort(
-                  (a, b) =>
-                    gridOrder.indexOf(a.question_id) -
-                    gridOrder.indexOf(b.question_id),
+                    </TouchableOpacity>
+                    <HStack mt="6px" pl="44px" flexWrap="wrap">
+                      {competence.questions.map(question => {
+                        const code =
+                          getAnswerCode(question, answers[question.id]) || 'NA';
+                        const [bg, color] = ANSWER_TONES[code];
+                        return (
+                          <Center
+                            key={question.id}
+                            mr="4px"
+                            mb="4px"
+                            w="22px"
+                            h="22px"
+                            borderRadius="11px"
+                            bg={bg}>
+                            <Text
+                              fontSize="10px"
+                              fontWeight={700}
+                              color={color}>
+                              {t(`classObservation.pdp.short.${code}`)}
+                            </Text>
+                          </Center>
+                        );
+                      })}
+                      {competence.has_global_score &&
+                        suggested[competence.id] !== undefined &&
+                        suggested[competence.id] !== score && (
+                          <Text fontSize="11px" color="gray.500">
+                            {t('classObservation.pdp.score-note', {
+                              suggested: suggested[competence.id],
+                              score,
+                            })}
+                          </Text>
+                        )}
+                    </HStack>
+                    {open &&
+                      competence.questions.map(question => {
+                        const code =
+                          getAnswerCode(question, answers[question.id]) || 'NA';
+                        return (
+                          <HStack
+                            key={question.id}
+                            mt="6px"
+                            pl="44px"
+                            space={2}
+                            alignItems="flex-start">
+                            <Text
+                              w="36px"
+                              fontSize="12px"
+                              fontWeight={600}
+                              color="gray.600">
+                              {question.code}
+                            </Text>
+                            <Text flex={1} fontSize="12px" color="gray.700">
+                              {t(question.title)}
+                            </Text>
+                            <Chip
+                              label={t(`classObservation.pdp.answer.${code}`)}
+                              tone={ANSWER_TONES[code]}
+                            />
+                          </HStack>
+                        );
+                      })}
+                  </VStack>
                 );
-              const [bg, color] = CATEGORY_TONES[category];
-              return (
-                <VStack
-                  key={category}
-                  mb="8px"
-                  p="8px"
-                  borderRadius="8px"
-                  bg={bg}>
-                  <Text fontSize="13px" fontWeight={700} color={color}>
-                    {t(`classObservation.pdp.group.${category}`)} (
-                    {entries.length})
-                  </Text>
-                  <HStack mt="4px" flexWrap="wrap">
-                    {entries.map(entry => (
-                      <Text
-                        key={entry.question_id}
-                        mr="4px"
-                        mb="4px"
-                        px="6px"
-                        borderRadius="6px"
-                        overflow="hidden"
-                        fontSize="12px"
-                        fontWeight={600}
-                        bg="white"
-                        color={color}>
-                        {questionById(entry.question_id)?.code}
+              })}
+            </Card>
+          </Box>
+          <Box flex={isTablet() ? 2 : undefined}>
+            <Card title={t('classObservation.pdp.diagnostic')}>
+              {(['STRENGTH', 'CONSOLIDATE', 'PRIORITY'] as Category[]).map(
+                category => {
+                  const entries = diagnostic
+                    .filter(entry => entry.category === category)
+                    .sort(
+                      (a, b) =>
+                        gridOrder.indexOf(a.question_id) -
+                        gridOrder.indexOf(b.question_id),
+                    );
+                  const [bg, color] = CATEGORY_TONES[category];
+                  return (
+                    <VStack
+                      key={category}
+                      mb="8px"
+                      p="8px"
+                      borderRadius="8px"
+                      bg={bg}>
+                      <Text fontSize="13px" fontWeight={700} color={color}>
+                        {t(`classObservation.pdp.group.${category}`)} (
+                        {entries.length})
                       </Text>
-                    ))}
-                  </HStack>
-                </VStack>
-              );
-            },
-          )}
-        </Card>
+                      <HStack mt="4px" flexWrap="wrap">
+                        {entries.map(entry => (
+                          <Text
+                            key={entry.question_id}
+                            mr="4px"
+                            mb="4px"
+                            px="6px"
+                            borderRadius="6px"
+                            overflow="hidden"
+                            fontSize="12px"
+                            fontWeight={600}
+                            bg="white"
+                            color={color}>
+                            {questionById(entry.question_id)?.code}
+                          </Text>
+                        ))}
+                      </HStack>
+                    </VStack>
+                  );
+                },
+              )}
+            </Card>
+          </Box>
+        </Stack>
 
         <HStack mb="8px" alignItems="center" justifyContent="space-between">
           <Text fontSize="18px" fontWeight={700} color="gray.700">
@@ -820,7 +840,7 @@ const ClassObservationPdp: React.FC = () => {
       </ScrollView>
 
       <VStack
-        px="16px"
+        px={GUTTER}
         pb="16px"
         pt="8px"
         borderTopWidth="1px"

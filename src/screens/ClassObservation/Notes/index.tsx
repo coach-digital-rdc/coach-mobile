@@ -25,7 +25,7 @@ import SessionStrip from '../../../components/SessionStrip';
 import PathRoutes from '../../../routers/paths';
 import Button from '../../../components/Button';
 import Icon from '../../../components/Icon';
-import Page from '../../../components/Page';
+import Page, {GUTTER} from '../../../components/Page';
 
 // Time elapsed since the start of the observation, as mm:ss
 export const elapsed = (from: string | Date, to: string | Date) => {
@@ -207,13 +207,13 @@ const ClassObservationNotes: React.FC = () => {
       <ScrollView
         ref={scroll}
         flex={1}
-        px="16px"
+        px={GUTTER}
         showsVerticalScrollIndicator={false}>
         <SessionStrip teacher={teacherName} detail={session.subject} />
 
         <HStack
           mb="20px"
-          px="16px"
+          px={GUTTER}
           py="14px"
           borderRadius="12px"
           alignItems="center"
@@ -345,7 +345,7 @@ const ClassObservationNotes: React.FC = () => {
       </ScrollView>
 
       <VStack
-        px="16px"
+        px={GUTTER}
         pb="16px"
         pt="8px"
         borderTopWidth="1px"

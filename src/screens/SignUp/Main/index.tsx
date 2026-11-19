@@ -10,7 +10,7 @@ import RadioCard from '../../../components/RadioCard';
 import Toast from '../../../components/Toast';
 import PathRoutes from '../../../routers/paths';
 import Button from '../../../components/Button';
-import Page from '../../../components/Page';
+import Page, {GUTTER} from '../../../components/Page';
 
 export const OBSERVER_FUNCTIONS = [
   'INSPECTOR',
@@ -80,7 +80,7 @@ const SignupScreen: React.FC = () => {
 
   return (
     <Page back title={t('login.createAccount.title')} noPadding>
-      <ScrollView flex={1} px="16px" keyboardShouldPersistTaps="handled">
+      <ScrollView flex={1} px={GUTTER} keyboardShouldPersistTaps="handled">
         <Text mt="8px" fontSize="24px" fontWeight={600} color="gray.700">
           {t('login.createAccount.heading')}
         </Text>
@@ -165,7 +165,7 @@ const SignupScreen: React.FC = () => {
           />
         </HStack>
       </ScrollView>
-      <VStack px="16px" pb="16px" pt="8px">
+      <VStack px={GUTTER} pb="16px" pt="8px">
         <Button
           w="full"
           mb={0}

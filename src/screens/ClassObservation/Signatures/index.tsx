@@ -32,7 +32,7 @@ import FormField from '../../../components/FormField';
 import PathRoutes from '../../../routers/paths';
 import Button from '../../../components/Button';
 import Icon from '../../../components/Icon';
-import Page from '../../../components/Page';
+import Page, {GUTTER} from '../../../components/Page';
 
 const CheckLine: React.FC<{
   label: string;
@@ -254,7 +254,7 @@ const ClassObservationSignatures: React.FC = () => {
   return (
     <Page back title={t('classObservation.title')} onBack={goBack} noPadding>
       <PhaseStepper current="evaluation" />
-      <ScrollView flex={1} px="16px" showsVerticalScrollIndicator={false}>
+      <ScrollView flex={1} px={GUTTER} showsVerticalScrollIndicator={false}>
         <Text fontSize="24px" fontWeight={600} color="gray.700">
           {t('classObservation.signatures.title')}
         </Text>
@@ -420,7 +420,7 @@ const ClassObservationSignatures: React.FC = () => {
         </VStack>
       </ScrollView>
 
-      <VStack px="16px" pb="16px" pt="8px">
+      <VStack px={GUTTER} pb="16px" pt="8px">
         <Button
           w="full"
           mb={0}

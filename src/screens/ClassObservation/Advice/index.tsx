@@ -19,7 +19,7 @@ import SessionStrip from '../../../components/SessionStrip';
 import FormField from '../../../components/FormField';
 import PathRoutes from '../../../routers/paths';
 import Button from '../../../components/Button';
-import Page from '../../../components/Page';
+import Page, {GUTTER} from '../../../components/Page';
 
 // "Conseils et horaires" of the mockups (B16): times of the didactic sequence, taken from
 // the observation, advice to the teacher and place of the signature.
@@ -95,7 +95,7 @@ const ClassObservationAdvice: React.FC = () => {
   return (
     <Page back title={t('classObservation.title')} onBack={goBack} noPadding>
       <PhaseStepper current="evaluation" />
-      <ScrollView flex={1} px="16px" showsVerticalScrollIndicator={false}>
+      <ScrollView flex={1} px={GUTTER} showsVerticalScrollIndicator={false}>
         <SessionStrip teacher={teacherName} detail={session.subject} />
         <Text fontSize="24px" fontWeight={600} color="gray.700">
           {t('classObservation.advice.title')}
@@ -143,7 +143,7 @@ const ClassObservationAdvice: React.FC = () => {
           />
         </HStack>
       </ScrollView>
-      <VStack px="16px" pb="16px" pt="8px">
+      <VStack px={GUTTER} pb="16px" pt="8px">
         <Button w="full" mb={0} isLoading={isSaving} onPress={handleContinue}>
           {t('classObservation.advice.button')}
         </Button>

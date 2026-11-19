@@ -2,6 +2,7 @@ import React from 'react';
 import {Center, HStack, Text, VStack, useTheme} from 'native-base';
 import {useTranslation} from 'react-i18next';
 import Icon from '../Icon';
+import {GUTTER} from '../Page';
 
 export const PHASES = ['preparation', 'observation', 'evaluation', 'closing'];
 
@@ -12,7 +13,7 @@ const PhaseStepper: React.FC<{current: string}> = ({current}) => {
   const index = PHASES.indexOf(current);
 
   return (
-    <HStack px="16px" py="8px" space={1} justifyContent="space-between">
+    <HStack px={GUTTER} py="8px" space={1} justifyContent="space-between">
       {PHASES.map((phase, i) => {
         const done = i < index;
         const active = i === index;

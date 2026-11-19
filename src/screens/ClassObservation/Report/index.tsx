@@ -19,7 +19,7 @@ import {ReportData} from '../../../helpers/report.helper';
 import PathRoutes from '../../../routers/paths';
 import Icon from '../../../components/Icon';
 import Toast from '../../../components/Toast';
-import Page from '../../../components/Page';
+import Page, {GUTTER} from '../../../components/Page';
 
 const KINDS: ReportKind[] = ['observation', 'pdp'];
 
@@ -193,7 +193,7 @@ const ClassObservationReport: React.FC = () => {
 
       <VStack flex={1} bg="gray.200">
         {error ? (
-          <Center flex={1} px="16px">
+          <Center flex={1} px={GUTTER}>
             <Text textAlign="center" color="gray.600">
               {t('classObservation.report.error')}
             </Text>
