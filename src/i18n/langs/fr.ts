@@ -183,16 +183,29 @@ const frTranslation = {
       '(0)[Aucun enseignant];(1)[1 enseignant];(2-inf)[{{count}} enseignants];',
   },
   syncDetails: {
+    preparing: "Préparation de l'appareil",
+    downloading: 'Téléchargement des données de {{school}}…',
     title: 'Configuration terminée',
-    description: "L'appareil a été configuré avec les données de base de",
-    start: "Commencer à utiliser l'application",
-    'description-list': 'Vous pourrez :',
-
-    list_0: '- Choisir {{ value }} dans la liste des établissements',
-    list_1: '- Créer des enseignants',
-    list_2: '- Choisir des enseignants déjà créés',
-    list_3: '- Consulter les données des enseignants déjà créés',
-    list_4: '- Consulter les données de {{ value }}',
+    description:
+      "L'appareil peut maintenant être utilisé sans connexion. Données téléchargées :",
+    offline:
+      "Pas de connexion : l'appareil utilise les données déjà présentes. Synchronisez dès que possible.",
+    teachers_interval:
+      "(0-1)[{{count}} enseignant.e de l'établissement];(2-inf)[{{count}} enseignant.e.s de l'établissement];",
+    grid: "Grille d'observation RDC : {{competencies}} sous-domaines, {{questions}} comportements",
+    checklist: 'Checklist documentaire : {{count}} documents',
+    rules: 'Règles du PDP, version {{version}}',
+    manual: "Manuel d'utilisation (consultable hors ligne)",
+    start: 'Commencer',
+  },
+  qrScan: {
+    title: 'Scanner le QR code',
+    hint: 'Placez le QR code dans le cadre',
+    found: 'Code reconnu',
+    invalid: "Ce QR code n'est pas celui d'un établissement",
+    permission: "Autorisez l'accès à la caméra pour scanner le QR code.",
+    confirm: "Confirmer l'établissement",
+    list: 'Choisir dans la liste',
   },
   home: {
     salutation: 'Bonjour',

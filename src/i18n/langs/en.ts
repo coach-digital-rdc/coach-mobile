@@ -183,16 +183,29 @@ const enTranslation = {
       '(0)[No teachers here];(1)[1 teacher here];(2-inf)[{{count}} teachers here];',
   },
   syncDetails: {
+    preparing: 'Preparing the device',
+    downloading: 'Downloading the data of {{school}}…',
     title: 'Setup complete',
-    description: 'The device was setup with the basic data from',
-    start: 'Start using the app',
-    'description-list': "You'll be able to :",
-
-    list_0: '- Select {{ value }} in the school list',
-    list_1: '- Create new teachers',
-    list_2: '- Select teachers created before',
-    list_3: "- View previously created teacher's data",
-    list_4: '- View {{ value }} data',
+    description:
+      'The device can now be used without connection. Data downloaded:',
+    offline:
+      'No connection: the device uses the data already present. Synchronise as soon as possible.',
+    teachers_interval:
+      '(0-1)[{{count}} teacher of the school];(2-inf)[{{count}} teachers of the school];',
+    grid: 'DRC observation grid: {{competencies}} sub-domains, {{questions}} behaviours',
+    checklist: 'Document checklist: {{count}} documents',
+    rules: 'PDP rules, version {{version}}',
+    manual: 'User manual (available offline)',
+    start: 'Start',
+  },
+  qrScan: {
+    title: 'Scan the QR code',
+    hint: 'Place the QR code in the frame',
+    found: 'Code recognised',
+    invalid: 'This QR code is not the one of a school',
+    permission: 'Allow access to the camera to scan the QR code.',
+    confirm: 'Confirm the school',
+    list: 'Choose from the list',
   },
   home: {
     salutation: 'Hi',

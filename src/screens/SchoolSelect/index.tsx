@@ -12,20 +12,10 @@ import {useTranslation} from 'react-i18next';
 import PathRoutes from '../../routers/paths';
 import {School} from '../../types/school';
 import Page from '../../components/Page';
-import {
-  Text,
-  Modal,
-  HStack,
-  VStack,
-  Spinner,
-  FlatList,
-  useTheme,
-} from 'native-base';
-import QrReader from '../../components/QrReader';
+import {Text, HStack, VStack, Spinner, FlatList, useTheme} from 'native-base';
 
 const SchoolSelectScreen: React.FC = () => {
   const [filter, setFilter] = useState('');
-  const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [schoolList, setSchoolList] = useState<School[]>([]);
 
@@ -44,26 +34,11 @@ const SchoolSelectScreen: React.FC = () => {
 
   const onSelectSchool = async (school: School) => {
     await selectSchool(school);
-    console.log('AQUI');
 
     if (currentCoach) {
       navigate(PathRoutes.home.main, {replace: true});
     } else {
       navigate(PathRoutes.selectAccount, {replace: true});
-    }
-  };
-
-  const onRead = async (data: string) => {
-    try {
-      setIsOpen(false);
-
-      const school: School = JSON.parse(data);
-
-      await selectSchool(school);
-
-      navigate(PathRoutes.syncDetails, {replace: true});
-    } catch (err) {
-      console.log({err});
     }
   };
 
@@ -76,7 +51,7 @@ const SchoolSelectScreen: React.FC = () => {
         {t('schoolSelect.subtitle')}
       </Text>
 
-      <TouchableOpacity onPress={() => setIsOpen(true)}>
+      <TouchableOpacity onPress={() => navigate(PathRoutes.qrScan)}>
         <HStack
           p="12px"
           space={3}
@@ -143,16 +118,6 @@ const SchoolSelectScreen: React.FC = () => {
           {t('aboutScan.description')}
         </Text>
       )}
-
-      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} flex={1}>
-        <VStack flex={1} w="full">
-          <QrReader
-            onBack={() => navigate(-1)}
-            onRead={onRead}
-            onClickSetting={() => {}}
-          />
-        </VStack>
-      </Modal>
     </Page>
   );
 };

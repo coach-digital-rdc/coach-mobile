@@ -13,6 +13,8 @@ const PathRoutes = {
 
   syncDetails: '/syncDetails',
 
+  qrScan: '/qrScan',
+
   coachScripts: '/coachScripts',
 
   settings: {

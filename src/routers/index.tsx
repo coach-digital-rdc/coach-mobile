@@ -31,6 +31,7 @@ import TLCIntroduction from '../screens/TeacherLearningCircles/Introduction';
 import TLCFinish from '../screens/TeacherLearningCircles/Finish';
 import CoachSelectScreen from '../screens/CoachSelect';
 import SyncDetails from '../screens/SyncDetails';
+import QrScanScreen from '../screens/QrScan';
 import TLCDynamicStep from '../screens/TeacherLearningCircles/DynamicStep';
 import SplashScreen from '../screens/SplashScreen';
 import LanguageScreen from '../screens/Language';
@@ -74,6 +75,7 @@ const RouterProvider: React.FC = () => {
         <Route path={PathRoutes.coachScripts} Component={CoachScriptsScreen} />
 
         <Route path={PathRoutes.syncDetails} Component={SyncDetails} />
+        <Route path={PathRoutes.qrScan} Component={QrScanScreen} />
 
         <Route path={PathRoutes.selectAccount} Component={CoachSelectScreen} />
 
