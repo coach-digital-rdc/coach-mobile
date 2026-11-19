@@ -15,11 +15,12 @@ const PathRoutes = {
 
   qrScan: '/qrScan',
 
+  sync: '/sync',
+
   coachScripts: '/coachScripts',
 
   settings: {
     main: '/settings',
-    changeLanguage: '/settings/changeLanguage',
   },
 
   login: {

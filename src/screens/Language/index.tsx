@@ -5,6 +5,7 @@ import {useTranslation} from 'react-i18next';
 import moment from 'moment';
 import i18n from '../../i18n';
 import {StorageService} from '../../services/storage.service';
+import {useCoachContext} from '../../providers/coach.provider';
 import {LoginLogo} from '../../assets/images/logos';
 import RadioCard from '../../components/RadioCard';
 import PathRoutes from '../../routers/paths';
@@ -24,6 +25,7 @@ const LANGUAGES = [
 const LanguageScreen: React.FC = () => {
   const {t} = useTranslation();
   const navigate = useNavigate();
+  const {currentCoach, currentSchool} = useCoachContext();
   const [language, setLanguage] = useState(i18n.language || 'fr');
 
   const choose = (value: string) => {
@@ -35,7 +37,15 @@ const LanguageScreen: React.FC = () => {
 
   const handleContinue = async () => {
     await StorageService.setLanguage(language);
-    navigate(PathRoutes.login.main, {replace: true});
+    // Then the usual start: login, school, or home when the device is already set up
+    navigate(
+      !currentCoach
+        ? PathRoutes.login.main
+        : !currentSchool
+        ? PathRoutes.selectSchool
+        : PathRoutes.home.main,
+      {replace: true},
+    );
   };
 
   return (

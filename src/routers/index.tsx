@@ -1,7 +1,6 @@
 import React from 'react';
 import {VStack} from 'native-base';
 import {Route, Routes} from 'react-router-native';
-import ChangeLanguageScreen from '../screens/Settings/ChangeLanguage';
 import CoachFormScreen from '../screens/CoachForm';
 import SchoolSelectScreen from '../screens/SchoolSelect';
 import TeacherFormScreen from '../screens/Teacher/TeacherForm';
@@ -32,6 +31,7 @@ import TLCFinish from '../screens/TeacherLearningCircles/Finish';
 import CoachSelectScreen from '../screens/CoachSelect';
 import SyncDetails from '../screens/SyncDetails';
 import QrScanScreen from '../screens/QrScan';
+import SyncScreen from '../screens/Sync';
 import TLCDynamicStep from '../screens/TeacherLearningCircles/DynamicStep';
 import SplashScreen from '../screens/SplashScreen';
 import LanguageScreen from '../screens/Language';
@@ -54,11 +54,6 @@ const RouterProvider: React.FC = () => {
 
         <Route path={PathRoutes.settings.main} Component={SettingsScreen} />
 
-        <Route
-          path={PathRoutes.settings.changeLanguage}
-          Component={ChangeLanguageScreen}
-        />
-
         <Route path={PathRoutes.login.main} Component={LoginScreen} />
 
         <Route path={PathRoutes.login.otp} Component={OTPScreen} />
@@ -76,6 +71,7 @@ const RouterProvider: React.FC = () => {
 
         <Route path={PathRoutes.syncDetails} Component={SyncDetails} />
         <Route path={PathRoutes.qrScan} Component={QrScanScreen} />
+        <Route path={PathRoutes.sync} Component={SyncScreen} />
 
         <Route path={PathRoutes.selectAccount} Component={CoachSelectScreen} />
 

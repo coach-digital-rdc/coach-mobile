@@ -61,10 +61,9 @@ const HomeScreen: React.FC = () => {
   }, [currentCoach, currentSchool, navigate]);
 
   const loadStatus = useCallback(async () => {
-    const counts = await SyncService.getUnsyncedItemsCount();
-    setUnsynced(
-      counts.pendingTeachers + counts.pendingSessions + counts.pendingFeedbacks,
-    );
+    // Everything waiting on the device, as in the "Synchronisation" screen
+    const pending = await SyncService.getPendingCounts();
+    setUnsynced(pending.reduce((sum, item) => sum + item.count, 0));
     setLastSync(await StorageService.getLastSync());
     // Sessions started and not closed, as in the "Séances en cours" screen
     const openSessions = await SessionService.listOpenSessions(
@@ -148,7 +147,7 @@ const HomeScreen: React.FC = () => {
     {
       icon: 'sync',
       label: t('home.tiles.sync'),
-      onPress: () => navigate(PathRoutes.settings.main),
+      onPress: () => navigate(PathRoutes.sync),
     },
   ];
 

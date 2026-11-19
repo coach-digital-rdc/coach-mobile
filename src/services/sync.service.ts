@@ -29,24 +29,8 @@ import {PdpService} from './pdp.service';
 import {SignatureService} from './signature.service';
 
 const SyncService = {
-  getUnsyncedItemsCount: async (): Promise<{
-    pendingTeachers: number;
-    pendingFeedbacks: number;
-    pendingSessions: number;
-  }> => {
-    const db = await getDBConnection();
-
-    const results = await db.executeSql(`
-        SELECT
-            (SELECT COUNT(*) FROM teacher where _status != 'synced') AS pendingTeachers,
-            (SELECT COUNT(*) FROM feedback where _status != 'synced') AS pendingFeedbacks,
-            (SELECT COUNT(*) FROM session where _status != 'synced') AS pendingSessions
-    `);
-
-    return results[0].rows.raw()[0];
-  },
-
-  trySyncData: async (firstSync = false): Promise<void> => {
+  // Returns true when the data have been sent and received
+  trySyncData: async (firstSync = false): Promise<boolean> => {
     try {
       const db = await getDBConnection();
 
@@ -128,9 +112,35 @@ const SyncService = {
       }
 
       await SyncService.updateAllToSynced(db);
+      return true;
     } catch (err) {
       console.log(JSON.stringify(err));
+      return false;
     }
+  },
+
+  // Data created or changed on the device and not sent yet, by kind (screen "Synchronisation")
+  getPendingCounts: async (): Promise<{key: string; count: number}[]> => {
+    const db = await getDBConnection();
+    const count = async (sql: string) =>
+      (await db.executeSql(sql))[0].rows.raw()[0].count as number;
+    const pending = (table: string) =>
+      `SELECT COUNT(*) as count FROM ${table} WHERE _status != 'synced'`;
+    const items = [
+      {key: 'sessions', count: await count(pending('session'))},
+      {key: 'notes', count: await count(pending('observation_note'))},
+      {key: 'checklist', count: await count(pending('documentation'))},
+      {
+        key: 'scoring',
+        count:
+          (await count(pending('answer'))) +
+          (await count(pending('competence_score'))),
+      },
+      {key: 'pdp', count: await count(pending('pdp'))},
+      {key: 'signatures', count: await count(pending('session_signature'))},
+      {key: 'teachers', count: await count(pending('teacher'))},
+    ];
+    return items.filter(item => item.count > 0);
   },
 
   // Coaches of the school; the profile of the connected observer is refreshed
